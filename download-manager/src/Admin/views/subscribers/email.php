@@ -85,6 +85,7 @@ $total = $wpdb->get_var("select count(*) as t from {$wpdb->prefix}ahm_emails");
         <div class="panel-footer">
             <nobr>
                 <input type="submit" class="btn btn-secondary action submitdelete" id="doaction" value="<?php echo __( "Delete Selected" , "download-manager" ); ?>">
+                <a href="#" class="btn btn-danger wpdm-delalleml" id="doaction"><?php echo __( "Delete All" , "download-manager" ); ?></a>
                 <?php if(isset($_REQUEST['q'])) { ?>
                     <input type="button" class="button-secondary action" onclick="location.href='admin.php?page=file-manager'" value="<?php echo __( "Reset Search" , "download-manager" ); ?>">
                 <?php } ?>
@@ -104,6 +105,18 @@ $total = $wpdb->get_var("select count(*) as t from {$wpdb->prefix}ahm_emails");
             </div><div style="clear: both"></div>
         </div>
     </div>
+
+    <script>
+        jQuery(function ($) {
+            $('body').on('click', '.wpdm-delalleml', function (e) {
+                e.preventDefault();
+                if(confirm('<?= esc_attr__('Are you sure?', 'download-manager'); ?>')) {
+                    WPDM.blockUI('#subtbl');
+                    location.href = "<?= admin_url('/edit.php?post_type=wpdmpro&page=wpdm-subscribers&lockOption=email&task=delete&all=1&__wpdmdemail='.wp_create_nonce(WPDM_PRI_NONCE)); ?>";
+                }
+            })
+        })
+    </script>
 
 
 

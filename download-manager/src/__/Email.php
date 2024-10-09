@@ -20,29 +20,6 @@ class Email {
 	public $_attachments;
 	public $_params = [];
 
-    var $email_hooks = [
-        'wpdm_before_email_download_link' => [
-            'title' => 'Before email download link',
-            'params' => 2
-        ],
-        'wpdm_onstart_download' => [
-            'title' => 'Just before download starts',
-            'params' => 1
-        ],
-        'create_package_frontend' => [
-            'title' => 'Create new package from front-end',
-            'params' => 2
-        ],
-        'edit_package_frontend' => [
-            'title' => 'Update a package from frontend',
-            'params' => 2
-        ],
-        'wpdm_after_checkout' => [
-            'title' => 'After a successful checkout',
-            'params' => 2
-        ],
-    ];
-
     public $templateDir;
 
     function __construct() {
@@ -99,6 +76,17 @@ class Email {
 			$this->_params[$key] = $val;
 		}
 		return $this;
+	}
+
+	function getStatus($id = '') {
+		$status = get_option("_fm_email_template_status");
+		if(!is_array($status)) {
+			$templates = self::templates();
+			$templates = array_keys($templates);
+			$status = array_combine($templates, array_pad([], count($templates), 1));
+		}
+
+		return $id ? ( isset($status[$id]) ? (int)$status[$id] : 1 ) : $status;
 	}
 
     public static function templates() {
@@ -221,46 +209,46 @@ class Email {
 
     public static function tags() {
         $tags = array(
-	        "{{SERVER_...key...}}" => ['value' => '', 'desc' => 'Server variables, replace <code>...key...</code> with proper key, for example, to show referer, use <code>{{SERVER_HTTP_REFERER}}</code>'],
-	        "{{REQUEST_...key...}}" => ['value' => '', 'desc' => 'Request variables, replace <code>...key...</code> with proper key'],
-            "{{support_email}}" => array( 'value' => get_option( 'admin_email' ), 'desc' => 'Support Email' ),
-            "{{img_logo}}"     => array( 'value' => '', 'desc' => 'Site Logo' ),
-            "{{banner}}"     => array( 'value' => '', 'desc' => 'Banner/Background Image URL' ),
-            "{{site_url}}"       => array( 'value' => home_url( '/' ), 'desc' => 'Home URL of your website' ),
-            "{{homeurl}}"       => array( 'value' => home_url( '/' ), 'desc' => 'Home URL of your website' ),
+	        "{{SERVER_...key...}}" => ['value' => '', 'desc' => sprintf(__('Server variables, replace %s with proper key, for example, to show referer, use %s', 'download-manager'), '<code>...key...</code>', '<code>{{SERVER_HTTP_REFERER}}</code>')],
+	        "{{REQUEST_...key...}}" => ['value' => '', 'desc' => sprintf(__('Request variables, replace %s with proper key', 'download-manager'), '<code>...key...</code>')],
+            "{{support_email}}" => array( 'value' => get_option( 'admin_email' ), 'desc' => __('Support Email', 'download-manager') ),
+            "{{img_logo}}"     => array( 'value' => '', 'desc' => __('Site Logo', 'download-manager') ),
+            "{{banner}}"     => array( 'value' => '', 'desc' => __('Banner/Background Image URL', 'download-manager') ),
+            "{{site_url}}"       => array( 'value' => home_url( '/' ), 'desc' => __('Site URL of Your Website', 'download-manager') ),
+            "{{homeurl}}"       => array( 'value' => home_url( '/' ), 'desc' => __('Home URL of Your Website', 'download-manager') ),
             "{{sitename}}"      => array(
                 'value' => get_option( 'blogname' ),
-                'desc'  => 'The name/title of your website'
+                'desc'  => __('Website Name/Title', 'download-manager'),
             ),
             "{{site_tagline}}"  => array(
                 'value' => get_bloginfo( 'description' ),
-                'desc'  => 'The name/title of your website'
+                'desc'  => __('Website Tagline', 'download-manager')
             ),
-            "{{loginurl}}"      => array( 'value' => wp_login_url(), 'desc' => 'Login page URL' ),
-            "{{name}}"          => array( 'value' => '', 'desc' => 'Members First Name' ),
-            "{{username}}"      => array( 'value' => '', 'desc' => 'Username' ),
-            "{{password}}"      => array( 'value' => '', 'desc' => 'Members account password' ),
+            "{{loginurl}}"      => array( 'value' => wp_login_url(), 'desc' => __('Login page URL', 'download-manager') ),
+            "{{name}}"          => array( 'value' => '', 'desc' => __('Members First Name', 'download-manager') ),
+            "{{username}}"      => array( 'value' => '', 'desc' => __('Members Username', 'download-manager') ),
+            "{{password}}"      => array( 'value' => '', 'desc' => __('Members Account Password', 'download-manager') ),
             "{{date}}"          => array(
                 'value' => date_i18n( get_option( 'date_format' ), time() + wpdm_tzoffset() ),
                 'desc'  => 'Current Date'
             ),
-            "{{package_name}}"  => array( 'value' => '', 'desc' => 'Package Name' ),
-            "{{author}}"        => array( 'value' => '', 'desc' => 'Package author profile' ),
-            "{{package_url}}"   => array( 'value' => '', 'desc' => 'Package URL' ),
-            "{{edit_url}}"      => array( 'value' => '', 'desc' => 'Package Edit URL' )
+            "{{package_name}}"  => array( 'value' => '', 'desc' => __('Package Name', 'download-manager') ),
+            "{{author}}"        => array( 'value' => '', 'desc' => __('Package Author Profile', 'download-manager') ),
+            "{{package_url}}"   => array( 'value' => '', 'desc' => __('Package URL', 'download-manager') ),
+            "{{edit_url}}"      => array( 'value' => '', 'desc' => __('Package Edit URL', 'download-manager') )
         );
 
-	    $tags["{{client_ip}}"] = ['value' => wpdm_get_client_ip(), 'desc' => 'User IP'];
+	    $tags["{{client_ip}}"] = ['value' => wpdm_get_client_ip(), 'desc' => __('User IP', 'download-manager')];
 
         if(is_user_logged_in()) {
             global $current_user;
-            $tags["{{user_login}}"] = ['value' => $current_user->user_login, 'desc' => 'User login'];
-            $tags["{{user_email}}"] = ['value' => $current_user->user_email, 'desc' => 'User email'];
-            $tags["{{user_first_name}}"] = ['value' => $current_user->user_firstname, 'desc' => 'User first name'];
-            $tags["{{user_last_name}}"] = ['value' => $current_user->user_lastname, 'desc' => 'User last name'];
-            $tags["{{user_display_name}}"] = ['value' => $current_user->display_name, 'desc' => 'User display name'];
-            $tags["{{user_description}}"] = ['value' => get_user_meta($current_user->ID, 'description', true), 'desc' => 'User display name'];
-	        $tags["{{um_...metakey...}}"] = ['value' => '', 'desc' => 'User meta data, replace <code>...metakey...</code> with user meta key'];
+            $tags["{{user_login}}"] = ['value' => $current_user->user_login, 'desc' => __('User Login', 'download-manager')];
+            $tags["{{user_email}}"] = ['value' => $current_user->user_email, 'desc' => __('User Email', 'download-manager')];
+            $tags["{{user_first_name}}"] = ['value' => $current_user->user_firstname, 'desc' => __('User First Name', 'download-manager')];
+            $tags["{{user_last_name}}"] = ['value' => $current_user->user_lastname, 'desc' => __('User Last Name', 'download-manager')];
+            $tags["{{user_display_name}}"] = ['value' => $current_user->display_name, 'desc' => __('User Display Name', 'download-manager')];
+            $tags["{{user_description}}"] = ['value' => get_user_meta($current_user->ID, 'description', true), 'desc' => __('User Description', 'download-manager')];
+	        $tags["{{um_...metakey...}}"] = ['value' => '', 'desc' => sprintf(__('User meta data, replace %s with user meta key', 'download-manager'), '<code>...metakey...</code>')];
         }
 	    return apply_filters( "wpdm_email_template_tags", $tags );
     }
@@ -299,6 +287,7 @@ class Email {
         $params['img_logo']     = isset( $params['logo'] ) && $params['logo'] != '' ? "<img style='max-width: 70%;{$logo_wh}' src='{$logo}' alt='".esc_attr(get_option('blogname'))."' />" : get_bloginfo('name');
         $params['banner']       = isset( $params['banner'] ) && $params['banner'] != '' ? esc_url($params['banner']) : "";
         $params['banner_img']   = isset( $params['banner'] ) && $params['banner'] != '' ? "<img style='max-width: 100%;' src='{$banner}' alt='Banner Image' />" : "";
+	    $params['images_dir'] = WPDM_BASE_URL.'src/__/views/email-templates/images/';
         $template_file          = get_option( "__wpdm_email_template", "default.html" );
         $emltpl = null;
         if ( isset( $params['template_file'] ) ) {
@@ -340,6 +329,9 @@ class Email {
     }
 
     public static function send( $id, $params ) {
+
+		if(!$id || !WPDM()->email->getStatus($id)) return false;
+
         $email       = self::info( $id );
         $template    = self::prepare( $id, $params );
         $headers[]     = "From: " . $template['from_name'] . " <" . $template['from_email'] . ">";

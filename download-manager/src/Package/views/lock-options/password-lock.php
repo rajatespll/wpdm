@@ -5,6 +5,7 @@
  * Time: 20:49
  */
 if (!defined('ABSPATH')) die();
+
 ?>
 <div class="card card-default">
     <div class="card-header">
@@ -15,6 +16,9 @@ if (!defined('ABSPATH')) die();
         <div id="msg_<?php echo $package['ID']; ?>" style="display:none;"><?php _e( "Processing..." , "download-manager" ); ?></div>
         <form id="wpdmdlf_<?php echo $field_id; ?>" method=post action="<?php echo home_url('/'); ?>" style="margin-bottom:0px;">
             <input type=hidden name="__wpdm_ID" value="<?php echo $package['ID']; ?>" />
+            <?php if(isset($_REQUEST['__wpdmfl'])) { ?>
+                <input type=hidden name="__wpdmfl" value="<?= wpdm_query_var('__wpdmfl', 'txt') ?>" />
+            <?php } ?>
             <input type=hidden name="dataType" value="json" />
             <input type=hidden name="execute" value="wpdm_getlink" />
             <input type=hidden name="action" value="wpdm_ajax_call" />
@@ -38,7 +42,8 @@ if (!defined('ABSPATH')) die();
                         jQuery("#wpdmdlf_<?php echo  $field_id; ?>").hide();
                         jQuery("#msg_<?php echo  $package['ID']; ?>").html("verifying...").css("cursor","pointer").show().click(function(){ jQuery(this).hide();jQuery("#wpdmdlf_<?php echo  $field_id; ?>").show(); });
                         if(res.success === true) {
-                            window.open(res.downloadurl, '_blank');
+                            if(res.autostart === true)
+                                window.open(res.downloadurl, '_blank');
                             jQuery("#wpdmdlf_<?php echo  $field_id; ?>").html("<a style='color:#ffffff !important' target='_blank' class='btn btn-success btn-block btn-lg' href='"+res.downloadurl+"'><?php _e( "Download" , "download-manager" ); ?></a>");
                             jQuery("#msg_<?php echo  $package['ID']; ?>").hide();
                             jQuery("#enter_pass_label_<?php echo  $package['ID']; ?>").hide();

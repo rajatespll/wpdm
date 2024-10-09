@@ -17,7 +17,9 @@ class Session
 
     function __construct()
     {
-        if(isset($_COOKIE['__wpdm_client']))
+	    $urlparts = wp_parse_url(home_url());
+	    $domain = $urlparts['host'];
+		if(isset($_COOKIE['__wpdm_client']))
             $deviceID = __::sanitize_var($_COOKIE['__wpdm_client'], 'alphanum');
         else {
             $agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
@@ -26,7 +28,7 @@ class Session
             if(!defined('WPDM_ACCEPT_COOKIE') || WPDM_ACCEPT_COOKIE !== false) {
 	            //Implement user consent
 	            if(apply_filters('wpdm_user_accept_cookies', true)) {
-		            @setcookie( '__wpdm_client', $deviceID, 0, "/", "", is_ssl(), true );
+		            @setcookie( '__wpdm_client', $deviceID, 0, "/", $domain, is_ssl(), true );
 		            $_COOKIE['__wpdm_client'] = $deviceID;
 	            }
             }
@@ -59,9 +61,20 @@ class Session
         if(!$deviceID) {
             $agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
             $deviceID = md5(__::get_client_ip() . $agent);
+        } else {
+	        $deviceID       = __::sanitize_var( $deviceID, 'alphanum' );
+	        self::$deviceID = $deviceID;
+	        $urlparts = wp_parse_url(home_url());
+	        $domain = $urlparts['host'];
+	        if(!defined('WPDM_ACCEPT_COOKIE') || WPDM_ACCEPT_COOKIE !== false) {
+		        //Implement user consent
+		        if(apply_filters('wpdm_user_accept_cookies', true)) {
+			        @setcookie( '__wpdm_client', $deviceID, 0, "/", $domain, is_ssl(), true );
+			        $_COOKIE['__wpdm_client'] = $deviceID;
+		        }
+	        }
         }
-        $deviceID = __::sanitize_var($deviceID, 'alphanum');
-        self::$deviceID = $deviceID;
+
         return self::$deviceID;
     }
 

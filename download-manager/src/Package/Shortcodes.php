@@ -105,13 +105,15 @@ class Shortcodes
      * @param array $params
      * @return string
      */
-    function packages($params = array('items_per_page' => 10, 'title' => false, 'desc' => false, 'orderby' => 'date', 'order' => 'DESC', 'paging' => false, 'page_numbers' => true, 'toolbar' => 1, 'template' => '', 'cols' => 3, 'colspad' => 2, 'colsphone' => 1, 'tags' => '', 'categories' => '', 'year' => '', 'month' => '', 's' => '', 'css_class' => 'wpdm_packages', 'scid' => '', 'async' => 1, 'tax' => '', 'terms' => ''))
+    function packages($params = ['items_per_page' => 10, 'title' => false, 'desc' => false, 'orderby' => 'date', 'order' => 'DESC', 'paging' => false, 'page_numbers' => true, 'toolbar' => 1, 'template' => '', 'cols' => 3, 'colspad' => 2, 'colsphone' => 1, 'tags' => '', 'categories' => '', 'year' => '', 'month' => '', 's' => '', 'css_class' => 'wpdm_packages', 'scid' => '', 'async' => 1, 'tax' => '', 'terms' => '', 'not_found' => 'No downloads available!'])
     {
         global $current_user, $post;
 
         static $wpdm_packages = 0;
 
-        // When login=1, show login form for guests/visitors
+	    //$params = __::a($params, ['items_per_page' => 10, 'title' => '', 'desc' => '', 'orderby' => 'date', 'order' => 'DESC', 'paging' => false, 'page_numbers' => true, 'toolbar' => 1, 'template' => '', 'cols' => 3, 'colspad' => 2, 'colsphone' => 1, 'tags' => '', 'categories' => '', 'year' => '', 'month' => '', 's' => '', 'css_class' => 'wpdm_packages', 'scid' => '', 'async' => 1, 'tax' => '', 'terms' => '', 'not_found' => 'No downloads available!']);
+
+	    // When login=1, show login form for guests/visitors
         if (isset($params['login']) && $params['login'] == 1 && !is_user_logged_in())
             return WPDM()->user->login->form($params);
 
@@ -255,6 +257,10 @@ class Shortcodes
 
         }
 
+	    $not_found_msg = wpdm_valueof($scparams, 'not_found') ?: __('No downloads found!', WPDM_TEXT_DOMAIN);
+	    if($total === 0) $html = "<div class='col-md-12'>{$not_found_msg}</div>";
+
+		if(!$html) $html = UI::div(UI::div($not_found_msg, 'alert alert-info'), 'col-md-12');
 
         $html = "<div class='row'>{$html}</div>";
 
@@ -326,8 +332,11 @@ class Shortcodes
     {
         global $wpdb;
 
-        if (is_array($params))
-            @extract($params);
+        if (!is_array($params))
+	        $params = [];
+
+		@extract($params);
+
         $template = isset($template) && $template != '' ? $template : 'link-template-calltoaction3';
         $async = isset($async) ? $async : 0;
         update_post_meta(get_the_ID(), "__wpdm_link_template", $template);
@@ -336,12 +345,18 @@ class Shortcodes
 	    //$strm = esc_attr($strm);
         $html = '';
         $cols = isset($cols) ? $cols : 1;
+	    $categories = isset($categories) ? $categories : '';
 	    $items_per_page = isset($items_per_page) ? $items_per_page : $cols * 6;
 	    update_post_meta(get_the_ID(), "__wpdm_items_per_page", $items_per_page);
 	    $colspad = isset($colspad) ? $colspad : 1;
         $colsphone = isset($colsphone) ? $colsphone : 1;
+	    //$html = $this->packages(array('items_per_page' ► $items_per_page, 'template' ► $template, 's' ► $strm, 'paging' ► true, 'toolbar' ► 0, 'cols' ► $cols, 'colsphone' ► $colsphone, 'colspad' ► $colspad, 'async' ► $async, 'categories' ► $categories));
+		if($strm)
+			$params['s'] = $strm;
+	    $params['toolbar'] = 0;
         if (($strm == '' && isset($init) && $init == 1) || $strm != '')
-            $html = $this->packages(array('items_per_page' => $items_per_page, 'template' => $template, 's' => $strm, 'paging' => true, 'toolbar' => 0, 'cols' => $cols, 'colsphone' => $colsphone, 'colspad' => $colspad, 'async' => $async));
+            $html = $this->packages($params);
+            //$html = $this->packages(array('items_per_page' => $items_per_page, 'template' => $template, 'categories' => $categories,  's' => $strm, 'paging' => true, 'toolbar' => 0, 'cols' => $cols, 'colsphone' => $colsphone, 'colspad' => $colspad, 'async' => $async, 'found_none' => wpdm_valueof($params, 'found_none', __('No Package Found!', WPDM_TEXT_DOMAIN))));
         $html = "<div class='w3eden'><form id='wpdm-search-form' style='margin-bottom: 20px'><div class='input-group input-group-lg'><div class='input-group-addon input-group-prepend'><span class=\"input-group-text\"><i class='fas fa-search'></i></span></div><input type='text' name='search' value='" . $strm . "' class='form-control input-lg' /></div></form>{$html}</div>";
         return str_replace(array("\r", "\n"), "", $html);
     }
@@ -355,7 +370,7 @@ class Shortcodes
     {
         global $wpdb;
         $download_count = $wpdb->get_var("select sum(meta_value) from {$wpdb->prefix}postmeta where meta_key='__wpdm_download_count'");
-        return $download_count;
+        return (int)wpdm_valueof($params, 'format') ? number_format($download_count, 0, '', ',') : $download_count;
     }
 
     /**
@@ -408,7 +423,6 @@ class Shortcodes
 
         $offset = ($jstable === 1) ? 0 : ($current_page - 1) * $items;
         $total_files = wp_count_posts('wpdmpro')->publish;
-
         $terms = isset($params['categories']) ? explode(",", $params['categories']) : array();
         if (isset($_GET['wpdmc'])) $terms = array(esc_attr($_GET['wpdmc']));
         if (count($terms) > 0) {
@@ -424,14 +438,13 @@ class Shortcodes
         $tag = isset($params['tag']) ? $params['tag'] : '';
         if ($tag != '') {
             $tax_query[] = [
-                'taxonomy' => 'wpdmtag',
+                'taxonomy' => WPDM_TAG,
                 'field' => 'slug',
                 'terms' => $tag,
                 'operator' => 'IN',
                 'include_children' => false
             ];
         }
-
         if (isset($params['login']) && $params['login'] == 1 && !is_user_logged_in())
             return WPDM()->user->login->form($params);
         else {

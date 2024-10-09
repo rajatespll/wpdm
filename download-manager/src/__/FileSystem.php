@@ -104,8 +104,10 @@ class FileSystem {
 		$end_range   = $end_byte;
 
 		nocache_headers();
-		header( "X-Robots-Tag: noindex, nofollow", true );
-		header( "Robots: none" );
+        if(!(int)get_option('__wpdm_allow_index')) {
+	        header( "X-Robots-Tag: noindex, nofollow", true );
+	        header( "Robots: none" );
+        }
 		header( 'Content-Description: File Transfer' );
 
 		header( "Content-type: $content_type" );
@@ -279,8 +281,10 @@ class FileSystem {
 		@ob_end_clean();
 		nocache_headers();
 		$filetype = wp_check_filetype( $filename );
-		header( "X-Robots-Tag: noindex, nofollow", true );
-		header( "Robots: none" );
+		if(!(int)get_option('__wpdm_allow_index')) {
+			header( "X-Robots-Tag: noindex, nofollow", true );
+			header( "Robots: none" );
+		}
 		header( "Content-Description: File Transfer" );
 		header( "Content-Type: {$filetype['type']}" );
 		header( "Content-disposition: attachment;filename=\"$filename\"" );
@@ -448,7 +452,7 @@ class FileSystem {
 		if ( $dir === '/' || $dir === '' ) {
 			return array();
 		}
-		$tmpfiles = file_exists( $dir ) ? array_diff( scandir( $dir ), array( ".", "..", ".DS_Store" ) ) : array();
+		$tmpfiles = file_exists( $dir ) ? array_diff( scandir( $dir ), array( ".", "..", ".DS_Store", ".htaccess" ) ) : array();
 		$files    = array();
 		foreach ( $tmpfiles as $file ) {
 			if ( is_dir( $dir . $file ) && $recur == true ) {
@@ -673,59 +677,69 @@ class FileSystem {
 		}
 
 
+        $thumbname = md5( $path.$width.$height );
 		$name_p    = explode( ".", $path );
 		$ext       = "." . end( $name_p );
 		$filename  = basename( $path );
-		$thumbpath = $cachedir . str_replace( $ext, "-{$width}x{$height}" . $ext, $filename );
+		//$thumbpath = $cachedir . str_replace( $ext, "-{$width}x{$height}" . $ext, $filename );
+		$thumbpath = $cachedir . $thumbname.$ext;
+        //wpdmdd($thumbpath);
 
 		if ( file_exists( $thumbpath ) && $usecache ) {
 			$thumbpath = str_replace( $cachedir, WPDM_CACHE_URL, $thumbpath );
-
 			return $thumbpath;
 		}
-		$image = wp_get_image_editor( $path );
 
-		$fullurl = str_replace( $cachedir, WPDM_CACHE_URL, $path );
-		if ( ! is_wp_error( $image ) ) {
-			//if ( is_wp_error( $image->resize( $width, $height, true ) ) ) return $fullurl;
-			$image->resize( $width, $height, $crop );
-			$image->save( $thumbpath );
+        try {
+	        $image = wp_get_image_editor( $path );
+	        $fullurl = str_replace( $cachedir, WPDM_CACHE_URL, $path );
+	        if ( ! is_wp_error( $image ) ) {
+		        //if ( is_wp_error( $image->resize( $width, $height, true ) ) ) return $fullurl;
+		        try {
+			        $image->resize( $width, $height, $crop );
+			        $image->save( $thumbpath );
+		        } catch ( \Exception $e ) {
+			        return "https://fakeimg.pl/600x400?text=x&font=museo";
+		        }
 
-		} else {
-			return str_replace( ABSPATH, home_url( '/' ), $path );
-		}
+	        } else {
+		        return str_replace( ABSPATH, home_url( '/' ), $path );
+	        }
 
-		$thumb_size = $image->get_size();
-		if ( $thumb_size['width'] < $width || $thumb_size['height'] < $height ) {
-			if ( $height == 0 ) {
-				$height = $thumb_size['height'];
-			}
-			$_image_back = imagecreatetruecolor( $width, $height );
-			$color       = imagecolorallocatealpha( $_image_back, 255, 255, 255, 127 );
-			imagefill( $_image_back, 0, 0, $color );
-			if ( strstr( $thumbpath, ".png" ) ) {
-				$_image_top = imagecreatefrompng( $thumbpath );
-			}
-			if ( strstr( $thumbpath, ".gif" ) ) {
-				$_image_top = imagecreatefromgif( $thumbpath );
-			}
-			if ( strstr( $thumbpath, ".jpg" ) || strstr( $thumbpath, ".jpeg" ) ) {
-				$_image_top = imagecreatefromjpeg( $thumbpath );
-			}
-			if ( ! isset( $_image_top ) || ! $_image_top ) {
-				return $thumbpath;
-			}
-			$imgw = imagesx( $_image_top );
-			$imgh = imagesy( $_image_top );
-			$posx = (int) ( ( $width - $imgw ) / 2 );
-			$posy = (int) ( ( $height - $imgh ) / 2 );
-			imagecopy( $_image_back, $_image_top, $posx, $posy, 0, 0, $imgw, $imgh );
-			imagepng( $_image_back, $thumbpath );
-			imagedestroy( $_image_back );
-		}
+	        $thumb_size = $image->get_size();
+	        if ( $thumb_size['width'] < $width || $thumb_size['height'] < $height ) {
+		        if ( $height == 0 ) {
+			        $height = $thumb_size['height'];
+		        }
+		        $_image_back = imagecreatetruecolor( $width, $height );
+		        $color       = imagecolorallocatealpha( $_image_back, 255, 255, 255, 127 );
+		        imagefill( $_image_back, 0, 0, $color );
+		        if ( strstr( $thumbpath, ".png" ) ) {
+			        $_image_top = imagecreatefrompng( $thumbpath );
+		        }
+		        if ( strstr( $thumbpath, ".gif" ) ) {
+			        $_image_top = imagecreatefromgif( $thumbpath );
+		        }
+		        if ( strstr( $thumbpath, ".jpg" ) || strstr( $thumbpath, ".jpeg" ) ) {
+			        $_image_top = imagecreatefromjpeg( $thumbpath );
+		        }
+		        if ( ! isset( $_image_top ) || ! $_image_top ) {
+			        return $thumbpath;
+		        }
+		        $imgw = imagesx( $_image_top );
+		        $imgh = imagesy( $_image_top );
+		        $posx = (int) ( ( $width - $imgw ) / 2 );
+		        $posy = (int) ( ( $height - $imgh ) / 2 );
+		        imagecopy( $_image_back, $_image_top, $posx, $posy, 0, 0, $imgw, $imgh );
+		        imagepng( $_image_back, $thumbpath );
+		        imagedestroy( $_image_back );
+	        }
 
-		$thumbpath = str_replace( "\\", "/", $thumbpath );
-		$thumbpath = str_replace( $cachedir, WPDM_CACHE_URL, $thumbpath );
+	        $thumbpath = str_replace( "\\", "/", $thumbpath );
+	        $thumbpath = str_replace( $cachedir, WPDM_CACHE_URL, $thumbpath );
+        } catch ( \Exception $e ) {
+            wpdmdd($e->getMessage());
+        }
 
 		return $thumbpath;
 	}
@@ -787,6 +801,17 @@ class FileSystem {
 		return $durl;
 	}
 
+	function filePreview( $file, $width = 150, $height = 150) {
+        $ext = self::fileExt($file);
+		if($ext === 'pdf')
+            return self::pdfThumbnail($file, md5($file));
+        if(in_array($ext, ['png', 'jpg', 'jpeg']))
+            return self::imageThumbnail($file, $width, $height, true);
+
+        return self::fileTypeIcon($ext);
+
+    }
+
 	/**
 	 * @usgae Block http access to a dir
 	 *
@@ -805,6 +830,7 @@ class FileSystem {
 	 * @return string
 	 */
 	public static function docViewer( $url, $ID, $ext = '' ) {
+
 		$doc_preview_html = "";
 		if ( $ext == 'pdf' ) {
 			$doc_preview_html = '<iframe src="https://docs.google.com/viewer?url=' . urlencode( $url ) . '&embedded=true" width="100%" height="600" style="border: none;"></iframe>';
@@ -876,7 +902,7 @@ class FileSystem {
 	 *
 	 * @return string File Type Icon URL
 	 */
-	static function fileTypeIcon( $filename_or_ext, $color = '#269def', $return = true ) {
+	static function fileTypeIcon( $filename_or_ext, $color = '#269def|#26bdef', $return = true ) {
 		$ext = $filename_or_ext;
 		if ( substr_count( $ext, '.' ) ) {
 			$ext = self::fileExt( $ext );
@@ -894,42 +920,26 @@ class FileSystem {
 			ob_start();
 			$id         = uniqid();
 			$ext        = strtoupper( $ext );
-			$color_rgba = wpdm_hex2rgb( $color );
+			$color = explode("|", $color);
 			$ext        = substr( $ext, 0, 3 );
 			?>
-            <svg id="Layer_<?= $id ?>" style="enable-background:new 0 0 512 512;" version="1.1" viewBox="0 0 512 512"
-                 xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style
-                        type="text/css">
-                    .st_<?= $id ?>_0 {
-                        fill: rgba(<?php echo $color_rgba; ?>, 0.3);
-                    }
 
-                    .st_<?= $id ?>_1 {
-                        fill: rgba(<?php echo $color_rgba; ?>, 0.9);
-                    }
-
-                    .st_<?= $id ?>_2 {
-                        fill: <?php echo $color; ?>;
-                    }
-
-                    .st_<?= $id ?>_3 {
-                        fill: #FFFFFF;
-                    }
-                </style>
-                <g id="XMLID_168_">
-                    <g id="XMLID_83_">
-                        <polygon class="st_<?= $id ?>_0" id="XMLID_87_"
-                                 points="330.7,6 87.9,6 87.9,506 449.2,506 449.2,122.8   "/>
-                        <polygon class="st_<?= $id ?>_1" id="XMLID_86_" points="330.7,6 449.2,122.8 330.7,122.8   "/>
-                        <rect class="st_<?= $id ?>_1" height="156.1" id="XMLID_85_" width="329" x="62.8" y="298.8"/>
-                        <polygon class="st_<?= $id ?>_2" id="XMLID_84_" points="62.8,454.9 87.9,476.1 87.9,454.9   "/>
-                    </g>
-                    <g xmlns="http://www.w3.org/2000/svg" id="XMLID_3113_">
-                        <text x="20%" fill="white" style="font-family: sans-serif;font-size: 725%;font-weight: bold;"
-                              y="82%"><?php echo $ext; ?></text>
-                    </g>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+                <defs>
+                    <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop stop-color="#269def" offset="0"/>
+                        <stop stop-color="#26bdef" offset="1"/>
+                    </linearGradient>
+                </defs>
+                <g>
+                    <rect fill="url(#gradient)" x="0" y="0" width="40" height="40" rx="3" ry="3"/>
+                    <text x="5" y="19" font-family="Arial, Helvetica, sans-serif" font-size="13px" letter-spacing="1" fill="#FFFFFF">
+                        <tspan><?php echo $ext; ?></tspan>
+                        <tspan x="6" y="28">_</tspan>
+                    </text>
                 </g>
-        </svg>
+            </svg>
+
 			<?php
 			$file_type_icon_url = ob_get_clean();
 			$file_type_icon_url = "data:image/svg+xml;base64," . base64_encode( $file_type_icon_url );
@@ -1025,9 +1035,11 @@ class FileSystem {
 	 * @return array|string|string[]
 	 */
 	function relPath( $abs_path ) {
-		$rel_path = str_replace( UPLOAD_DIR, "", $abs_path );
-		$rel_path = str_replace( ABSPATH, "", $rel_path );
-
+		$abs_path = str_replace( "\\", "/", $abs_path );
+        $up_root = str_replace( "\\", "/", UPLOAD_DIR );
+		$rel_path = str_replace( $up_root, "", $abs_path );
+        $abs_root = str_replace( "\\", "/", ABSPATH );
+		$rel_path = str_replace( $abs_root, "", $rel_path );
 		return $rel_path;
 	}
 
@@ -1042,6 +1054,8 @@ class FileSystem {
 	 */
 	function absPath( $rel_path, $pid = null ) {
 		$abs_path = false;
+
+        if(!$rel_path) return false;
 
 		$upload_dir      = wp_upload_dir();
 		$upload_base_url = $upload_dir['baseurl'];
@@ -1158,9 +1172,10 @@ class FileSystem {
 		}
 		$absPath          = str_replace( "\\", "/", $absPath );
 		$upload_dir       = str_replace( "\\", "/", UPLOAD_DIR );
+		$upload_dir_real  = realpath($upload_dir);
 		$asset_root       = str_replace( "\\", "/", AssetManager::root() );
 		$allowedPathCheck = apply_filters( "wpdm_allowed_path_check", true );
-		if ( substr_count( $absPath, $upload_dir ) || substr_count( $absPath, $asset_root ) || ! $allowedPathCheck ) {
+		if ( substr_count( $absPath, $upload_dir ) || substr_count( $absPath, $upload_dir_real ) || substr_count( $absPath, $asset_root ) || ! $allowedPathCheck ) {
 			return true;
 		}
 

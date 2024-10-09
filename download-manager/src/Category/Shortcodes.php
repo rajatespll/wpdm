@@ -38,14 +38,20 @@ class Shortcodes
 
     }
 
-    function categoryLink($params)
-    {
-        $category = new Category(wpdm_valueof($params, 'id'));
-        if(!$category->ID) return '';
-        $cat = (array)$category;
-        $cat['icon'] = $category->icon ? "<img src='{category->icon}' alt='{$category->name}' />" : "";
-        $template = isset($params['template']) && $params['template'] != '' ? $params['template'] : 'category-link-shortcode.php';
-        return Template::output($template, $cat, __DIR__.'/views');
-    }
+	function categoryLink($params)
+	{
+		$category = new Category((int)wpdm_valueof($params, 'id'));
+		if(!$category->ID) return '';
+		$cat = (array)$category;
+		$_cat = [];
+		foreach ($cat as $key => $value) {
+			if(!is_array($value))
+				$_cat["{{{$key}}}"] = $value;
+		}
+		$_cat['{{icon}}'] = $category->icon ? "<img src='{$category->icon}' alt='{$category->name}' />" : "";
+		$template = isset($params['template']) && $params['template'] != '' ? $params['template'] : 'category-link-shortcode.php';
+		$template = wp_basename($template);
+		return Template::output($template, $_cat, __DIR__.'/views');
+	}
 
 }

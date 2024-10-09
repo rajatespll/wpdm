@@ -23,6 +23,7 @@ class Stats
         add_action('admin_init', array($this, 'quickExport'));
         add_action('wp_ajax_wpdm_stats_get_packages', array($this, 'ajax_callback_get_packages'));
         add_action('wp_ajax_wpdm_stats_get_users', array($this, 'ajax_callback_get_users'));
+        add_action("wp_ajax_wpdm_export_stats", array($this, 'export'));
     }
 
     function menu()
@@ -45,10 +46,10 @@ class Stats
         if ($term) {
             $result_rows = $wpdb->get_results("SELECT ID, post_title FROM $posts_table where `post_type` = 'wpdmpro' AND `post_title` LIKE  '%" . $term . "%' ");
             foreach ($result_rows as $row) {
-                array_push($packages, [
-                    'id' => $row->ID,
+                $packages[] = [
+                    'id'   => $row->ID,
                     'text' => $row->post_title
-                ]);
+                ];
             }
         }
         //results key is necessary for jquery select2
@@ -65,21 +66,91 @@ class Stats
         if ($term) {
             $result_rows = $wpdb->get_results("SELECT ID, user_login, display_name, user_email FROM $users_table where `display_name` LIKE  '%" . $term . "%' OR `user_nicename` LIKE  '%" . $term . "%' OR `user_login` LIKE  '%" . $term . "%' OR `user_email` LIKE  '%" . $term . "%'  ");
             foreach ($result_rows as $row) {
-                $text = $row->display_name . " ( $row->user_login ) ";
-                array_push($users, [
-                    'id' => $row->ID,
-                    'text' => $text
-                ]);
+                $text    = $row->display_name . " ( $row->user_login ) ";
+                $users[] = [
+	                'id'   => $row->ID,
+	                'text' => $text
+                ];
             }
         }
         //results key is necessary for jquery select2
         wp_send_json(["results" => $users]);
     }
 
+	function prepareExport() {
+		if(__::isAuthentic('xstats', WPDM_PUB_NONCE, WPDM_ADMIN_CAP, false)) {
+		?>
+
+			<?php
+			die();
+		}
+	}
+
+    function export(){
+        if (!wp_verify_nonce(wpdm_query_var('_statexport_nonce'), NONCE_KEY) || !current_user_can(WPDM_ADMIN_CAP)) die('-1');
+
+
+        do_action("wpdm_before_process_stats_export_data");
+
+        global $wpdb;
+
+        $items_per_page = 10;
+        if(wpdm_query_var('_key') == ''){
+            $key = uniqid();
+            $export_file = WPDM_CACHE_DIR."wpdm-stat-export-{$key}.csv";
+            $export['file'] = $export_file;
+            $export['start'] = 0;
+            $export['total'] = $wpdb->get_var("select count(*) from {$wpdb->prefix}ahm_download_stats");
+
+        } else {
+            $key = wpdm_query_var('_key');
+            $export = TempStorage::get("export_{$key}");
+            $export_file = $export['file'];
+        }
+
+        $file = fopen($export_file, 'a');
+
+        //Add headers
+        if ((int)$export['start'] === 0) {
+            fputs($file, "Package ID,Package Name,Version,Filename,User ID,User Name,User Email,Order ID,Date,TimeStamp,IP,Agent\r\n");
+        }
+
+        $stats = $wpdb->get_results("select s.*,u.*,p.post_title from {$wpdb->prefix}ahm_download_stats s LEFT JOIN {$wpdb->prefix}users u ON s.uid=u.ID LEFT JOIN {$wpdb->prefix}posts p ON s.pid=p.ID limit {$export['start']}, $items_per_page");
+        foreach ($stats as $d) {
+            $csv_row = "{$d->pid},\"{$d->post_title}\",\"{$d->version}\",\"{$d->filename}\",{$d->uid},\"{$d->display_name}\",\"{$d->user_email}\",{$d->oid},{$d->year}-{$d->month}-{$d->day},{$d->timestamp},{$d->ip},\"{$d->agent}\"\r\n";;
+            fputs($file, $csv_row . "\r\n");
+        }
+        fclose($file);
+
+
+        $continue = true;
+        $exported = $export['start'] + $items_per_page;
+        $export['start'] = $exported;
+        $progress = ($exported/$export['total'])*100;
+
+
+        TempStorage::set("export_{$key}", $export);
+
+        $response = array('key' => $key, 'continue' => $continue,'entries' => $export['total'], 'progress' => (int)$progress, 'exported' => $exported, 'file' => $export_file);
+
+        if($exported >= $export['total']) {
+            $progress = 100;
+            $exported = $export['total'];
+            $response['continue'] = false;
+            $response['exportfile'] = FileSystem::instantDownloadURL($export_file);
+            TempStorage::kill("export_{$key}");
+        }
+
+        wp_send_json($response);
+    }
+
     function quickExport()
     {
         if (wpdm_query_var('page') == 'wpdm-stats' && wpdm_query_var('task') == 'export') {
             if(!current_user_can(WPDM_ADMIN_CAP) || !wp_verify_nonce(wpdm_query_var('__xnonce'), NONCE_KEY)) die('Invalid nonce!');
+
+            do_action("wpdm_before_quick_export_stats_data");
+
             global $wpdb;
             $sql = wpdm_query_var("hash") !== '' ? Crypt::decrypt(wpdm_query_var('hash')) : "";
             if(!$sql) $sql = "SELECT [##fields##] FROM {$wpdb->prefix}ahm_download_stats";

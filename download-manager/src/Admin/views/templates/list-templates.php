@@ -24,6 +24,8 @@ if(!isset($_GET['_type']) || $_GET['_type'] !== 'email'){ ?>
         <th style="width: 250px;"><?php echo __( "Template ID" , "download-manager" ); ?></th>
         <?php if(!isset($_GET['_type']) || $_GET['_type'] != 'email'){ ?>
             <th style="width: 150px"><?php echo __( "Status" , "download-manager" ); ?></th>
+        <?php } else { ?>
+            <th style="width: 150px"><?php echo __( "Email Status" , "download-manager" ); ?></th>
         <?php } ?>
         <th style="width: 260px;text-align: right"><?php echo __( "Actions" , "download-manager" ); ?></th>
     </tr>
@@ -42,9 +44,10 @@ if(!isset($_GET['_type']) || $_GET['_type'] !== 'email'){ ?>
         $ctemplates = [];
         foreach($ctpls as $ctpl => $template){
             $name = "";
-
+	        $path = "";
             if(!is_array($template)){
-                $tmpdata = file_get_contents($template);
+                $tmpdata = file_exists($template) ? file_get_contents($template) : '';
+	            $path = $template;
                 $regx = "/WPDM.*Template[\s]*:([^\-\->]+)/";
                 if (preg_match($regx, $tmpdata, $matches)) {
                     $name = $matches[1];
@@ -60,7 +63,11 @@ if(!isset($_GET['_type']) || $_GET['_type'] !== 'email'){ ?>
 
             <tr valign="top" class="author-self status-inherit" id="template-<?php echo $ttype; ?>-<?php echo $ctpl; ?>">
                 <td class="column-icon media-icon" style="text-align: left;">
-                    <nobr><?php echo $name; ?></nobr>
+                    <?php if($path) { ?>
+                    <a href="#" class="pull-right ttip" title="<?= __('Show file path', WPDM_TEXT_DOMAIN) ?>" onclick="jQuery('#lnk-<?= $tplid ?>').slideToggle();return false;"><i class="fa fa-globe"></i></a>
+                    <?php } ?>
+                    <nobr><?php echo $name; ?></nobr><br/>
+                    <code style="display: none;" id="lnk-<?= $tplid ?>"><?php echo str_replace(ABSPATH, '', $path); ?></code>
                 </td>
                 <td>
                     <input class="form-control input-sm input-tplid" type="text" readonly="readonly" onclick="this.select()" value="<?php echo $tplid; ?>" />
@@ -85,8 +92,11 @@ if(!isset($_GET['_type']) || $_GET['_type'] !== 'email'){ ?>
             </tr>
             <?php
         }} else {
+        $status_all = WPDM()->email->getStatus();
+
         $templates = \WPDM\__\Email::templates();
         foreach($templates as $ctpl => $template){
+	        $status = isset($status_all[$ctpl]) ? (int) $status_all[$ctpl] : 1;
             ?>
             <tr valign="top" class="author-self status-inherit" id="post-8">
                 <td class="column-icon media-icon" style="text-align: left;">
@@ -95,6 +105,12 @@ if(!isset($_GET['_type']) || $_GET['_type'] !== 'email'){ ?>
                 </td>
                 <td>
                     <?php echo $ctpl; ?>
+                </td>
+                <td>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-<?php echo $status === 1?'success active':'light'; ?> btn-sm btn-status <?php echo $ctpl; ?>" data-value="1" data-id="<?php echo $ctpl; ?>"><input type="radio" <?php checked($status,1); ?> name="<?php echo $ctpl; ?>-status" value="1"/><i class="fa fa-check"></i></label>
+                        <label class="btn btn-<?php echo $status === 0?'danger active':'light'; ?> btn-sm btn-status <?php echo $ctpl; ?>" data-value="0" data-id="<?php echo $ctpl; ?>"><input type="radio" name="<?php echo $ctpl; ?>-status" <?php checked($status,0); ?> value="0"/><i class="fa fa-times"></i></label>
+                    </div>
                 </td>
                 <td style="text-align: right">
 

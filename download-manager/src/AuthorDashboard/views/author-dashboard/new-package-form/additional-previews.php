@@ -67,24 +67,26 @@ if(!defined("ABSPATH")) die();
                     library: {
                         type: [ 'image' ]
                     },
-                    multiple: false  // Set to true to allow multiple files to be selected
+                    multiple: true  // Set to true to allow multiple files to be selected
                 });
 
                 // When an image is selected, run a callback.
                 file_frame.on( 'select', function() {
                     // We set multiple to false so only get one image from the uploader
-                    attachment = file_frame.state().get('selection').first().toJSON();
-                    var imgurl = attachment.sizes.thumbnail !== undefined ? attachment.sizes.thumbnail.url : attachment.url;
-                    var imgid = attachment.id;
-                    var newDate = new Date;
-                    var ID = newDate.getTime();
-                    jQuery('#adpcon').append("<div id='"+ID+"' style='display:none;float:left;margin:3px;padding:5px;height:68px;width:68px;background: url("+imgurl+") no-repeat;background-size:cover;' class='adp'><input type='hidden' id='in_"+ID+"' name='file[additional_previews][]' value='"+imgid+"' /><nobr><b><img style='width:16px;position:absolute;z-index:9999;cursor:pointer;' id='del_"+ID+"' src='<?php echo plugins_url(); ?>/download-manager/assets/images/delete.svg' rel='del' align=left /></b></nobr><div style='clear:both'></div></div>");
-                    jQuery('#'+ID).fadeIn();
-                    jQuery('#del_'+ID).click(function(){
-                        if(confirm('Are you sure?')){
-                            jQuery('#'+ID).fadeOut().remove();
-                        }
+                    file_frame.state().get('selection').each(function (image) {
+                        attachment = image.toJSON();
+                        var imgurl = attachment.sizes.thumbnail !== undefined ? attachment.sizes.thumbnail.url : attachment.url;
+                        var imgid = attachment.id;
+                        var newDate = new Date;
+                        var ID = newDate.getTime();
+                        jQuery('#adpcon').append("<div id='" + ID + "' style='display:none;float:left;margin:3px;padding:5px;height:68px;width:68px;background: url(" + imgurl + ") no-repeat;background-size:cover;' class='adp'><input type='hidden' id='in_" + ID + "' name='file[additional_previews][]' value='" + imgid + "' /><nobr><b><img style='width:16px;position:absolute;z-index:9999;cursor:pointer;' id='del_" + ID + "' src='<?php echo plugins_url(); ?>/download-manager/assets/images/delete.svg' rel='del' align=left /></b></nobr><div style='clear:both'></div></div>");
+                        jQuery('#' + ID).fadeIn();
+                        jQuery('#del_' + ID).click(function () {
+                            if (confirm('Are you sure?')) {
+                                jQuery('#' + ID).fadeOut().remove();
+                            }
 
+                        });
                     });
 
                     // Do something with attachment.id and/or attachment.url here

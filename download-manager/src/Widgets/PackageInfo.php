@@ -1,4 +1,7 @@
 <?php
+
+use WPDM\__\__;
+
 if (!defined("ABSPATH")) die("Shit happens!");
 if (!class_exists('PackageInfo')) {
     class PackageInfo extends WP_Widget
@@ -87,7 +90,7 @@ if (!class_exists('PackageInfo')) {
 
             if (is_array($package_info) && isset($package_info['qrcode'])) {
                 echo $before_widget;
-                echo "<img class='wpdm-qr-code wpdm-qr-code-widget' style='max-width: 100%' src='https://chart.googleapis.com/chart?cht=qr&chs=450x450&choe=UTF-8&chld=H|0&chl=" . get_permalink(get_the_ID()) . "' alt='" . get_the_title() . "' />";
+                echo "<img class='wpdm-qr-code wpdm-qr-code-widget' style='max-width: 100%' src='".__::qrCode(get_permalink(get_the_ID()))."' alt='" . get_the_title() . "' />";
                 echo $after_widget;
             }
             wp_reset_query();

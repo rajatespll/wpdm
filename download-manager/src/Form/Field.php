@@ -81,7 +81,12 @@ class Field
         foreach ($attrs as $key => $value) {
             $_attrs .= "{$key}='{$value}' ";
         }
-        return "<input type='password' $_attrs />";
+	    $strength = '';
+	    if(isset($attrs['strength']) && $attrs['strength'] === 1) {
+		    $strength = '<div  class="progress bg-gray-50" style="height: 5px;position: absolute;width: calc(100% - 40px);background: #eee;margin-top: -5px;"><div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: 10%;height: 5px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div></div>';
+		    $strength .= '<script type="text/javascript" src="'.WPDM_ASSET_URL.'js/password-strength.js"></script>';
+	    }
+	    return "<input type='password' {$_attrs} />{$strength}";
     }
 
     static function checkbox($attrs){
@@ -159,10 +164,12 @@ class Field
                 <input type="hidden" id="<?php echo $attrs['id'] ?>" name="<?php echo $attrs['name'] ?>" value=""/>
                 <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
                         async defer></script>
-                <div id="<?php echo $attrs['id'] ?>_field"></div>
+                <div id="<?php echo $attrs['id'] ?>_field" class="recap_field"></div>
                 <style>
-                    #<?php echo $attrs['id'] ?>_field iframe{ transform: scale(1.16); margin-left: 24px; margin-top: 5px; margin-bottom: 5px; }
-                    #<?php echo $attrs['id'] ?>_field{ padding-bottom: 10px !important; }
+                    .wp-core-ui .recap_field{ padding-bottom: 12px; }
+                    .wp-core-ui #<?php echo $attrs['id'] ?>_field iframe{ transform: scale(0.89); margin-left: -16px; margin-bottom: 12px; clear:both; }
+                    .w3eden #<?php echo $attrs['id'] ?>_field iframe{ transform: scale(1.16); margin-left: 24px; margin-top: 5px; margin-bottom: 5px; }
+                    .w3eden #<?php echo $attrs['id'] ?>_field{ padding-bottom: 10px !important; }
                 </style>
                 <script type="text/javascript">
                     var verifyCallback = function (response) {

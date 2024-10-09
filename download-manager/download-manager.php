@@ -5,7 +5,7 @@ Plugin URI: https://www.wpdownloadmanager.com/purchases/
 Description: Manage, Protect and Track file downloads, and sell digital products from your WordPress site. A complete digital asset management solution.
 Author: W3 Eden, Inc.
 Author URI: https://www.wpdownloadmanager.com/
-Version: 6.3.5
+Version: 6.6.1
 Text Domain: download-manager
 Domain Path: /languages
 */
@@ -46,7 +46,7 @@ use WPDM\Widgets\WidgetController;
 
 global $WPDM, $_SESSION;
 
-define('WPDM_VERSION','6.3.5');
+define('WPDM_VERSION','6.6.1');
 
 define('WPDM_TEXT_DOMAIN','download-manager');
 
@@ -94,6 +94,9 @@ if(!defined('UPLOAD_BASE'))
 
 if(!defined('WPDM_USE_GLOBAL'))
     define('WPDM_USE_GLOBAL', 'WPDM_USE_GLOBAL');
+
+if(!defined('WPDM_TAG'))
+    define('WPDM_TAG', 'wpdmtag');
 
 
 if(!defined('WPDM_FONTAWESOME_URL'))
@@ -348,7 +351,7 @@ final class WordPressDownloadManager{
 
         register_taxonomy('wpdmcategory', array('wpdmpro'), $args);
 
-        if($wpdm_tags) {
+        if($wpdm_tags && WPDM_TAG !== 'post_tag') {
             $labels = array(
                 'name' => __("Tags", "download-manager"),
                 'singular_name' => __("Tag", "download-manager"),
@@ -371,7 +374,7 @@ final class WordPressDownloadManager{
                 'rewrite' => array('slug' => sanitize_title(get_option('__wpdm_turl_base', 'document-tag'))),
             );
 
-            register_taxonomy('wpdmtag', array('wpdmpro'), $args);
+            register_taxonomy(WPDM_TAG, array('wpdmpro'), $args);
 
             //unregister_taxonomy_for_object_type('post_tag', 'wpdmpro');
         }
@@ -453,7 +456,16 @@ final class WordPressDownloadManager{
 
         $wpdmss = maybe_unserialize(get_option('__wpdm_disable_scripts', array()));
 
-        if (is_array($wpdmss) && !in_array('wpdm-font-awesome', $wpdmss)) {
+	    $wpdmss = apply_filters("wpdm_disable_scripts", $wpdmss);
+
+	    $wpdm_bsjs_pages = get_option('__wpdm_bsjs_pages', []);
+	    $wpdm_bscss_pages = get_option('__wpdm_bscss_pages', []);
+
+        if ((is_array($wpdmss) && !in_array('wpdm-font-awesome', $wpdmss))
+            || ( in_array("wpdmsingle", $wpdm_bscss_pages) && is_singular('wpdmpro') )
+            || ( in_array("wpdmarchive", $wpdm_bscss_pages) && is_tax('wpdmcategory') )
+            || isset($_REQUEST['__wpdmlo'])
+        ) {
             wp_enqueue_style('wpdm-font-awesome');
         }
 
@@ -476,16 +488,31 @@ final class WordPressDownloadManager{
 	        wp_enqueue_style('select2-css', plugins_url('/download-manager/assets/select2/css/select2.min.css'));
         }
 
-        if (is_array($wpdmss) && !in_array('wpdm-bootstrap-css', $wpdmss)) {
+        if ((is_array($wpdmss) && !in_array('wpdm-bootstrap-css', $wpdmss))
+            || ( in_array("wpdmsingle", $wpdm_bscss_pages) && is_singular('wpdmpro') )
+            || ( in_array("wpdmarchive", $wpdm_bscss_pages) && is_tax('wpdmcategory') )
+            || ( in_array(get_the_ID(), $wpdm_bscss_pages) && is_page() )
+            || isset($_REQUEST['__wpdmlo'])
+        ) {
             wp_enqueue_style('wpdm-front-bootstrap' );
         }
 
-        if (is_array($wpdmss) && !in_array('wpdm-front', $wpdmss)) {
+        if ((is_array($wpdmss) && !in_array('wpdm-front', $wpdmss))
+            || ( in_array("wpdmsingle", $wpdm_bscss_pages) && is_singular('wpdmpro') )
+            || ( in_array("wpdmarchive", $wpdm_bscss_pages) && is_tax('wpdmcategory') )
+            || ( in_array(get_the_ID(), $wpdm_bscss_pages) )
+            || isset($_REQUEST['__wpdmlo'])
+        ) {
             wp_enqueue_style('wpdm-front' );
         }
 
 
-        if (is_array($wpdmss) && !in_array('wpdm-bootstrap-js', $wpdmss)) {
+        if (is_array($wpdmss) && !in_array('wpdm-bootstrap-js', $wpdmss)
+            || ( in_array("wpdmsingle", $wpdm_bsjs_pages) && is_singular('wpdmpro') )
+            || ( in_array("wpdmarchive", $wpdm_bsjs_pages) && is_tax('wpdmcategory') )
+            || ( in_array(get_the_ID(), $wpdm_bsjs_pages) )
+            || isset($_REQUEST['__wpdmlo'])
+        ) {
             wp_enqueue_script('wpdm-front-bootstrap' );
         }
 
@@ -493,13 +520,20 @@ final class WordPressDownloadManager{
         wp_register_script('wpdm-frontjs', plugins_url('/download-manager/assets/js/front.js'), array('jquery'), WPDM_VERSION);
 
         $wpdm_js = array(
-            'spinner' => '<i class="fas fa-sun fa-spin"></i>'
+            'spinner' => '<i class="fas fa-sun fa-spin"></i>',
+            'client_id' => Session::$deviceID
         );
         $wpdm_js = apply_filters("wpdm_js_vars", $wpdm_js);
 
         wp_localize_script('wpdm-frontjs', 'wpdm_url', $this->wpdm_urls);
 
         wp_localize_script('wpdm-frontjs', 'wpdm_js', $wpdm_js);
+
+        wp_localize_script('wpdm-frontjs', 'wpdm_strings', [
+                'pass_var' => __("Password Verified!", "download-manager"),
+            'pass_var_q' => __("Please click following button to start download.", "download-manager"),
+            'start_dl' => __("Start Download", "download-manager")
+        ]);
 
         wp_enqueue_script('wpdm-frontjs');
 

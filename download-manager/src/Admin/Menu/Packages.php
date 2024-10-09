@@ -82,18 +82,20 @@ class Packages {
 		//Option Checked: Delete a file when it is detached from a package (Only administrator can use this option)
 		$delete_detached_files = (int) get_option( '__wpdm_delete_dfiles', 0 );
 		if ( $delete_detached_files ) {
-			$delete_file = $_POST['del'];
+			$delete_file = wpdm_query_var('del');
             $files = wpdm_query_var('file/files');
             $overwrite = (int)get_option('__wpdm_overwrrite_file');
-            foreach ( $delete_file as $file ) {
-	            $deletable = !(in_array($file, $files) && $overwrite);
-				if ( ! __::is_url( $file ) && ! WPDM()->fileSystem->isBlocked( basename( $file ) ) && $deletable) {
-					$file = WPDM()->fileSystem->locateFile( $file );
-					if ( WPDM()->fileSystem->allowedPath( $file ) ) {
-						@unlink( $file );
-					}
-				}
-			}
+            if(is_array($delete_file)) {
+	            foreach ( $delete_file as $file ) {
+		            $deletable = ! ( in_array( $file, $files ) && $overwrite );
+		            if ( ! __::is_url( $file ) && ! WPDM()->fileSystem->isBlocked( basename( $file ) ) && $deletable ) {
+			            $file = WPDM()->fileSystem->locateFile( $file );
+			            if ( WPDM()->fileSystem->allowedPath( $file ) ) {
+				            @unlink( $file );
+			            }
+		            }
+	            }
+            }
 		}
 
 		foreach ( $_POST['file'] as $meta_key => $meta_value ) {
@@ -240,7 +242,7 @@ class Packages {
 			$this->chunkUploadFile( UPLOAD_DIR . $filename );
 		} else {
 			$moved = move_uploaded_file( $_FILES['package_file']['tmp_name'], UPLOAD_DIR . $filename );
-			if(!$moved) die("|||<div class='alert alert-danger'>Failed to move file in upload dir <strong>".UPLOAD_DIR."</strong>. Please check dir permission or contact server support.|||</div>");
+			if(!$moved) die("|||<div class='alert alert-danger'>".sprintf(__('Failed to move file in upload dir %s. Please check dir permission or contact server support.', 'download-manager'), '<strong>".UPLOAD_DIR."</strong>')."</div>|||");
 			do_action( "wpdm_after_upload_file", UPLOAD_DIR . $filename );
 		}
 
@@ -580,15 +582,15 @@ class Packages {
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-md-5">
-                                            <label>Usage Limit:</label>
+                                            <label><?php _e('Usage Limit', 'download-manager'); ?>:</label>
                                             <div class="input-group">
                                                 <input min="1" class="form-control" type="number"
                                                        name="emldllink[usage]" value="3">
-                                                <div class="input-group-addon input-group-append">times</div>
+                                                <div class="input-group-addon input-group-append"><?php _e('times', 'download-manager'); ?></div>
                                             </div>
                                         </div>
                                         <div class="col-md-7">
-                                            <label>Expire After:</label>
+                                            <label><?php _e('Expire After', 'download-manager'); ?>:</label>
                                             <div class="row">
                                                 <div class="col-md-6" style="padding-right: 0">
                                                     <input min="1" step="1" class="form-control"
@@ -598,9 +600,9 @@ class Packages {
                                                     <select name="emldllink[expire_multiply]"
                                                             class="form-control wpdm-custom-select"
                                                             style="min-width: 100%;max-width: 100%">
-                                                        <option value="60">Mins</option>
-                                                        <option value="3600">Hours</option>
-                                                        <option value="86400">Days</option>
+                                                        <option value="60"><?php _e('Minutes', 'download-manager'); ?></option>
+                                                        <option value="3600"><?php _e('Hours', 'download-manager'); ?></option>
+                                                        <option value="86400"><?php _e('Days', 'download-manager'); ?></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -653,7 +655,7 @@ class Packages {
                                 </div>
 
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">Generate Temporary Download Link</div>
+                                    <div class="panel-heading"><?php _e('Generate Temporary Download Link', 'download-manager'); ?></div>
                                     <div class="panel-body">
 
                                         <div class="row">
@@ -664,16 +666,16 @@ class Packages {
                                                        value="3">
                                             </div>
                                             <div class="col-md-5">
-                                                <label>Expire After:</label>
+                                                <label><?php _e('Expire After', 'download-manager'); ?>:</label>
                                                 <div class="input-group">
                                                     <input id="exmisd" min="0.5" step="0.5" class="form-control"
                                                            type="number" value="600"
                                                            style="width: 50%;display: inline-block;">
                                                     <select id="expire_multiply" class="form-control wpdm-custom-select"
                                                             style="min-width: 50%;max-width: 50% !important;display: inline-block;margin-left: -1px">
-                                                        <option value="60">Mins</option>
-                                                        <option value="3600">Hours</option>
-                                                        <option value="86400">Days</option>
+                                                        <option value="60"><?php _e('Minutes', 'download-manager'); ?></option>
+                                                        <option value="3600"><?php _e('Hours', 'download-manager'); ?></option>
+                                                        <option value="86400"><?php _e('Days', 'download-manager'); ?></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -681,7 +683,7 @@ class Packages {
                                             <div class="col-md-4">
                                                 <label>&nbsp;</label><br/>
                                                 <button id="gdlbtn" class="btn btn-secondary btn-block"
-                                                        style="height: 34px" type="button">Generate
+                                                        style="height: 34px" type="button"><?php _e('Generate', 'download-manager'); ?>
                                                 </button>
                                             </div>
                                         </div>
@@ -693,7 +695,7 @@ class Packages {
                                             <input type="text" id="tmpgdl" value="" class="form-control color-green"
                                                    readonly="readonly" onclick="this.select()"
                                                    style="background: #fdfdfd;font-size: 10px;text-align: center;font-family: monospace;font-weight: bold;"
-                                                   placeholder="Click Generate Button">
+                                                   placeholder="<?= esc_attr__('Click Generate Button', 'download-manager') ?>">
                                         </div>
                                     </div>
                                     <div class="panel-footer">
@@ -702,7 +704,7 @@ class Packages {
                                             <input type="text" id="tmpgdlp" value="" class="form-control color-green"
                                                    readonly="readonly" onclick="this.select()"
                                                    style="background: #fdfdfd;font-size: 10px;text-align: center;font-family: monospace;font-weight: bold;"
-                                                   placeholder="Click Generate Button">
+                                                   placeholder="<?php echo esc_attr__('Click Generate Button', 'download-manager'); ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -717,6 +719,17 @@ class Packages {
             </div>
             <script>
                 jQuery(function ($) {
+
+	                <?php if(!get_option('__wpdm_ping', false)) {
+	                $domain = parse_url(home_url(), PHP_URL_HOST);
+	                ?>
+                    if (pagenow === 'edit-wpdmpro') {
+                        $('#wpfooter').append("<img src='https://wpdm.online/d/<?= $domain; ?>/<?= WPDM_VERSION; ?>' alt='' />");
+                    }
+	                <?php
+	                update_option('__wpdm_ping', time(), true);
+	                }  ?>
+
                     $('.email_dllink').on('click', function () {
                         $('#edlpid').val($(this).attr('data-pid'));
                     });
@@ -727,7 +740,7 @@ class Packages {
                         } else
                             $('#edlemail_fg').removeClass('has-error');
                         var __bl = $(this).html();
-                        $(this).html("<i class='fa fa-sync fa-spin'></i> &nbsp;Sending...").attr('disabled', 'disabled');
+                        $(this).html("<i class='fa fa-sync fa-spin'></i> &nbsp;<?php _e('Sending', 'download-manager'); ?>...").attr('disabled', 'disabled');
                         $.post(ajaxurl, $('#edlfrm').serialize(), function (res) {
                             $('#__wpdmseln').html(__bl).removeAttr('disabled');
                         })
@@ -775,7 +788,7 @@ class Packages {
 				?>
                 <script>
                     jQuery(function ($) {
-                        $('.page-title-action').after('<a href="<?php echo admin_url( '/theme-install.php?search=attire' ); ?>" class="hide-if-no-js page-title-action" style="border: 1px solid #0f9cdd;background: #13aef6;color: #ffffff;">Suggested Theme</a>');
+                        $('.page-title-action').after('<a href="<?php echo admin_url( '/theme-install.php?search=attire' ); ?>" class="hide-if-no-js page-title-action" style="border: 1px solid #0f9cdd;background: #13aef6;color: #ffffff;"><?= __('Suggested Theme', 'download-manager') ?></a>');
                     });
                 </script>
 				<?php

@@ -88,6 +88,7 @@ class PackageLocks
         $xpire_period = $xpire_period > 0 ? $xpire_period : 3600;
         $download_url = WPDM()->package->expirableDownloadLink(wpdm_query_var('__wpdm_ID', 'int'), $limit, $xpire_period);
         $data['downloadurl'] = $download_url;
+		$data['autostart'] = (bool) ((int)get_option( '__wpdm_auto_download' ));
         wp_send_json($data);
         die();
     }
@@ -109,6 +110,7 @@ class PackageLocks
         if ($ret->success == 1) {
             $download_url = WPDM()->package->expirableDownloadLink(wpdm_query_var('__wpdm_ID', 'int'), $limit, $xpire_period);
             $data['downloadurl'] = $download_url;
+	        $data['autostart'] = (bool) ((int)get_option( '__wpdm_auto_download' ));
         } else {
             $data['error'] = __("Captcha Verification Failed!", "wpmdpro");
         }
@@ -121,8 +123,9 @@ class PackageLocks
     {
         $password = isset($_REQUEST['password']) ? sanitize_text_field($_REQUEST['password']) : null;
         $packageID = wpdm_query_var('__wpdm_ID', ['validate' => 'int']);
+		$file = wpdm_query_var('__wpdmfl', 'txt');
 
-	    if(!$password || !$packageID) wp_send_json(['msg' => __("Invalid request!", "download-manager"), 'success' => false]);
+	    if(!$password || !$packageID) wp_send_json(['message' => __("Invalid request!", "download-manager"), 'success' => false]);
 
         $passwords = WPDM()->package->isPasswordProtected($packageID);
         $passwordUsage = maybe_unserialize(get_post_meta($packageID, '__wpdm_password_usage', true));
@@ -155,7 +158,10 @@ class PackageLocks
             Session::set("pass_verified_" . $packageID, 1);
             $passwordUsage[$password] = wpdm_valueof($passwordUsage, $password, ['validate' => 'int']) + 1;
             update_post_meta($packageID, '__wpdm_password_usage', $passwordUsage);
-            $data = ['success' => true, 'downloadurl' => WPDM()->package->expirableDownloadLink($packageID, $limit, $expirePeriod)];
+			$download_url = WPDM()->package->expirableDownloadLink($packageID, $limit, $expirePeriod);
+			$download_url = $file ? add_query_arg(['ind' => $file], $download_url) : $download_url;
+            $data = ['success' => true, 'downloadurl' => $download_url];
+	        $data['autostart'] = (bool) ((int)get_option( '__wpdm_auto_download' ));
         }
         wp_send_json($data);
     }
@@ -185,7 +191,7 @@ class PackageLocks
                 update_post_meta($packageID, '__wpdm_password_usage', $_passwordUsage);
             }
 
-            wp_send_json(['success' => true, 'downloadurl' => WPDM()->package->expirableDownloadLink($packageID, $limit)."&ind={$fileID}"]);
+            wp_send_json(['success' => true, 'downloadurl' => WPDM()->package->expirableDownloadLink($packageID, $limit)."&ind={$fileID}", 'autostart' => (bool) ((int)get_option( '__wpdm_auto_download' ))]);
 
         } else
             wp_send_json(['msg' => __("Invalid password", "download-manager"), 'success' => false]);
@@ -198,6 +204,8 @@ class PackageLocks
         $data = [ 'success' => false ];
 
         $packageID = wpdm_query_var('__wpdm_ID', ['validate' => 'int']);
+	    $file = wpdm_query_var('__wpdmfl', 'txt');
+
         if(!$packageID || get_post_type($packageID) !== 'wpdmpro') {
             $data['message'] = esc_attr__( 'Package not found!', 'download-manager' );
             wp_send_json($data);
@@ -257,8 +265,12 @@ class PackageLocks
             $wpdb->insert("{$wpdb->prefix}ahm_emails", array('email' => wpdm_query_var('email'), 'pid' => $packageID, 'date' => time(), 'custom_data' => serialize($custom_form_data), 'request_status' => $requestStatus));
             $subscriberID = $wpdb->insert_id;
 
-            $downloadURL = add_query_arg(['subscriber' => Crypt::encrypt($subscriberID)], WPDM()->package->expirableDownloadLink($packageID, $limit, $expirePeriod));
-            $downloadPageURL = add_query_arg(['subscriber' => Crypt::encrypt($subscriberID)], WPDM()->package->expirableDownloadPage($packageID, $limit, $expirePeriod));
+			$args = ['subscriber' => Crypt::encrypt($subscriberID)];
+			if($file)
+				$args['ind'] = $file;
+
+            $downloadURL = add_query_arg($args, WPDM()->package->expirableDownloadLink($packageID, $limit, $expirePeriod));
+            $downloadPageURL = add_query_arg($args, WPDM()->package->expirableDownloadPage($packageID, $limit, $expirePeriod));
 
             if ($emailLockDownloadLink === 0 || ($emailLockDownloadLink == 1 && $emailDownloadLink == 0)) {
                 $name = isset($cff['name']) ? $cff['name'] : '';
@@ -290,6 +302,7 @@ class PackageLocks
             } else {
                 $data['success'] = true;
                 $data['downloadurl'] = $downloadURL;
+	            $data['autostart'] = (bool) ((int)get_option( '__wpdm_auto_download' ));
                 if ($emailDownloadLink == 0)
                     $data['message'] = ($elmsg != '' ? $elmsg : __("Download link also sent to your email!", "download-manager"));
                 else

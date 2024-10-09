@@ -21,6 +21,8 @@ class Asset
     var $name;
     var $type;
     var $size;
+	var $downloads;
+	var $activeLinkKey = '';
     var $temp_download_url;
     var $dbtable;
 
@@ -42,6 +44,8 @@ class Asset
             $this->type = is_dir($this->path)?'dir':'file';
             $this->size = wpdm_file_size($this->path);
             $this->temp_download_url = home_url("/?asset={$this->ID}&key=".wp_create_nonce($this->path));
+	        $this->links = $this->getLinks();
+			$this->downloads = 0;
         }
         $this->permissions = WPDM()->fileSystem->filePermissions($path);
         return $this;
@@ -65,6 +69,7 @@ class Asset
             $this->type = is_dir($this->path)?'dir':'file';
             $this->size = wpdm_file_size($this->path);
             $this->temp_download_url = home_url("/?asset={$this->ID}&key=".wp_create_nonce($this->path));
+			$this->downloads = $assetmeta->downloads;
             return $this;
         }
         return null;
@@ -89,6 +94,8 @@ class Asset
             $this->type = is_dir($this->path)?'dir':'file';
             $this->size = wpdm_file_size($this->path);
             $this->temp_download_url = home_url("/?asset={$this->ID}&key=".wp_create_nonce($this->path));
+			$this->downloads = $assetmeta->downloads;
+			$this->activeLinkKey = $key;
             return $this;
         }
         return null;
@@ -113,10 +120,12 @@ class Asset
 
     function getLinks(){
         global $wpdb;
-        $links = $wpdb->get_results("select * from {$wpdb->prefix}ahm_asset_links where asset_ID = '{$this->ID}'");
-        foreach ($links as &$link){
+        $_links = $wpdb->get_results("select * from {$wpdb->prefix}ahm_asset_links where asset_ID = '{$this->ID}'");
+		$links = [];
+        foreach ($_links as $link){
             $link->url = home_url('/wpdm-asset/'.$link->asset_key);
             $link->access = json_decode($link->access);
+			$links[$link->asset_key] = $link;
         }
 
         return $links;
@@ -150,11 +159,13 @@ class Asset
         return $this;
     }
 
-    function newMeta($name, $value){
-        $this->metadata[] = array( $name => $value );
+    function setMeta($name, $value){
+        $this->metadata[$name] = $value;
         return $this;
     }
-
+    function getMeta($name){
+        return wpdm_valueof($this->metadata, $name);
+    }
     public static function preview($path){
         global $current_user;
         $ext = explode('.', $path);
@@ -235,7 +246,7 @@ class Asset
     }
 
     function dirViewer(){
-        $dirTree = $this->dirIterator($this->path);
+        //$dirTree = $this->dirIterator($this->path);
         ob_start();
         include Template::locate("dir-viewer.php", __DIR__.'/views');
         $viewer = ob_get_clean();
@@ -287,6 +298,10 @@ class Asset
     }
 
     function download(){
+		WPDM()->downloadHistory->add($this->ID, $this->path, '', 'asset');
+		global $wpdb;
+	    $this->downloads++;
+		$wpdb->update($this->dbtable, ['downloads' => $this->downloads], ['ID' => $this->ID]);
 	    $params = wpdm_query_var('play') ? ['play' => wpdm_query_var('play')] : null;
 	    \WPDM\__\FileSystem::downloadFile($this->path, wp_basename($this->name), 10240, false, $params);
     }

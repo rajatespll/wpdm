@@ -1770,7 +1770,7 @@ body.wpdm-iframe-modal-open {
     position: fixed;
     left: 50% !important;
     top: 40px !important;
-    z-index: 999999;
+    z-index: 99999999;
 }
 
 .wpdm-floatify {
@@ -1791,7 +1791,7 @@ body.wpdm-iframe-modal-open {
     cursor: pointer;
     font-size: 9pt;
     letter-spacing: 0.5px;
-    z-index: 999999;
+    z-index: 99999999;
     max-width: 400px;
 }
 
@@ -1799,6 +1799,20 @@ body.wpdm-iframe-modal-open {
     float: none;
     margin-left: -50%;
     text-align: center;
+}
+
+#wpdm-notify-bottom .wpdm-notify {
+    float: none;
+    border-radius: 0;
+    left: 0;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    margin: 0 !important;
+    border-bottom: 0 !important;
+    border-top: 2px solid;
 }
 
 .wpdm-hide-right {

@@ -11,7 +11,7 @@ class Installer {
 	/**
 	 * @var float
 	 */
-	private $dbVersion = 633.0;
+	private $dbVersion = 660.1;
 
 	function __construct() {
 
@@ -55,7 +55,7 @@ class Installer {
               `filename` text,
               `agent` text,         
               PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+            ) ENGINE=InnoDB";
 
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}ahm_emails` (
               `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -65,7 +65,7 @@ class Installer {
               `custom_data` text NOT NULL,
               `request_status` INT( 1 ) NOT NULL,
               PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+            ) ENGINE=InnoDB";
 
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}ahm_social_conns` (
               `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -79,7 +79,7 @@ class Installer {
               `timestamp` int(11) NOT NULL,
               `processed` tinyint(1) NOT NULL DEFAULT '0',
               PRIMARY KEY (`ID`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+            ) ENGINE=InnoDB";
 
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}ahm_assets` (
               `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -90,7 +90,7 @@ class Installer {
               `access` text NOT NULL,
               `metadata` text NOT NULL,
               PRIMARY KEY (`ID`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+            ) ENGINE=InnoDB";
 
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}ahm_asset_links` (
               `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -99,7 +99,7 @@ class Installer {
               `access` text NOT NULL,
               `time` int(11) NOT NULL,
               PRIMARY KEY (`ID`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+            ) ENGINE=InnoDB";
 
 		$sqls[] = "DROP TABLE IF EXISTS `{$wpdb->prefix}ahm_sessions`";
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}ahm_sessions` (
@@ -110,7 +110,7 @@ class Installer {
               `lastAccess` int(11) NOT NULL,
               `expire` int(11) NOT NULL,
               PRIMARY KEY (`ID`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+            ) ENGINE=InnoDB";
 
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}ahm_user_download_counts` (
               `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -118,7 +118,7 @@ class Installer {
               `package_id` int(11) NOT NULL,
               `download_count` int(11) NOT NULL,
               PRIMARY KEY (`ID`)                          
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci";
+            ) ENGINE=InnoDB";
 
 		$sqls[] = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}ahm_dropzone` (
 			  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -143,7 +143,7 @@ class Installer {
 			  `closed` int(11) NOT NULL DEFAULT '0',
 			  `files` text NOT NULL,
 			  PRIMARY KEY (`ID`)
-			) ENGINE=InnoDB CHARSET=utf8;";
+			) ENGINE=InnoDB";
 
             foreach ( $sqls as $qry ) {
 	            $wpdb->query( $qry );
@@ -154,10 +154,12 @@ class Installer {
             $installer->addColumn( 'ahm_download_stats', 'version', 'varchar(255) NOT NULL' );
             $installer->addColumn( 'ahm_download_stats', 'agent', 'TEXT' );
             $installer->addColumn( 'ahm_download_stats', 'filename', 'TEXT' );
+            $installer->addColumn( 'ahm_download_stats', 'type', 'varchar(80) NULL' );
             $installer->addColumn( 'ahm_emails', 'request_status', "INT(1) NOT NULL" );
 			$installer->addColumn( 'ahm_filerequests', "date", "int(11) NOT NULL" );
 			$installer->addColumn( 'ahm_filerequests', "closed", "INT(11) NOT NULL DEFAULT '0'" );
             $installer->uniqueKey( 'ahm_asset_links', "asset_key" );
+			$installer->addColumn( 'ahm_assets', "downloads", "int(11) NOT NULL DEFAULT 0" );
 
             $ach   = get_option( "__wpdm_activation_history", array() );
             $ach   = maybe_unserialize( $ach );

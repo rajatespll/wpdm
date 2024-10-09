@@ -12,8 +12,9 @@
             </div>
             <?php } ?>
 
-            <form method="post" action="" id="registerform" name="registerform" class="login-form">
+            <form method="post" action="" id="registerform" name="registerform"  class="wpdm-registration-form">
 
+                <?php wp_nonce_field(WPDM_PUB_NONCE, 'wdpmregnonce') ?>
 
                 <div id="__signup_msg"></div>
 
@@ -96,6 +97,7 @@
                         }
                         WPDM.blockUI('#registerform');
                         $('#registerform-submit').html(WPDM.html("i", "", 'fa fa-spin fa-sun') + "<?php _e( "Please Wait..." , "download-manager" ); ?>").attr('disabled', 'disabled');
+                        let form_date = $(this).serializeArray();
                         $(this).ajaxSubmit({
                             success: function (res) {
                                 if (res.success == false) {
@@ -104,8 +106,11 @@
                                     $('#registerform-submit').html(llbl).removeAttr('disabled');
                                     WPDM.unblockUI('#registerform');
                                 } else if (res.success == true) {
+                                    WPDM.doAction("wpdm_new_signup", form_date);
                                     $('#registerform-submit').html(WPDM.html("i", "", 'fa fa-check-circle') + " <?php _e( "Success! Redirecting..." , "download-manager" ); ?>");
-                                    location.href = res.redirect_to;
+                                    setTimeout(function () {
+                                        location.href = res.redirect_to;
+                                    }, 3000)
                                 } else {
                                     alert(res);
                                 }

@@ -11,7 +11,7 @@ get_header();
 
 $category = get_queried_object();
 $cpage_global = maybe_unserialize(get_option('__wpdm_cpage'));
-$cpage_global = !is_array($cpage_global) ? [ 'template' => 'link-template-default', 'cols' => 2, 'colsphone' => 1, 'colspad' => 1, 'heading' => 1 ] : $cpage_global;
+$cpage_global = !is_array($cpage_global) ? [ 'template' => 'link-template-default', 'cols' => 2, 'colsphone' => 1, 'colspad' => 1, 'heading' => 1, 'orderby' => 'date', 'order' => 'desc', 'async' => 0 ] : $cpage_global;
 
 $cpage = maybe_unserialize(get_term_meta(get_queried_object_id(), '__wpdm_pagestyle', true));
 $cpage = !is_array($cpage) ? $cpage_global : $cpage;

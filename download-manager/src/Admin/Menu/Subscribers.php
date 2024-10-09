@@ -116,14 +116,16 @@ class Subscribers
 
         $task = isset($_GET['task']) ? $_GET['task'] : '';
         $page = isset($_GET['page']) ? $_GET['page'] : '';
-        if ($task == 'delete' && $page == 'wpdm-subscribers' && is_array(wpdm_query_var('id'))) {
+        if ($task == 'delete' && $page == 'wpdm-subscribers') {
 
             __::isAuthentic('__wpdmdemail', WPDM_PRI_NONCE, WPDM_ADMIN_CAP, true);
 
-            $ids = implode(",", wpdm_query_var('id', 'int'));
-            if (wpdm_query_var('lockOption') == 'email' || wpdm_query_var('lockOption') == '')
+            $ids = is_array(wpdm_query_var('id')) ? implode(",", wpdm_query_var('id', 'int')) : null;
+            if ((wpdm_query_var('lockOption') == 'email' || wpdm_query_var('lockOption') == '') && $ids)
                 $wpdb->query("delete from {$wpdb->prefix}ahm_emails where id in ($ids)");
-            else
+            else if (wpdm_query_var('lockOption') == 'email' || wpdm_query_var('all') === 1)
+                $wpdb->query("truncate table {$wpdb->prefix}ahm_emails");
+            else if($ids)
                 $wpdb->query("delete from {$wpdb->prefix}ahm_social_conns where ID in ($ids)");
 
             header("location: edit.php?post_type=wpdmpro&page=wpdm-subscribers" . (wpdm_query_var('lockOption') != '' ? '&lockOption=' . wpdm_query_var('lockOption') : ''));

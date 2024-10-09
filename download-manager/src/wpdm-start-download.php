@@ -10,6 +10,7 @@ if(!defined("ABSPATH")) die('!');
 error_reporting(0);
 
 global $current_user, $dfiles;
+$current_user = wp_get_current_user();
 
 //Check for blocked IPs
 if(wpdm_ip_blocked()) {
@@ -20,7 +21,7 @@ if(wpdm_ip_blocked()) {
 }
 
 //Check for blocked users by email
-if(is_user_logged_in() && !wpdm_verify_email($current_user->user_email)) {
+if(is_user_logged_in() && $current_user->user_email && !wpdm_verify_email($current_user->user_email)) {
     $emsg =  get_option('__wpdm_blocked_domain_msg');
     if(trim($emsg) === '') $emsg = __('Your email address is blocked!', 'download-manager');
     Messages::fullPage('Error!', $emsg, 'error');
@@ -80,6 +81,7 @@ if ($fileCount > 1 && !$idvdl) {
 
     $cache_zip = $cache_zip_po == -1 || !$cache_zip_po ? $cache_zip : $cache_zip_po;
     if ($zipped == '' || !file_exists($zipped) || $cache_zip == 0) {
+	    $zipped = '';
         $zipname = sanitize_file_name($package['title']) . '-' . $package['ID'] . '.zip';
         $_files = maybe_unserialize(get_post_meta($package['ID'], '__wpdm_files', true));
         $_files = is_array($_files) ? $_files : [];
@@ -117,7 +119,7 @@ else {
     $firstfile = reset($files);
 	$firstfile = html_entity_decode($firstfile);
     $firstfile = file_exists($firstfile) ? $firstfile : UPLOAD_DIR.$firstfile;
-    WPDM()->downloadHistory->add($package['ID'], $indfile ? $indfile : $firstfile, wpdm_query_var('oid'));
+    WPDM()->downloadHistory->add($package['ID'], $indfile ?: $firstfile, wpdm_query_var('oid'));
 
     //URL Download
     if ($indfile != '' && substr_count($indfile, '://')) {

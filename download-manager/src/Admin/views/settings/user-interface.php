@@ -18,7 +18,7 @@ $gappsk = $gappsk ?: 'AIzaSyCgvNB-55xoUiz1zKIJgFPQbqyn4lCCB_E';
     </div>
 </div -->
 <div class="panel panel-default">
-    <div class="panel-heading"><?php _e("Disable Style & Script",'download-manager'); ?></div>
+    <div class="panel-heading"><?php _e("Enable/Disable Style & Script",'download-manager'); ?></div>
     <div class="panel-body">
 
         <?php
@@ -34,6 +34,42 @@ $gappsk = $gappsk ?: 'AIzaSyCgvNB-55xoUiz1zKIJgFPQbqyn4lCCB_E';
             <!-- li><label><input <?php if(in_array('google-font', $wpdmss)) echo 'checked=checked'; ?> type="checkbox" value="google-font" name="__wpdm_disable_scripts[]"> <?php _e("Google Font","download-manager"); ?></label></li -->
         </ul>
         <em><?php _e( "Because, sometimes your theme may have those scripts/styles enqueued already" , "download-manager" ); ?></em>
+        <hr/>
+        <div class="form-group">
+            <label><?php _e('Enable WPDM JS in the selected pages:', 'download-manager'); ?></label>
+            <div>
+	            <?php
+	            $selected_pages = get_option('__wpdm_bsjs_pages', []);
+	            if(!is_array($selected_pages)) $selected_pages = [];
+	            $pages  = get_pages( );
+                echo "<select multiple class='form-control' name='__wpdm_bsjs_pages[]'>";
+	            echo "<option value='wpdmsingle' ".selected(true, in_array('wpdmsingle', $selected_pages)).">".__('Package Details Pages', 'download-manager')."</option>";
+	            echo "<option value='wpdmarchive' ".selected(true, in_array('wpdmarchive', $selected_pages)).">".__('Package Category Pages', 'download-manager')."</option>";
+                foreach ($pages as $page) {
+                    echo "<option value='{$page->ID}' ".selected(true, in_array($page->ID, $selected_pages)).">{$page->post_title}</option>";
+                }
+                echo "</select>";
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label><?php _e('Enable WPDM CSS in the selected pages:', 'download-manager'); ?></label>
+            <div>
+			    <?php
+			    $selected_pages = get_option('__wpdm_bscss_pages', []);
+                if(!is_array($selected_pages)) $selected_pages = [];
+			    $pages  = get_pages( );
+			    echo "<select multiple class='form-control' name='__wpdm_bscss_pages[]'>";
+			    echo "<option value='wpdmsingle' ".selected(true, in_array('wpdmsingle', $selected_pages)).">".__('Package Details Pages', 'download-manager')."</option>";
+			    echo "<option value='wpdmarchive' ".selected(true, in_array('wpdmarchive', $selected_pages)).">".__('Package Category Pages', 'download-manager')."</option>";
+			    foreach ($pages as $page) {
+				    echo "<option value='{$page->ID}' ".selected(true, in_array($page->ID, $selected_pages)).">{$page->post_title}</option>";
+			    }
+			    echo "</select>";
+			    ?>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -318,16 +354,17 @@ $gappsk = $gappsk ?: 'AIzaSyCgvNB-55xoUiz1zKIJgFPQbqyn4lCCB_E';
                     .text('-- NONE SELECTED --'));
             $('#__wpdm_google_font').each(function () {
                 for (var i = 0; i < fonts.items.length; i++) {
-                    if(fonts.items[i].family+':wght@'+fonts.items[i].variants.join(';') === $(this).data('selected'))
+                    let variants = fonts.items[i].variants.sort();
+                    if(fonts.items[i].family+':wght@'+variants.join(';') === $(this).data('selected'))
                         $(this)
                             .append($("<option></option>")
-                                .attr("value", fonts.items[i].family+':wght@'+fonts.items[i].variants.join(';'))
+                                .attr("value", fonts.items[i].family+':wght@'+variants.join(';'))
                                 .attr("selected", "selected")
                                 .text(fonts.items[i].family));
                     else
                         $(this)
                             .append($("<option></option>")
-                                .attr("value", fonts.items[i].family+':wght@'+fonts.items[i].variants.join(';'))
+                                .attr("value", fonts.items[i].family+':wght@'+variants.join(';'))
                                 .text(fonts.items[i].family));
                 }
                 $(this).select2({minimumResultsForSearch: 6});

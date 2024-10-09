@@ -6,7 +6,7 @@ if(!defined('ABSPATH')) die(); ?>
     <table class="table">
         <thead>
         <tr>
-            <th><?php _e( "Package Name" , "download-manager" ); ?></th>
+            <th><?php _e( "Package / File" , "download-manager" ); ?></th>
             <th><?php _e( "Download Time" , "download-manager" ); ?></th>
             <th><?php _e( "IP" , "download-manager" ); ?></th>
         </tr>
@@ -20,7 +20,10 @@ if(!defined('ABSPATH')) die(); ?>
         foreach($res as $stat){
             ?>
             <tr>
-                <td><a href="<?php echo get_permalink($stat->pid); ?>"><?php echo $stat->post_title; ?></a></td>
+                <td>
+                    <a class="p-0 d-block mb-1" href="<?php echo get_permalink($stat->pid); ?>"><?php echo $stat->post_title; ?></a>
+                    <div class="text-muted text-small"><i class="far fa-arrow-alt-circle-down mr-1"></i><em><?= __::mask($stat->filename, '...', -20, false) ?: 'Package' ?></em></div>
+                </td>
                 <td><?php echo date_i18n(get_option('date_format')." h:i A",$stat->timestamp + __::timezoneOffset()); ?></td>
                 <td><?php echo $stat->ip; ?></td>
             </tr>

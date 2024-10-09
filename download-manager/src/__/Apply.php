@@ -25,8 +25,6 @@ class Apply {
 		//add_action( "wp_ajax_wpdm_email_lock", [ $this, 'verifyEmailLock' ] );
 		//add_action( "wp_ajax_nopriv_wpdm_email_lock", [ $this, 'verifyEmailLock' ] );
 
-		add_action( "wp_ajax_wpdm_create_term", [ $this, 'createTerm' ] );
-
 		add_action( "wp_ajax_wpdm_generate_password", [ $this, 'generatePassword' ] );
 		add_action( "wp_ajax_wpdm-activate-shop", [ $this, 'activatePremiumPackage' ] );
 		add_action( "wp_ajax_wpdm-install-addon", [ $this, 'installAddon' ] );
@@ -312,19 +310,19 @@ class Apply {
 	function triggerDownload() {
 
 		global $wpdb, $current_user, $wp_query;
-		if ( preg_match( "/\/wpdmdl\/([\d]+)-([^\/]+)\/(.+)/", $_SERVER['REQUEST_URI'] ) ) {
-			$uri                            = trim( __::valueof( $_SERVER, 'REQUEST_URI', [ 'validate' => 'escs' ] ), '/' );
-			$download_url_base              = get_option( '__wpdm_download_url_base', 'download' );
-			$uri                            = explode( "/" . $download_url_base . "/", $uri );
-			$parts                          = explode( "/", $uri[1] );
-			$parts                          = explode( "-", $parts[0] );
-			$_REQUEST['wpdmdl']             = $_GET['wpdmdl'] = (int) $parts[0];
-			$wp_query->query_vars['wpdmdl'] = (int) $parts[0];
-			$parts                          = json_decode( base64_decode( $parts[1] ) );
-			if ( is_array( $parts ) ) {
-				foreach ( $parts as $key => $val ) {
-					$_REQUEST[ $key ] = $_GET[ $key ] = $val;
-				}
+		$dlbase         = get_option('__wpdm_fdurl_base', 'wpdmdl');
+		if ( preg_match( "/\/{$dlbase}\/([\d]+)\/(.+)\/(.*)/", $_SERVER['REQUEST_URI'], $matched ) ) {
+            if((int)get_option('__wpdm_flat_download_url')) {
+	            $_REQUEST['wpdmdl']             = $_GET['wpdmdl'] = (int) $matched[1];
+	            $_REQUEST['ind']                = $_GET['ind'] = (int) $matched[2];
+	            $wp_query->query_vars['wpdmdl'] = (int) $matched[1];
+	            $wp_query->query_vars['ind']    = (int) $matched[2];
+            }
+		}
+		else if ( preg_match( "/\/download\/([\d]+)\/(.*)/", $_SERVER['REQUEST_URI'], $matched ) ) {
+			if((int)get_option('__wpdm_flat_download_url')) {
+				$_REQUEST['wpdmdl']             = $_GET['wpdmdl'] = (int) $matched[1];
+				$wp_query->query_vars['wpdmdl'] = (int) $matched[1];
 			}
 		}
 
@@ -346,7 +344,6 @@ class Apply {
 		if ( ! isset( $wp_query->query_vars['wpdmdl'] ) && ! isset( $_GET['wpdmdl'] ) ) {
 			return;
 		}
-
 
 		$id = isset( $_GET['wpdmdl'] ) ? (int) $_GET['wpdmdl'] : (int) $wp_query->query_vars['wpdmdl'];
 		if ( $id <= 0 ) {
@@ -391,14 +388,14 @@ class Apply {
 			$package['access'] = array( 'guest' );
 		}
 
-
+        //wpdmdd($package);
 		$matched = ( is_array( @maybe_unserialize( $package['access'] ) ) && is_user_logged_in() ) ? array_intersect( $current_user->roles, @maybe_unserialize( $package['access'] ) ) : array();
 
 
 		if ( ( ( $id != '' && is_user_logged_in() && count( $matched ) < 1 && ! @in_array( 'guest', $package['access'] ) ) || ( ! is_user_logged_in() && ! @in_array( 'guest', $package['access'] ) && $id != '' ) ) ) {
 			do_action( "wpdm_download_permission_denied", $id );
-			// wpdm_download_data( "permission-denied.txt", __( "You don't have permission to download this file", "download-manager" ) );
-			// die();
+			wpdm_download_data( "permission-denied.txt", __( "You don't have permission to download this file", "download-manager" ) );
+			die();
 		} else {
 			if ( $package['ID'] > 0 ) {
 
@@ -679,163 +676,6 @@ class Apply {
 		return $feed;
 	}
 
-	function verifyEmailLock() {
-		global $wpdb;
-
-		if ( ! isset( $_POST['__wpdm_ID'] ) ) {
-			return;
-		}
-		$id    = (int) $_POST['__wpdm_ID'];
-		$key   = uniqid();
-		$file  = get_post( $id, ARRAY_A );
-		$file  = wpdm_setup_package_data( $file );
-		$file1 = $file;
-		$data  = array( 'error' => '', 'downloadurl' => '' );
-
-		if ( wpdm_verify_email( wpdm_query_var( 'email' ) ) ) {
-
-			$subject = "Your Download Link";
-			$site    = get_option( 'blogname' );
-
-			$limit        = get_option( '__wpdm_private_link_usage_limit', 3 );
-			$xpire_period = ( (int) get_option( '__wpdm_private_link_expiration_period', 3 ) ) * ( (int) get_option( '__wpdm_private_link_expiration_period_unit', 60 ) );
-			$xpire_period = $xpire_period > 0 ? $xpire_period : 3600;
-
-			//When there are custom form data with the email lock form, ex: Name, Company Name, Position, etc.
-			$custom_form_data = isset( $_POST['custom_form_field'] ) ? $_POST['custom_form_field'] : array();
-
-			if ( wpdm_query_var( 'name' ) !== '' ) {
-				$custom_form_data = [ 'name' => wpdm_query_var( 'name' ) ] + $custom_form_data;
-			}
-
-			//do something before sending download link
-			do_action( "wpdm_before_email_download_link", $_POST, $file );
-
-			$show_download_link_instantly           = isset( $file['email_lock_idl'] ) ? (int) $file['email_lock_idl'] : 3;
-			$show_download_link_instantly_also_mail = isset( $file['email_lock_idl_email'] ) ? (int) $file['email_lock_idl_email'] : 0;
-
-			$request_status = $show_download_link_instantly === 0 ? 3 : $show_download_link_instantly;
-			$wpdb->insert( "{$wpdb->prefix}ahm_emails", array(
-				'email'          => $_POST['email'],
-				'pid'            => $file['ID'],
-				'date'           => time(),
-				'custom_data'    => serialize( $custom_form_data ),
-				'request_status' => $request_status
-			) );
-			$subscriberID = $wpdb->insert_id;
-
-			$download_url      = add_query_arg( [ 'subscriber' => \WPDM\__\Crypt::encrypt( $subscriberID ) ], WPDM()->package->expirableDownloadLink( $id, $limit, $xpire_period ) );
-			$download_page_url = add_query_arg( [ 'subscriber' => \WPDM\__\Crypt::encrypt( $subscriberID ) ], WPDM()->package->expirableDownloadPage( $id, $limit, $xpire_period ) );
-
-			if ( $show_download_link_instantly === 0 || ( $show_download_link_instantly == 1 && $show_download_link_instantly_also_mail == 0 ) ) {
-				$name         = isset( $cff['name'] ) ? $cff['name'] : '';
-				$email_params = array(
-					'to_email'          => $_POST['email'],
-					'name'              => $name,
-					'download_count'    => $limit,
-					'package_name'      => $file['post_title'],
-					'package_url'       => get_permalink( $id ),
-					'download_url'      => $download_url,
-					'download_page_url' => $download_page_url
-				);
-				$email_params = apply_filters( "wpdm_email_lock_mail_params", $email_params, $file );
-				\WPDM\__\Email::send( "email-lock", $email_params );
-
-			}
-			$elmsg = sanitize_textarea_field( get_post_meta( $id, '__wpdm_email_lock_msg', true ) );
-			if ( $show_download_link_instantly === 0 ) {
-				$data['downloadurl'] = "";
-				$data['msg']         = ( $elmsg != '' ? $elmsg : __( "Download link sent to your email!", "download-manager" ) );
-				$data['type']        = 'success';
-			} else if ( $show_download_link_instantly === 2 ) {
-				$data['downloadurl'] = "";
-				$data['msg']         = ( $elmsg != '' ? $elmsg : __( "Admin will review your request soon!", "download-manager" ) );
-				$data['type']        = 'success';
-				$message = UI::card("Your have new pending download request for:", [get_the_title($id)])
-                           ."<a href='".admin_url('edit.php?post_type=wpdmpro&page=wpdm-subscribers')."' class='button full green'>".__('Review the request', WPDM_TEXT_DOMAIN)."</a>";
-
-                $email               = new Email();
-				$email->to( get_option( 'admin_email' ) )
-				      ->from( 'no-reply@' . $_SERVER['HTTP_HOST'], get_bloginfo( 'name' ) )
-				      ->message( $message )
-				      ->template( 'default' )
-				      ->sendMail();
-
-			} else {
-				$data['downloadurl'] = $download_url;
-				if ( $show_download_link_instantly_also_mail == 0 ) {
-					$data['msg'] = ( $elmsg != '' ? $elmsg : __( "Download link also sent to your email!", "download-manager" ) );
-				} else {
-					$data['msg'] = ( $elmsg != '' ? $elmsg : __( "Download will be started shortly!", "download-manager" ) );
-				}
-			}
-
-			if ( ! wpdm_is_ajax() ) {
-
-				@setcookie( "wpdm_getlink_data_" . $key, json_encode( $data ) );
-
-				if ( isset( $data['downloadurl'] ) && $data['downloadurl'] != '' ) {
-					header( "location: " . $data['downloadurl'] );
-					die();
-				}
-
-				header( "location: " . $_SERVER['HTTP_REFERER'] . "#nojs_popup|ckid:" . $key );
-				die();
-			}
-
-			$_pdata         = $_POST;
-			$_pdata['pid']  = $file['ID'];
-			$_pdata['time'] = time();
-			Session::set( "__wpdm_email_lock_verified", $_pdata, 604800 );
-			wp_send_json( $data );
-			die();
-		} else {
-			$data['downloadurl'] = "";
-			$data['msg']         = get_option( '__wpdm_blocked_domain_msg' );
-			if ( trim( $data['msg'] ) === '' ) {
-				$data['msg'] = __( "Invalid Email Address!", "download-manager" );
-			}
-			$data['type'] = 'error';
-
-			if ( ! wpdm_is_ajax() ) {
-
-				@setcookie( "wpdm_getlink_data_" . $key, json_encode( $data ) );
-
-				if ( isset( $data['downloadurl'] ) && $data['downloadurl'] != '' ) {
-					header( "location: " . $data['downloadurl'] );
-					die();
-				}
-
-				header( "location: " . $_SERVER['HTTP_REFERER'] . "#nojs_popup|ckid:" . $key );
-				die();
-			}
-
-			wp_send_json( $data );
-			die();
-		}
-
-	}
-
-
-	function createTerm() {
-		if ( wp_verify_nonce( wpdm_query_var( '__nonce' ), NONCE_KEY ) ) {
-			$_term    = wp_create_term( wpdm_query_var( 'term' ), wpdm_query_var( 'taxonomy' ) );
-			$_term_id = wpdm_valueof( $_term, 'term_id' );
-			if ( $_term_id ) {
-				$term = get_term( $_term_id );
-				wp_send_json( [
-					'success' => true,
-					'term'    => $term,
-					'html'    => '<li class="wpdm-tag"><label><input type="checkbox" name="taxonomy[' . wpdm_query_var( 'taxonomy' ) . '][]" class="wpdmtag" value="' . $term->term_id . '"> <span class="tagname">' . $term->name . '</span></label></li>'
-				] );
-			} else {
-				wp_send_json( [ 'success' => false, 'term' => $_term ] );
-			}
-		} else {
-			wp_send_json( [ 'success' => false ] );
-		}
-	}
-
 
 	function shopLogo( $args, $id ) {
 		if ( is_object( $id ) ) {
@@ -937,7 +777,8 @@ class Apply {
 	static function uiColors( $override_option = false ) {
 
 		$wpdmss = maybe_unserialize( get_option( '__wpdm_disable_scripts', array() ) );
-		if ( is_array( $wpdmss ) && in_array( 'wpdm-front', $wpdmss ) && ! is_admin() && $override_option !== true ) {
+		$wpdm_bscss_pages = get_option('__wpdm_bscss_pages', []);
+		if ( is_array( $wpdmss ) && in_array( 'wpdm-front', $wpdmss ) && ! is_admin() && $override_option !== true && !isset($_REQUEST['__wpdmlo']) && !in_array(get_the_ID(), $wpdm_bscss_pages) ) {
 			return;
 		}
 
@@ -1084,3 +925,6 @@ class Apply {
 
 }
 
+/*add_filter("wpcf7_form_response_output", function( $output, $class, $content, $obj, $status ) {
+    return "OK";
+}, 10, 5);*/

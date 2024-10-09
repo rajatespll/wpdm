@@ -16,7 +16,7 @@ if(!defined("ABSPATH")) die("Shit happens!");
             var filename = file;
             $('#rurl').val('');
             let regex = new RegExp("^(ftp:\/\/|http:\/\/|https:\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$");
-            if(!regex.test(file)){
+            if(!regex.test(file) && file.indexOf('magnet:?') !== 0){
                 alert("Invalid url");
                 return false;
             }

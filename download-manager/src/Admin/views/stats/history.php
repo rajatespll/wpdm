@@ -108,7 +108,7 @@ if(is_array($pack_ids) && count($pack_ids) > 0)
 
 $hash = \WPDM\__\Crypt::encrypt( "SELECT [##fields##] FROM $states_table s WHERE 1 {$package_ids_filter} {$user_ids_filter} {$timestamp_filter} {$pid_query} {$uniqq}" );
 
-$count_downloads_without_paging = $wpdb->get_var( "SELECT count(distinct s.pid) FROM $states_table s, $posts_table p WHERE s.pid = p.ID  
+$count_downloads_without_paging = $wpdb->get_var( "SELECT count(s.pid) FROM $states_table s, $posts_table p WHERE s.pid = p.ID  
                                         {$package_ids_filter} {$user_ids_filter} {$timestamp_filter} {$pid_query}
                                         " );
 
@@ -116,6 +116,10 @@ $filtered_result_rows = $wpdb->get_results( "SELECT p.post_title, s.* FROM $stat
                                     {$package_ids_filter} {$user_ids_filter} {$timestamp_filter} {$pid_query} {$uniqq}  
                                     order by `timestamp` desc limit $start, $items_per_page
                                     " );
+/*wpdmdd("SELECT p.post_title, s.* FROM $states_table s, $posts_table p WHERE s.pid = p.ID
+                                    {$package_ids_filter} {$user_ids_filter} {$timestamp_filter} {$pid_query} {$uniqq}
+                                    order by `timestamp` desc limit $start, $items_per_page
+                                    ");*/
 $pagination           = array(
 	'base'      => @add_query_arg( 'page_no', '%#%' ),
 	'format'    => '',
@@ -138,42 +142,6 @@ $pagination           = array(
 		<input type="hidden" name="page" value="wpdm-stats"/>
 		<input type="hidden" name="type" value="history"/>
 		<input type="hidden" name="filter" value="1"/>
-
-		<section class="row">
-			<!-- From date filter -->
-			<div class="col-md-4">
-				<div class="input-group input-group-lg">
-					<div class="input-group-addon">
-						<span class="input-group-text"><?php _e( "From Date", "download-manager" ); ?>:</span>
-					</div>
-					<input type="text" name="from_date" value="<?php echo $selected_from_date->format( 'Y-m-d' ) ?>"
-					       class="datepicker form-control bg-white text-right" readonly="readonly"/>
-				</div>
-			</div>
-
-			<!-- To date filter -->
-			<div class="col-md-4">
-				<div class="input-group input-group-lg">
-					<div class="input-group-addon">
-						<span class="input-group-text"><?php _e( "To Date", "download-manager" ); ?>:</span>
-					</div>
-					<input type="text" name="to_date" value="<?php echo $selected_to_date->format( 'Y-m-d' ) ?>"
-					       class="datepicker form-control bg-white text-right" readonly="readonly"/>
-				</div>
-			</div>
-
-			<div class="col-md-4">
-				<div class="input-group input-group-lg">
-					<label style="display: table-cell;width: 100%;" for="unq"
-					       class="input-group-addon"><?php echo __( 'Count Unique Downloads Only', 'download-manager' ); ?></label>
-					<div class="form-control" style="font-size: 17px;font-weight: 400;width: 60px">
-						<input id="unq" type="checkbox"
-						       value="1" <?php checked( 1, wpdm_query_var( 'uniq', 'int' ) ); ?> name="uniq">
-
-					</div>
-				</div>
-			</div>
-		</section>
 
 		<section class="row" style="margin-top: 20px">
 			<div class="col-md-4">
@@ -207,6 +175,16 @@ $pagination           = array(
 			<?php
 			$cats = wpdm_query_var( 'cats' );
 			$cats = is_array($cats) ? $cats : [];
+            function printOptions($options, $level = 0) {
+                $pstr = $level > 0 ? str_pad(" ", $level*2+1, "--",  STR_PAD_LEFT) : '';
+                wpdmprecho([$level, $pstr]);
+                foreach ($options as $option) {
+                    echo "<option value='{$option['category']->term_id}'>{$pstr}{$option['category']->name}</option>";
+                    if(count($option['childs']) > 0) {
+	                    printOptions($option['childs'], $level + 1);
+                    }
+                }
+            }
 			?>
 			<div class="col-md-4">
 				<div class="panel panel-default">
@@ -214,10 +192,12 @@ $pagination           = array(
 					<div class="panel-body">
 						<select id="cats" name="cats[]" multiple="multiple" style="width: 100%; height: 100%"
 						        class="form-control">
-							<?php foreach ( get_terms( [ 'taxonomy' => 'wpdmcategory' ] ) as $cat ) : ?>
-								<option <?php selected( in_array( $cat->term_id, $cats ), true ); ?>
-									value="<?php echo $cat->term_id ?>"> <?php echo $cat->name . " ( $cat->count )" ?> </option>
-							<?php endforeach ?>
+							<?php
+                            $cats = WPDM()->categories->hArray();
+							printOptions($cats);
+                            /* foreach ( get_terms( [ 'taxonomy' => 'wpdmcategory' ] ) as $cat ) : ?>
+								<option <?php selected( in_array( $cat->term_id, $cats ), true ); ?> value="<?php echo $cat->term_id ?>"> <?php echo $cat->name . " ( $cat->count )" ?> </option>
+							<?php endforeach */ ?>
 						</select>
 
 						<!-- remove user filter -->
@@ -265,17 +245,43 @@ $pagination           = array(
 
 
 			<!-- Filter submit button -->
-			<div class="col-md-12">
-				<div style="float:right">
-					<button type="submit"
-					        class="btn btn-primary btn-lg"><?php echo __( "Filter", "download-manager" ) ?></button>
-					<a href="edit.php?post_type=wpdmpro&page=wpdm-stats&task=export&__xnonce=<?php echo wp_create_nonce( NONCE_KEY ); ?>&hash=<?php echo $hash; ?>"
-					   class="btn btn-info btn-lg"><?php echo __( "Export", "download-manager" ) ?></a>
-					<a href="edit.php?post_type=wpdmpro&page=wpdm-stats&type=history"
-					   class="btn btn-danger btn-lg"><?php echo __( "Reset", "download-manager" ) ?></a>
-				</div>
-			</div>
+
 		</section>
+
+        <section class="row">
+            <!-- From date filter -->
+            <div class="col-md-4">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-addon">
+                        <span class="input-group-text"><?php _e( "From Date", "download-manager" ); ?>:</span>
+                    </div>
+                    <input type="text" name="from_date" value="<?php echo $selected_from_date->format( 'Y-m-d' ) ?>"
+                           class="datepicker form-control bg-white text-right" readonly="readonly"/>
+                </div>
+            </div>
+
+            <!-- To date filter -->
+            <div class="col-md-3">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-addon">
+                        <span class="input-group-text"><?php _e( "To Date", "download-manager" ); ?>:</span>
+                    </div>
+                    <input type="text" name="to_date" value="<?php echo $selected_to_date->format( 'Y-m-d' ) ?>"
+                           class="datepicker form-control bg-white text-right" readonly="readonly"/>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div style="float:right">
+                    <button type="submit"
+                            class="btn btn-primary btn-lg"><?php echo __( "Filter", "download-manager" ) ?></button>
+                    <a href="edit.php?post_type=wpdmpro&page=wpdm-stats&task=export&__xnonce=<?php echo wp_create_nonce( NONCE_KEY ); ?>&hash=<?php echo $hash; ?>"
+                       class="btn btn-info btn-lg"><?php echo __( "Export Filtered Stats", "download-manager" ) ?></a>
+                    <a href="edit.php?post_type=wpdmpro&page=wpdm-stats&type=history"
+                       class="btn btn-danger btn-lg"><?php echo __( "Reset", "download-manager" ) ?></a>
+                </div>
+			</div>
+        </section>
 
 
 	</form>
@@ -295,6 +301,7 @@ $pagination           = array(
 			<thead>
 			<tr>
 				<th class="bg-white"><?php _e( "Package Name", "download-manager" ); ?></th>
+				<th class="bg-white"><?php _e( "File Name", "download-manager" ); ?></th>
 				<th class="bg-white"><?php _e( "Version", "download-manager" ); ?></th>
 				<th class="bg-white"><?php _e( "Download Time", "download-manager" ); ?></th>
 				<th class="bg-white"><?php _e( "User", "download-manager" ); ?></th>
@@ -321,7 +328,7 @@ $pagination           = array(
 					<!-- Package -->
 					<td>
 						<a title='Filter By This Package' class='ttip'
-						   href="edit.php?post_type=wpdmpro&page=wpdm-stats&type=history&pid=<?php echo $stat->pid ?>">
+						   href="edit.php?post_type=wpdmpro&page=wpdm-stats&type=history&package_ids[]=<?php echo $stat->pid ?>">
 							<?php echo $stat->post_title; ?>
 						</a>
 						<div class="show-on-hover pull-right">
@@ -336,6 +343,8 @@ $pagination           = array(
 							</a>
 						</div>
 					</td>
+					<!-- filename -->
+					<td><?php echo $stat->filename; ?></td>
 					<!-- version -->
 					<td><?php echo $stat->version; ?></td>
 					<!-- time -->

@@ -7,10 +7,10 @@ if(!defined("ABSPATH")) die("Shit happens!");
         <div id="plupload-upload-ui" class="hide-if-no-js">
             <div id="drag-drop-area">
                 <div class="drag-drop-inside" style="margin-top: 40px">
-                    <p class="drag-drop-info"><?php _e('Drop files here', WPDM_TEXT_DOMAIN); ?></p>
-                    <p>&mdash; <?php _ex('or', 'Uploader: Drop files here - or - Select Files', WPDM_TEXT_DOMAIN); ?> &mdash;</p>
+                    <p class="drag-drop-info"><?php _e('Drop files here',  'download-manager'); ?></p>
+                    <p>&mdash; <?php _ex('or', 'Uploader: Drop files here - or - Select Files',  'download-manager'); ?> &mdash;</p>
                     <p class="drag-drop-buttons">
-                        <button id="plupload-browse-button" type="button" class="btn wpdm-whatsapp btn-sm" ><i class="fa fa-folder-open"></i> <?php esc_attr_e('Select Files'); ?></button><br/>
+                        <button id="plupload-browse-button" type="button" class="btn wpdm-whatsapp btn-sm" ><i class="fa fa-folder-open"></i> <?php esc_attr_e('Select Files', 'download-manager'); ?></button><br/>
                         <small>[ Max: <?php echo get_option('__wpdm_chunk_upload',0) == 1?'No Limit':(int)(wp_max_upload_size()/1048576).' MB'; ?> ]</small>
                     </p>
                 </div>
@@ -29,7 +29,7 @@ if(!defined("ABSPATH")) die("Shit happens!");
             'url'                 => admin_url('admin-ajax.php'),
             'flash_swf_url'       => includes_url('js/plupload/plupload.flash.swf'),
             'silverlight_xap_url' => includes_url('js/plupload/plupload.silverlight.xap'),
-            'filters'             => array(array('title' => __('Allowed Files', WPDM_TEXT_DOMAIN), 'extensions' => WPDM()->fileSystem->getAllowedFileTypes(false))),
+            'filters'             => array(array('title' => __('Allowed Files',  'download-manager'), 'extensions' => WPDM()->fileSystem->getAllowedFileTypes(false))),
             'multipart'           => true,
             'urlstream_upload'    => true,
 
@@ -104,11 +104,7 @@ if(!defined("ABSPATH")) die("Shit happens!");
 
                             file.name.replace(/</ig, "&lt;") + '</b> (<span>' + plupload.formatSize(0) + '</span>/' + plupload.formatSize(file.size) + ') ' +
                             '<div class="progress progress-success progress-striped active"><div class="bar fileprogress"></div></div></div>');
-                        // alert(file.size/1048576);
-                        // jQuery('#acf-field_64b675ebff734').val(plupload.formatSize(file.size));
-                        jQuery('#acf-field_64b678beaac99').val(file.size/1048576);
                     });
-
 
                     up.refresh();
                     up.start();

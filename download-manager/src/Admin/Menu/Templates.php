@@ -342,9 +342,9 @@ class Templates
 
     function updateTemplateStatus(){
 	    __::isAuthentic('tsnonce', WPDM_PRI_NONCE, WPDM_ADMIN_CAP);
-        $type = wpdm_query_var('type');
+        $type = wpdm_query_var('type', 'txt');
         $tpldata = maybe_unserialize(get_option("_fm_{$type}_template_status"));
-        $tpldata[wpdm_query_var('template')] = wpdm_query_var('status');
+        $tpldata[wpdm_query_var('template')] = wpdm_query_var('status', 'int');
         update_option("_fm_{$type}_template_status", $tpldata, false);
         echo "OK";
         die();

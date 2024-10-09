@@ -9,6 +9,7 @@ namespace WPDM\Package;
 
 use WPDM\__\__;
 use WPDM\__\Crypt;
+use WPDM\__\FileSystem;
 use WPDM\__\Messages;
 use WPDM\__\Template;
 use WPDM\__\TempStorage;
@@ -18,8 +19,9 @@ class Hooks
 {
     function __construct()
     {
-        add_action("wp", [$this, 'wp']);
+	    add_action("wp", [$this, 'wp']);
         add_filter("the_content", [$this, 'embedPackage']);
+
     }
 
     function wp()
@@ -32,7 +34,7 @@ class Hooks
     function wpdmIframe()
     {
         if (isset($_REQUEST['__wpdmlo'])) {
-            include Template::locate('lock-options-iframe.php', __DIR__.'/views');
+			include Template::locate('lock-options-iframe.php', __DIR__.'/views');
             die();
         }
     }
@@ -134,4 +136,6 @@ class Hooks
 
         return UI::div($data, 'w3eden');
     }
+
+
 }

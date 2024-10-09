@@ -7,6 +7,7 @@
 namespace WPDM\MediaLibrary;
 
 
+use WPDM\__\__;
 use WPDM\__\Crypt;
 use WPDM\__\Messages;
 use WPDM\__\Template;
@@ -55,7 +56,7 @@ class MediaAccessControl
         if(wpdm_query_var('__xnonce') && wp_verify_nonce(wpdm_query_var('__xnonce'), NONCE_KEY)){
             $mediaid = Crypt::decrypt(wpdm_query_var('__meida'));
             $password = get_post_meta($mediaid, '__wpdm_media_pass', true);
-            if($password === wpdm_query_var('__pswd')){
+            if($password == wpdm_query_var('__pswd')){
                 $mediakey = uniqid();
                 $xpire_sex = (int)get_option('__wpdm_private_link_expiration_period') * (int)get_option('__wpdm_private_link_expiration_period_unit');
                 $xpire_sex = $xpire_sex > 0 ? $xpire_sex :  30;
@@ -78,7 +79,8 @@ class MediaAccessControl
         return $content;
     }
 
-    function protectMediaLibrary(){
+    /*
+    function protectMediaLibrary1(){
         if(isset($_REQUEST['wpdmmediaid'])){
             global $wpdb;
             $current_user = wp_get_current_user();
@@ -123,6 +125,67 @@ class MediaAccessControl
             die();
         }
     }
+    //*/
+	function protectMediaLibrary(){
+		if(isset($_REQUEST['wpdmmediaid'])){
+			global $wpdb;
+			$current_user = wp_get_current_user();
+			$ID = wpdm_query_var('wpdmmediaid', 'int');
+			$media = get_post($ID);
+			if(!$media) Messages::fullPage('404', esc_attr__( 'Media not found!', WPDM_TEXT_DOMAIN ));
+			$media_meta = wp_get_attachment_metadata($ID);
+			//wpdmdd($media);
+			$validFilenames = [basename(wpdm_valueof($media_meta,'file')), basename($media->guid)];
+			foreach($media_meta['sizes'] as $key => $item){
+				$validFilenames[] = $item['file'];
+			}
+			$media_rel_path = get_post_meta( $media->ID, '_wp_attached_file', true );
+			if(!$media_rel_path && isset($media['file'])) $media_rel_path = $media['file'];
+			$validRelPath = str_replace(basename($media_rel_path), '', $media_rel_path);
+			$reqFilename = basename($_REQUEST['wpdmmedia']);
+			//wpdmdd($reqFilename, $validFilenames, $_REQUEST['wpdmmedia'], $validRelPath);
+			//wpdmdd(substr_count($media->guid, $_REQUEST['wpdmmedia']), $reqFilename, $validFilenames, in_array($reqFilename, $validFilenames));
+			if(!in_array($reqFilename, $validFilenames) || substr_count($media->guid, $_REQUEST['wpdmmedia']) === 0) {
+				wp_die( __('Invalid file path!', 'download-manager') );
+			}
+
+			// wpdmdd($media);
+			$media->path = ABSPATH.$media_rel_path;
+			$media->filesize = wpdm_file_size($media->path);
+			$upload_dir = wp_upload_dir();
+
+			$access = get_post_meta($media->ID, '__wpdm_media_access', true);
+			if(!is_array($access)) $access = ['public'];
+			$password = get_post_meta($media->ID, '__wpdm_media_pass', true);
+			$private = get_post_meta($media->ID, '__wpdm_private', true);
+			if(current_user_can('manage_options')) $private = false;
+			$user_roles = is_user_logged_in() ? $current_user->roles + array('public') : array();
+			$user_roles[] = 'public';
+			$user_allowed = array_intersect($user_roles, $access);
+			$user_allowed = count($user_allowed);
+			if( $private && ( $password || !$user_allowed ) ) {
+
+				if(!$user_allowed && substr_count($media->post_mime_type, 'image')) {
+					$access_denied_placeholder = apply_filters("access_denied_placeholder", WPDM_BASE_DIR.'assets/images/denied.png', $media);
+					FileSystem::downloadFile($access_denied_placeholder, basename($media->guid),  10240, 0, ['play' => 1]);
+					die();
+				}
+
+				$picon = wp_get_attachment_image($media->ID, 'thumbnail', true);
+				$keyvalid = true;
+				$__hash = Crypt::encrypt($media->ID);
+				$download_url = "";
+				include Template::locate("media-download.php", __DIR__.'/views');
+				die();
+			}
+
+			//$upload_dir = wp_upload_dir();
+			$file_path = $upload_dir['basedir'].'/'.__::query_var('wpdmmedia');
+			$file_path = apply_filters("wpdm_media_download", $file_path, $media->ID);
+			FileSystem::downloadFile($file_path, basename($file_path), 10240, 0, array('play' => 1));
+			die();
+		}
+	}
 
     function updateMediaAccess(){
         $protected = get_option("__wpdm_media_private");
@@ -275,6 +338,9 @@ class MediaAccessControl
 
     function footerScripts(){
         global $pagenow;
+	    $roles = get_option('__wpdm_mac_access');
+	    $roles = maybe_unserialize($roles);
+	    if(!is_array($roles) || count(array_intersect($roles, wp_get_current_user()->roles)) < 1) return;
         ?>
         <script>
             var xhr = null;
@@ -336,12 +402,15 @@ class MediaAccessControl
     }
 
     function protectionSettings($form_fields, $post) {
+        $roles = get_option('__wpdm_mac_access');
+        $roles = maybe_unserialize($roles);
+        if(!is_array($roles) || count(array_intersect($roles, wp_get_current_user()->roles)) < 1) return $form_fields;
         ob_start();
         //wpdmprecho($post);
         ?><script>
             jQuery(function ($) {
                 $('.w3eden.media-access-control-container').remove();
-                $('.attachment-info .details').after("<br style='clear:both;'/><hr style='clear:both;margin-bottom:10px'/><div class='w3eden media-access-control-container'><div  id='wpdm-media-access'><div class='panel panel-default'><div class='panel-body'><i class='fa fa-sun fa-spin'></i> <?php echo __( "Checking status...", "download-manager" ); ?></div></div></div></div>");
+                $('.attachment-info .details').after("<div class='w3eden media-access-control-container'><br style='clear:both;'/><hr style='clear:both;margin-bottom:10px'/><div  id='wpdm-media-access'><div class='panel panel-default'><div class='panel-body'><i class='fa fa-sun fa-spin'></i> <?php echo __( "Checking status...", "download-manager" ); ?></div></div></div></div>");
                 xhr = $.ajax({
                     type: "GET",
                     url: ajaxurl,

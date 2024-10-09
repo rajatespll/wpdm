@@ -175,8 +175,8 @@ if (!defined('ABSPATH')) die();
         <a href="<?php echo get_permalink($package->ID); ?>" style="color: rgba(255,255,255, 0.4);">View Package</a>&nbsp; &mdash;
     </div>
 </div>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.css" />
-<script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js"></script>
+<link rel="stylesheet" href="<?php echo WPDM_BASE_URL ?>assets/simplebar/simplebar.css"/>
+<script src="<?php echo WPDM_BASE_URL ?>assets/simplebar/simplebar.min.js"></script>
 <script>
     jQuery(function ($) {
         $('#wpdm-download').modal({backdrop: 'static'});

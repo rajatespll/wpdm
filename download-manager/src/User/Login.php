@@ -46,10 +46,42 @@ class Login
         add_filter("template_include", [$this, 'interimLogin'], 9999);
         add_filter('the_content', array($this, 'validateLoginPage'));
 
-	    add_action('authenticate', [$this, 'verifyLoginEmail'], 999998, 3);
-	    add_action('authenticate', [$this, 'verifyUserStatus'], 999999, 3);
+	    add_filter('authenticate', [$this, 'verifyLoginEmail'], 999998, 3);
+	    add_filter('authenticate', [$this, 'verifyUserStatus'], 999999, 3);
+	    add_filter('authenticate', [$this, 'reCaptchaVerify'], 999999, 3);
+
+        add_action("login_form", [$this, 'reCaptcha']);
 
     }
+
+
+	function reCpathcaActive() {
+		$active_captcha = (int)get_option('__wpdm_recaptcha_loginform', 0) === 1 && get_option('_wpdm_recaptcha_secret_key', '') != '';
+		$active_captcha = apply_filters("signin_form_captcha", $active_captcha);
+        return $active_captcha;
+    }
+
+    function reCaptcha() {
+        if($this->reCpathcaActive()) {
+            $form = new Form(['__recap' => [
+	            'type' => 'reCaptcha',
+	            'attrs' => ['name' => '__recap', 'id' => '__recap'],
+            ]], ['noForm' => true]);
+            echo $form->render();
+        }
+    }
+
+
+	function reCaptchaVerify($user, $user_login, $user_pass) {
+		if ($this->reCpathcaActive()) {
+			$ret = wpdm_remote_post('https://www.google.com/recaptcha/api/siteverify', array('secret' => get_option('_wpdm_recaptcha_secret_key', ''), 'response' => wpdm_query_var('__recap')));
+			$ret = json_decode($ret);
+			if (!$ret->success) {
+				return new \WP_Error( 'recaptcha_failed', __( '<strong>Error:</strong> Captcha verification failed!', 'download-manager' ) );
+			}
+		}
+		return $user;
+	}
 
     function formFields($params = [])
     {
@@ -62,9 +94,9 @@ class Login
         $login_data_fields['password'] = array(
             'label' => __("Password", "download-manager"),
             'type' => 'password',
-            'attrs' => array('name' => 'wpdm_login[pwd]', 'id' => 'password', 'required' => 'required', 'placeholder' => __("Enter Password", "download-manager")),
+            'attrs' => array('name' => 'wpdm_login[pwd]', 'id' => 'password', 'required' => 'required', 'placeholder' => __("Enter Password", "download-manager"), 'strength' => 0),
         );
-        if (!isset($params['captcha']) || $params['captcha'] === true) {
+        /*if (!isset($params['captcha']) || $params['captcha'] === true) {
             $show_captcha = (int)get_option('__wpdm_recaptcha_loginform', 0) === 1 && get_option('_wpdm_recaptcha_secret_key', '') != '';
             $show_captcha = apply_filters("signin_form_captcha", $show_captcha);
             if ($show_captcha) {
@@ -73,7 +105,7 @@ class Login
                     'attrs' => array('name' => '__recap', 'id' => '__recap'),
                 );
             }
-        }
+        }*/
         $login_data_fields = apply_filters("wpdm_login_form_fields", $login_data_fields);
         $form = new Form($login_data_fields, ['name' => 'wpdm_login_form', 'id' => 'wpdm_login_form', 'method' => 'POST', 'action' => '', 'submit_button' => [], 'noForm' => true]);
         return $form->render();
@@ -152,25 +184,6 @@ class Login
 
         if ($login_try > 30) wp_die("Slow Down!");
 
-        if(!isset($shortcode_params['captcha']) || $shortcode_params['captcha'] ===  true) {
-            $active_captcha = (int)get_option('__wpdm_recaptcha_loginform', 0) === 1 && get_option('_wpdm_recaptcha_secret_key', '') != '';
-            $active_captcha = apply_filters("signin_form_captcha", $active_captcha);
-            if ($active_captcha) {
-                $ret = wpdm_remote_post('https://www.google.com/recaptcha/api/siteverify', array('secret' => get_option('_wpdm_recaptcha_secret_key', ''), 'response' => wpdm_query_var('__recap')));
-                $ret = json_decode($ret);
-                if (!$ret->success) {
-                    $login_error = __("Invalid CAPTCHA!", "download-manager");
-                    if (wpdm_is_ajax()) {
-                        wp_send_json(array('success' => false, 'message' => 'Error: ' . $login_error));
-                        die();
-                    }
-                    Session::set('login_error', $login_error);
-                    wp_safe_redirect(wpdm_query_var('permalink', 'url'));
-                    die();
-                }
-            }
-        }
-
         Session::clear('login_error');
         $creds = array();
         $creds['user_login'] = isset($_POST['wpdm_login']['log']) ? $_POST['wpdm_login']['log'] : '';
@@ -243,28 +256,29 @@ class Login
      */
     function updatePassword()
     {
-        if (__::query_var('__wpdm_update_pass')) {
+	    __::isAuthentic('__wpdm_update_pass', NONCE_KEY, 'read');
+	    $pass = __::query_var('password','html');
+	    if ($pass == '') die('error');
+	    $user = Crypt::decrypt(__::query_var('__up_user'));
+	    if (is_object($user) && isset($user->ID)) {
 
-            if (wp_verify_nonce(__::query_var('__wpdm_update_pass'), NONCE_KEY)) {
-                $pass = __::query_var('password','html');
-                if ($pass == '') die('error');
-                $user = Crypt::decrypt(__::query_var('__up_user'));
-                if (is_object($user) && isset($user->ID)) {
+		    if(defined('WPDM_ADMIN_DISABLE_RESET_PASS') && constant('WPDM_ADMIN_DISABLE_RESET_PASS') === true) {
+			    if ( user_can( $user->ID, 'manage_options' ) ) {
+				    wp_send_json( array(
+					    'success' => false,
+					    'message' => apply_filters( 'wpdm_update_password_error', __( 'Password update is not allowed disabled for this user!', 'download-manager' ) )
+				    ) );
+			    }
+		    }
 
-                    if(user_can($user->ID, 'manage_options'))
-                        wp_send_json(array('success' => false, 'message' => apply_filters('wpdm_update_password_error', __('Password update is disabled for this user!', 'download-manager'))));
+		    wp_set_current_user($user->ID, $user->user_login);
+		    wp_set_auth_cookie($user->ID);
+		    //do_action('wp_login', $user->user_login);
+		    wp_set_password($pass, $user->ID);
+		    //print_r($user);
+		    wp_send_json(array('success' => true, 'message' => ''));
+	    } else wp_send_json(array('success' => false, 'message' => apply_filters('wpdm_update_password_error', __('Session Expired! Please try again.', 'download-manager'))));
 
-                    wp_set_current_user($user->ID, $user->user_login);
-                    wp_set_auth_cookie($user->ID);
-                    //do_action('wp_login', $user->user_login);
-                    wp_set_password($pass, $user->ID);
-                    //print_r($user);
-                    wp_send_json(array('success' => true, 'message' => ''));
-                } else wp_send_json(array('success' => false, 'message' => apply_filters('wpdm_update_password_error', __('Session Expired! Please try again.', 'download-manager'))));
-            } else
-                wp_send_json(array('success' => false, 'message' => apply_filters('wpdm_update_password_error', __('Session Expired! Please try again.', 'download-manager'))));
-
-        }
     }
 
     /**
@@ -431,6 +445,8 @@ class Login
     function verifyLoginEmail($user, $user_login, $user_pass)
     {
 
+	    if((!is_object($user) || get_class($user) !== 'WP_User') && !$user_login) return $user;
+
         $user_email = null;
         if(!is_email($user_login) && !$user) {
             $_user = get_user_by('user_login', $user_login);
@@ -452,6 +468,9 @@ class Login
 
     function verifyUserStatus($user, $user_login, $user_pass)
     {
+
+	    if((!is_object($user) || get_class($user) !== 'WP_User') && !$user_login) return $user;
+
         if($user_login && WPDM()->user->requiresApproval() && !WPDM()->user->isApproved($user->ID)) {
             $status = WPDM()->user->getStatus($user->ID);
 	        $user = new \WP_Error();
@@ -462,7 +481,7 @@ class Login
 	        }
             else if($status === 'suspended') {
 		        $pemsg = esc_html(get_option('__wpdm_suspended_acc_msg'));
-		        if (trim($pemsg) === '') $pemsg = esc_html__('Your account is suspended, you are not allowed to login!', 'download-manager');
+		        if (trim($pemsg) === '') $pemsg = esc_html__('Your account has been suspended, you are not allowed to login!', 'download-manager');
 		        $user->add( 'pending_approval', $pemsg );
 	        }
             else if($status === 'declined') {

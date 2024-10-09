@@ -1,12 +1,19 @@
 <?php
 use WPDM\__\__;
+use WPDM\__\Messages;
 
 if(!defined("ABSPATH")) die();
 
         if(!$asset->hasAccess())
         {
-            \WPDM\__\Messages::error(array('title' => 'Access Denied!', 'message' => __( "You do not have access to this asset", "download-manager" )), 1);
+            Messages::error(array('title' => 'Access Denied!', 'message' => __( "You do not have access to this asset", "download-manager" )), 1);
         }
+
+        if($expire && $expire < time())
+        {
+            Messages::error(array('title' => 'Link Expired!', 'message' => sprintf(__( "The link your are trying to access has been expired on %s", "download-manager" ), date(get_option('date_format')." ".get_option('time_format'), $expire))), 1);
+        }
+        //wpdmdd($asset);
 
 ?><!DOCTYPE html>
 <html lang="en">

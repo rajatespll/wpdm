@@ -144,17 +144,6 @@ $full_month_data_array = array_values($full_month_data_array);
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading"><?php _e('Top Packages', WPDM_TEXT_DOMAIN); ?></div>
-            <div class="panel-body">
-                <?php //$tops = WPDM()->query->  ?>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6"></div>
-</div>
 
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

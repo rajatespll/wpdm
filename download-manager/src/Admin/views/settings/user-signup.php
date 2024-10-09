@@ -19,7 +19,7 @@ if(!defined('ABSPATH')) die('Dream more!');
 
 		<div class="form-group">
             <label><?php _e('Message to show when account is suspended', WPDM_TEXT_DOMAIN); ?>:</label>
-            <input type="text" class="form-control" name="__wpdm_declined_signup_msg" placeholder="<?= esc_attr__('Message to show when suspended user is trying to login'); ?>" value="<?= esc_attr(get_option('__wpdm_suspended_acc_msg', 'Your account is suspended, you are not allowed to login!')); ?>">
+            <input type="text" class="form-control" name="__wpdm_declined_signup_msg" placeholder="<?= esc_attr__('Message to show when suspended user is trying to login'); ?>" value="<?= esc_attr(get_option('__wpdm_suspended_acc_msg', 'Your account has been suspended, you are not allowed to login!')); ?>">
         </div>
 
 		<label><?php echo __( "Allowed Sign up Roles" , "download-manager" ); ?></label>

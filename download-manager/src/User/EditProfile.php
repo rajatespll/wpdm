@@ -58,7 +58,7 @@ class EditProfile
             $pfile_data['user_email'] = sanitize_email($_POST['wpdm_profile']['user_email']);
 
 
-            if ($_POST['password'] != $_POST['cpassword']) {
+            if ($_POST['password'] !== $_POST['cpassword']) {
                 Session::set('member_error', 'Password not matched');
                 $error = 1;
             }
@@ -77,6 +77,13 @@ class EditProfile
 
                 Session::set('member_success', 'Profile data updated successfully.');
             }
+
+			if(__::query_var('__wpdm_profile_pic')) {
+				$profile = maybe_unserialize(get_user_meta(get_current_user_id(), '__wpdm_public_profile', true));
+				if(!is_array($profile)) $profile = [];
+				$profile['logo'] = __::query_var('__wpdm_profile_pic', 'url');
+				update_user_meta(get_current_user_id(), '__wpdm_public_profile', $profile);
+			}
 
             do_action("wpdm_update_profile", $current_user->ID);
 

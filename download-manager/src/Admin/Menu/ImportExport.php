@@ -221,30 +221,22 @@ class ImportExport
 
         $wpdb->update($wpdb->posts, array('post_modified' => $csv_row['update_date']), array('ID' => $post_id));
         unset($csv_row['update_date']);
-        $cat_id = array();
         foreach($csv_row['category'] as $index => $category){
             if((int)$category > 0) $category = (int)$category;
-            $cat_id[]= $category;
-            
-            $category = get_term( $category )->name;
-            // echo "<pre>"; print_r($category);
-            // die();
-            // if(term_exists($category, 'wpdmcategory')){
-            //     $eterm = term_exists($category, 'wpdmcategory');
-            //     $csv_row['category'][$index] = (int)$eterm['term_id'];
-            // }
-            // else {
-            //     $tinf =  wp_insert_term($category, 'wpdmcategory');
-            //     if(is_array($tinf) && isset($tinf['term_id']))
-            //         $csv_row['category'][$index] = (int)$tinf['term_id'];
+            if(term_exists($category, 'wpdmcategory')){
+                $eterm = term_exists($category, 'wpdmcategory');
+                $csv_row['category'][$index] = (int)$eterm['term_id'];
+            }
+            else {
+                $tinf =  wp_insert_term($category, 'wpdmcategory');
+                if(is_array($tinf) && isset($tinf['term_id']))
+                    $csv_row['category'][$index] = (int)$tinf['term_id'];
 
-            // }
+            }
         }
-        // print_r($cat_id);
-        // die();
 
         if(count($csv_row['category']) > 0)
-            $ret = wp_set_post_terms($post_id, $cat_id, 'wpdmcategory' );
+            $ret = wp_set_post_terms($post_id, $csv_row['category'], 'wpdmcategory' );
 
         unset($csv_row['category']);
 
@@ -255,11 +247,11 @@ class ImportExport
 				if ( (int) $term > 0 ) {
 					$term = (int) $term;
 				}
-				if ( term_exists( $term, 'wpdmtag' ) ) {
-					$eterm                     = term_exists( $term, 'wpdmtag' );
+				if ( term_exists( $term, WPDM_TAG ) ) {
+					$eterm                     = term_exists( $term, WPDM_TAG );
 					$tags[] = $eterm['term_id'];
 				} else {
-					$tinf = wp_insert_term( $term, 'wpdmtag' );
+					$tinf = wp_insert_term( $term, WPDM_TAG );
 					if ( is_array( $tinf ) && isset( $tinf['term_id'] ) ) {
 						$tags[] = $tinf['term_id'];
 					}
@@ -269,7 +261,7 @@ class ImportExport
 
 			if ( count( $tags ) > 0 ) {
 				$tags = array_unique($tags);
-				$ret = wp_set_post_terms( $post_id, $csv_row['tags'], 'wpdmtag' );
+				$ret = wp_set_post_terms( $post_id, $csv_row['tags'], WPDM_TAG );
 			}
 
 			unset( $csv_row['tags'] );
@@ -299,11 +291,13 @@ class ImportExport
                 'post_status' => 'inherit'
             );
             $attachment_id = wp_insert_attachment($attachment, $csv_row['preview'], $post_id);
+
             unset($attachment);
 
             if (!is_wp_error($attachment_id)) {
                 $attachment_data = wp_generate_attachment_metadata($attachment_id, $csv_row['preview']);
                 wp_update_attachment_metadata($attachment_id, $attachment_data);
+				//wpdmdd($attachment_data);
                 unset($attachment_data);
                 set_post_thumbnail($post_id, $attachment_id);
             }
@@ -610,7 +604,7 @@ class ImportExport
 				}
 				$meta_value = implode(",", $cat_names);
             } else if($meta_key === 'tags') {
-	            $tags = wp_get_post_terms($package['ID'], 'wpdmtags');
+	            $tags = wp_get_post_terms($package['ID'], WPDM_TAG);
 	            $tag_names = [];
 	            foreach ($tags as $tag) {
 		            $tag_names[] = $tag->name;

@@ -66,7 +66,7 @@ foreach ($top_packages as $p) {
     <div class="row">
 
         <!-- From date -->
-        <div class="col-md-3">
+        <div class="col-md-5">
             <div class="input-group input-group-lg">
                 <div class="input-group-addon">
                     <span class="input-group-text"><?php _e("From Date", "download-manager"); ?>:</span>
@@ -76,7 +76,7 @@ foreach ($top_packages as $p) {
         </div>
 
         <!-- To date -->
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="input-group input-group-lg">
                 <div class="input-group-addon">
                     <span class="input-group-text"><?php _e("To Date", "download-manager"); ?>:</span>
@@ -86,7 +86,7 @@ foreach ($top_packages as $p) {
         </div>
 
         <!-- Filter submit button -->
-        <div class="col-md-2">
+        <div class="col-md-3">
             <div class="btn-group">
                 <button type="submit" class="btn btn-primary btn-lg"><?php echo __("Filter", "download-manager") ?></button>
                 <a href="edit.php?post_type=wpdmpro&page=wpdm-stats&type=insight" class="btn btn-danger btn-lg"><?php echo __("Reset", "download-manager") ?></a>

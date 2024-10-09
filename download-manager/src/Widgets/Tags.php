@@ -32,9 +32,9 @@ if (!class_exists('WPDM_Tags')) {
 
             $object = get_queried_object();
             if (is_singular('wpdmpro'))
-                $terms = wp_get_post_terms(get_the_ID(), 'wpdmtag');
+                $terms = wp_get_post_terms(get_the_ID(), WPDM_TAG);
             else
-                $terms = get_terms("wpdmtag", $args);
+                $terms = get_terms(WPDM_TAG, $args);
 
 
             if (is_array($terms)) {

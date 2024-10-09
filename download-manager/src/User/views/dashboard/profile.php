@@ -10,6 +10,7 @@ foreach ($current_user->roles as $role) {
 }
 
 ?>
+
 <?php do_action("wpdm_before_user_dashboard_summery"); ?>
 <div class="row">
     <div class="col-md-4">
@@ -73,7 +74,7 @@ if(isset($params['recommended']) && ( term_exists($params['recommended'], 'wpdmc
                 $q = new WP_Query($qparams);
                 while ($q->have_posts()) {
                     $q->the_post();
-                    if (WPDM()->package->userCanAccess(get_the_ID()) && has_post_thumbnail(get_the_ID())) {
+                    if (WPDM()->package->userCanAccess(get_the_ID())) {
                         ?>
                         <div class="col-md-6">
                             <div class="media wpdm-rec-item mb-3">

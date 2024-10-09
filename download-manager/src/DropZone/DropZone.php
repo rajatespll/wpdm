@@ -10,6 +10,7 @@ use WPDM\__\FileSystem;
 use WPDM\__\Messages;
 use WPDM\__\Template;
 use WPDM\__\UI;
+use WPDM\AssetManager\Asset;
 use WPDM\AssetManager\AssetManager;
 
 define("DZF_STATUS", ['PENDING' => 0, 'NEW' => 1, 'DELIVERED' => 2, 'ACCEPTED' => 3, 'DECLINED' => 4]);
@@ -40,6 +41,7 @@ class DropZone {
 		add_action('wpdm_after_upload_file_frontend', [$this, 'upload']);
 		add_action('wp_ajax_wpdmdz_delete_file', [$this, 'deleteFile']);
 		add_action('wp_ajax_wpdmdz_file_info', [$this, 'fileInfo']);
+
 		add_action('wp_ajax_wpdmdz_save_file_info', [$this, 'saveFileInfo']);
 		add_action('wp_ajax_wpdmdz_add_comment', [$this, 'addComment']);
 		add_action('wp_ajax_wpdmdz_file_accept', [$this, 'fileAccept']);
@@ -49,6 +51,7 @@ class DropZone {
 		add_action('wp_ajax_wpdmdz_fc_files', [$this, 'viewFiles']);
 		add_action('wp_ajax_wpdmdz_fc_share', [$this, 'shareRequestLink']);
 		add_action('wp_ajax_wpdmdz_share_file', [$this, 'shareFile']);
+		//add_action('wp_ajax_wpdmdz_send_file', [$this, 'sendFile']);
 		add_action('wp_ajax_wpdmdz_share_rlink', [$this, 'sendRequestLink']);
 		add_action('wp_ajax_wpdmdz_close_request', [$this, 'closeRequest']);
 		add_action('wp_ajax_wpdmdz_delete_request', [$this, 'deleteRequest']);
@@ -210,7 +213,7 @@ class DropZone {
 		$file = $this->getFile($ID);
 		if((int)$file->owner === get_current_user_id() || current_user_can(WPDM_ADMIN_CAP)) {
 			global $wpdb;
-			$wpdb->delete( $this->table, [ 'ID' => $ID, 'owner' => get_current_user_id() ] );
+			$wpdb->delete( $this->table, [ 'ID' => $ID ] );
 			@unlink(WPDM()->fileSystem->locateFile($file->file));
 			do_action("wpdm_dropzone_file_deleted", $file);
 		}
@@ -228,6 +231,27 @@ class DropZone {
 
 		include wpdm_tpl_path('dz-file-info.php', __DIR__.'/views');
 		die();
+	}
+	function sendFile()
+	{
+		/*__::isAuthentic('dzsfn', WPDM_PUB_NONCE, 'upload_files');
+		$file = $this->getFile(wpdm_query_var('file', 'int'));
+		if(!current_user_can(WPDM_ADMIN_CAP) && (int)$file->owner !== get_current_user_id()) {
+			Messages::error('Yor do not have access to this file!', 1);
+		}
+		$asset = new Asset();
+		$filepath = WPDM()->fileSystem->locateFile($file->file);
+		$asset->init($filepath);
+		$asset->newLink();
+		$email = wpdm_query_var('email');
+		if(is_email($email)) {
+			\WPDM\__\Email::send( "default", [
+				'subject'  => 'All Files are synced with Amazon S3 successfully!',
+				'to_email' => $email,
+				'message'  => "<h1>Congratulations</h1>All Files are synced with Amazon S3 successfully!",
+			] );
+		}*/
+
 	}
 
 	function saveFileInfo()
@@ -497,8 +521,22 @@ class DropZone {
 	function shareFile()
 	{
 		global $wpdb;
-		$id = __::query_var('id', 'int');
-		$request = $this->fileRequestInfo($id);
+		if(!get_option('__wpdm_dz_p2p_sharing', 0)) {
+			Messages::error(__('File sharing is not active at this moment!', 'download-manager'));
+			die();
+		};
+		$file = $this->getFile(wpdm_query_var('file', 'int'));
+		if((int)$file->owner !== get_current_user_id()) {
+			Messages::error('Yor do not have access to this file!', 1);
+		}
+		$asset = new Asset();
+		$filepath = WPDM()->fileSystem->locateFile($file->file);
+		$asset->init($filepath);
+		$links = $asset->getLinks();
+		if(count($asset->links) === 0) {
+			$asset->newLink();
+			$links = $asset->links;
+		}
 		include Template::locate("share-file.php", __DIR__.'/views');
 		die();
 	}

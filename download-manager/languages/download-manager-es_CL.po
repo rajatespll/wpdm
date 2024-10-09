@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Download Manager Pro v3.2.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-19 20:56+0600\n"
-"PO-Revision-Date: 2023-03-19 20:56+0600\n"
+"POT-Creation-Date: 2024-05-13 13:45+0600\n"
+"PO-Revision-Date: 2024-05-13 13:45+0600\n"
 "Last-Translator: Shahnur Alam <shaon@ymail.com>\n"
 "Language-Team: Spanish (Chile)\n"
 "Language: es_CL\n"
@@ -14,16 +14,18 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;esc_attr__;_ex;esc_attr_e\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: assets\n"
 
-#: download-manager.php:273 download-manager.php:285
+#: download-manager.php:281 download-manager.php:293
+#: src/Admin/views/metaboxes/attached-files.php:162
+#: src/Admin/views/metaboxes/file-info.php:18
 #: src/Admin/views/stats/insight.php:234
 #: src/AuthorDashboard/views/author-dashboard/list-packages-table.php:41
 #: src/Category/views/category-shortcode-toolbar.php:50
 #: src/Category/views/category-shortcode-toolbar.php:84
-#: src/Package/Shortcodes.php:280
+#: src/Package/Shortcodes.php:287
 #: src/Package/views/category-shortcode-toolbar.php:67
 #: src/Package/views/category-shortcode-toolbar.php:101
 #: src/Package/views/packages-shortcode-toolbar.php:48
@@ -32,131 +34,148 @@ msgstr ""
 msgid "Downloads"
 msgstr "Descargas"
 
-#: download-manager.php:274
+#: download-manager.php:282
 msgid "Package"
 msgstr "Paquete"
 
-#: download-manager.php:275 src/AuthorDashboard/AuthorDashboard.php:90
+#: download-manager.php:283 src/AuthorDashboard/AuthorDashboard.php:90
 #: src/AuthorDashboard/views/author-dashboard/new-package-form.php:237
 msgid "Add New"
 msgstr "Añadir Nuevo"
 
-#: download-manager.php:276
+#: download-manager.php:284
 msgid "Add New Package"
 msgstr "Agregar nuevo paquete"
 
-#: download-manager.php:277
+#: download-manager.php:285
 msgid "Edit Package"
 msgstr "Editar Paquete"
 
-#: download-manager.php:278
+#: download-manager.php:286
 msgid "New Package"
 msgstr "Nuevo Paquete"
 
-#: download-manager.php:279
+#: download-manager.php:287
 msgid "All Packages"
 msgstr "Todos los paquetes"
 
-#: download-manager.php:280
+#: download-manager.php:288
 #: src/AuthorDashboard/views/author-dashboard/new-package-form.php:245
 msgid "View Package"
 msgstr "Ver Paquete"
 
-#: download-manager.php:281
+#: download-manager.php:289
 msgid "Search Packages"
 msgstr "Buscar Paquetes"
 
-#: download-manager.php:282
+#: download-manager.php:290
 msgid "No Package Found"
 msgstr "Paquete no encontrado"
 
-#: download-manager.php:283
+#: download-manager.php:291
 msgid "No Packages found in Trash"
 msgstr "No hay paquetes encontrados en la papelera"
 
-#: download-manager.php:321 download-manager.php:331
+#: download-manager.php:329 download-manager.php:339
+#: src/Admin/views/stats/history.php:191
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/categories.php:13
 msgid "Categories"
 msgstr "Categorías"
 
-#: download-manager.php:322
+#: download-manager.php:330
 msgid "Category"
 msgstr "Categoría"
 
-#: download-manager.php:323
+#: download-manager.php:331
 msgid "Search Categories"
 msgstr "Buscar Categorías"
 
-#: download-manager.php:324 src/Package/views/datatable.php:175
+#: download-manager.php:332 src/Package/views/datatable.php:175
 msgid "All Categories"
 msgstr "Todas las categorias"
 
-#: download-manager.php:325
+#: download-manager.php:333
 msgid "Parent Category"
 msgstr "Categoría padre"
 
-#: download-manager.php:326
+#: download-manager.php:334
 msgid "Parent Category:"
 msgstr "Categoría padre:"
 
-#: download-manager.php:327
+#: download-manager.php:335
 msgid "Edit Category"
 msgstr "Editar categoria"
 
-#: download-manager.php:328
+#: download-manager.php:336
 msgid "Update Category"
 msgstr "Actualizar categoría"
 
-#: download-manager.php:329
+#: download-manager.php:337
 msgid "Add New Category"
 msgstr "Añadir nueva categoria"
 
-#: download-manager.php:330
+#: download-manager.php:338
 msgid "New Category Name"
 msgstr "Nombre de la nueva categoría"
 
-#: download-manager.php:348 download-manager.php:356
+#: download-manager.php:356 download-manager.php:364
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/tags.php:13
 msgid "Tags"
 msgstr "Etiquetas"
 
-#: download-manager.php:349 src/Admin/views/templates/custom-tags.php:18
+#: download-manager.php:357 src/Admin/views/templates/custom-tags.php:18
 #: src/Admin/views/templates/templates-beta.php:197
 msgid "Tag"
 msgstr "Etiqueta"
 
-#: download-manager.php:350
+#: download-manager.php:358
 msgid "Search Document Tags"
 msgstr "Buscar etiquetas de documento"
 
-#: download-manager.php:351
+#: download-manager.php:359
 #, fuzzy
 #| msgid "All Types"
 msgid "All Tags"
 msgstr "Todos los tipos"
 
-#: download-manager.php:352
+#: download-manager.php:360
 #, fuzzy
 #| msgid "Edit Package"
 msgid "Edit Tag"
 msgstr "Editar Paquete"
 
-#: download-manager.php:353
+#: download-manager.php:361
 #, fuzzy
 #| msgid "Update Date"
 msgid "Update Tag"
 msgstr "Fecha de actualización"
 
-#: download-manager.php:354 src/Admin/views/templates/custom-tags.php:12
+#: download-manager.php:362 src/Admin/views/templates/custom-tags.php:12
 #: src/Admin/views/templates/templates-beta.php:193
 msgid "Add New Tag"
 msgstr "Añadir nueva etiqueta"
 
-#: download-manager.php:355
+#: download-manager.php:363
 #, fuzzy
 #| msgid "Tag Name"
 msgid "New Tag Name"
 msgstr "Nombre de la etiqueta"
+
+#: download-manager.php:511
+#, fuzzy
+#| msgid "Password Update Failed"
+msgid "Password Verified!"
+msgstr "Contraseña"
+
+#: download-manager.php:512
+msgid "Please click following button to start download."
+msgstr ""
+
+#: download-manager.php:513
+#, fuzzy
+#| msgid "Total Downloads"
+msgid "Start Download"
+msgstr "Descargas totales"
 
 #: src/Admin/AdminController.php:64
 msgid "Changelog"
@@ -182,28 +201,29 @@ msgid ""
 "strong>. Please click the button on the right to update your database now."
 msgstr ""
 
-#: src/Admin/AdminController.php:254
+#: src/Admin/AdminController.php:258
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/attached-files.php:16
 #: src/Modules/strings.php:21
 msgid "Attached Files"
 msgstr "Archivos adjuntos"
 
-#: src/Admin/AdminController.php:260 src/Modules/ServerDirBrowser.php:223
+#: src/Admin/AdminController.php:264 src/Modules/ServerDirBrowser.php:223
 msgid "Attach Dir"
 msgstr "Adjuntar dir"
 
-#: src/Admin/AdminController.php:266
+#: src/Admin/AdminController.php:270
 #: src/Admin/views/metaboxes/package-settings.php:6
+#: src/Admin/views/settings/basic.php:66
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/package-settings.php:4
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/package-settings.php:9
 msgid "Package Settings"
 msgstr "Configuración de Paquetes"
 
-#: src/Admin/AdminController.php:272
+#: src/Admin/AdminController.php:276
 msgid "Attach File"
 msgstr "Adjuntar archivo"
 
-#: src/Admin/AdminController.php:278
+#: src/Admin/AdminController.php:282
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/additional-previews.php:16
 #, fuzzy
 #| msgid "Additional Preview Images"
@@ -227,49 +247,50 @@ msgstr "Complementos &lsaquo; Gestor de descargas"
 msgid "Add-Ons"
 msgstr "Complementos"
 
-#: src/Admin/Menu/Categories.php:51 src/Admin/Menu/Categories.php:256
+#: src/Admin/Menu/Categories.php:51 src/Admin/Menu/Categories.php:284
 msgid "Category Image:"
 msgstr "Imagen de la Categoría:"
 
-#: src/Admin/Menu/Categories.php:54 src/Admin/Menu/Categories.php:261
+#: src/Admin/Menu/Categories.php:54 src/Admin/Menu/Categories.php:289
 msgid "Image URL"
 msgstr "URL de la imagen"
 
-#: src/Admin/Menu/Categories.php:56 src/Admin/Menu/Categories.php:263
+#: src/Admin/Menu/Categories.php:56 src/Admin/Menu/Categories.php:291
 msgid "Select Category Image"
 msgstr "Seleccionar imagen de categoría"
 
-#: src/Admin/Menu/Categories.php:56 src/Admin/Menu/Categories.php:263
+#: src/Admin/Menu/Categories.php:56 src/Admin/Menu/Categories.php:291
 #: src/Admin/views/metaboxes/attach-file-datatable.php:5
 msgid "Browse"
 msgstr "Buscar"
 
-#: src/Admin/Menu/Categories.php:119 src/Admin/Menu/Categories.php:326
+#: src/Admin/Menu/Categories.php:119 src/Admin/Menu/Categories.php:354
 msgid "Access:"
 msgstr "Acceso:"
 
-#: src/Admin/Menu/Categories.php:121 src/Admin/Menu/Categories.php:329
+#: src/Admin/Menu/Categories.php:121 src/Admin/Menu/Categories.php:357
 msgid ""
 "Select the roles who should have access to the packages under this category"
 msgstr ""
 "Seleccione los roles que deberían tener acceso a los paquetes en esta "
 "categoría"
 
-#: src/Admin/Menu/Categories.php:124 src/Admin/Menu/Categories.php:342
+#: src/Admin/Menu/Categories.php:124 src/Admin/Menu/Categories.php:370
 #: src/Admin/views/metaboxes/package-settings.php:75
+#: src/Admin/views/quick-update-form.php:37
 #: src/AssetManager/views/asset-manager-ui.php:720
 #: src/AssetManager/views/asset-manager-ui.php:1028
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/package-settings.php:67
 msgid "All Visitors"
 msgstr "Todos los visitantes"
 
-#: src/Admin/Menu/Categories.php:140 src/Admin/Menu/Categories.php:371
+#: src/Admin/Menu/Categories.php:140 src/Admin/Menu/Categories.php:399
 #, fuzzy
 #| msgid "Create Page Template"
 msgid "Category Page Template"
 msgstr "Crear plantilla de página"
 
-#: src/Admin/Menu/Categories.php:143 src/Admin/Menu/Categories.php:374
+#: src/Admin/Menu/Categories.php:143 src/Admin/Menu/Categories.php:402
 #: src/Admin/views/metaboxes/package-settings.php:98
 #: src/Admin/views/metaboxes/package-settings.php:113
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/package-settings.php:93
@@ -277,62 +298,173 @@ msgstr "Crear plantilla de página"
 msgid "Use Global"
 msgstr "Atributo global"
 
-#: src/Admin/Menu/Categories.php:144 src/Admin/Menu/Categories.php:375
-#: src/Admin/views/settings/frontend.php:102
+#: src/Admin/Menu/Categories.php:144 src/Admin/Menu/Categories.php:403
+#: src/Admin/views/settings/frontend.php:103
 msgid "Do Not Apply"
 msgstr ""
 
-#: src/Admin/Menu/Categories.php:146 src/Admin/Menu/Categories.php:377
-#: src/Admin/views/settings/frontend.php:104
+#: src/Admin/Menu/Categories.php:146 src/Admin/Menu/Categories.php:405
+#: src/Admin/views/settings/frontend.php:105
 msgid "Keep current template as it is provided with the active theme"
 msgstr ""
 
-#: src/Admin/Menu/Categories.php:148 src/Admin/Menu/Categories.php:379
-#: src/Admin/views/settings/frontend.php:106
+#: src/Admin/Menu/Categories.php:148 src/Admin/Menu/Categories.php:407
+#: src/Admin/views/settings/frontend.php:107
 #, fuzzy
 #| msgid "Link Template:"
 msgid "Use Link Template"
 msgstr "Plantilla Enlace:"
 
-#: src/Admin/Menu/Categories.php:161 src/Admin/Menu/Categories.php:392
+#: src/Admin/Menu/Categories.php:161 src/Admin/Menu/Categories.php:420
 #: src/Admin/views/metaboxes/package-settings.php:123
-#: src/Admin/views/settings/frontend.php:116
+#: src/Admin/views/quick-update-form.php:57
+#: src/Admin/views/settings/frontend.php:117
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/package-settings.php:119
 #: src/Widgets/CatPackages.php:98 src/Widgets/ListPackages.php:143
 #: src/Widgets/NewDownloads.php:67 src/Widgets/TopDownloads.php:67
 msgid "Link Template:"
 msgstr "Plantilla Enlace:"
 
-#: src/Admin/Menu/Categories.php:167 src/Admin/Menu/Categories.php:398
-#: src/Admin/views/settings/frontend.php:122
+#: src/Admin/Menu/Categories.php:167 src/Admin/Menu/Categories.php:426
+#: src/Admin/views/settings/frontend.php:123
 #, fuzzy
 #| msgid "Register Page"
 msgid "Items Per Page:"
 msgstr "Página de registro"
 
-#: src/Admin/Menu/Categories.php:171 src/Admin/Menu/Categories.php:402
-#: src/Admin/views/settings/frontend.php:126
+#: src/Admin/Menu/Categories.php:171 src/Admin/Menu/Categories.php:430
+#: src/Admin/views/settings/frontend.php:127
 msgid "Toolbar:"
 msgstr ""
 
-#: src/Admin/Menu/Categories.php:173 src/Admin/Menu/Categories.php:404
-#: src/Admin/views/settings/frontend.php:128
+#: src/Admin/Menu/Categories.php:173 src/Admin/Menu/Categories.php:432
+#: src/Admin/views/settings/frontend.php:129
 #, fuzzy
 #| msgid "Show all"
 msgid "Show"
 msgstr "Mostrar todo"
 
-#: src/Admin/Menu/Categories.php:174 src/Admin/Menu/Categories.php:405
-#: src/Admin/views/settings/frontend.php:129
+#: src/Admin/Menu/Categories.php:174 src/Admin/Menu/Categories.php:433
+#: src/Admin/views/settings/frontend.php:130
 msgid "Hide"
 msgstr ""
 
-#: src/Admin/Menu/Categories.php:180 src/Admin/Menu/Categories.php:411
-#: src/Admin/views/settings/frontend.php:135
+#: src/Admin/Menu/Categories.php:180 src/Admin/Menu/Categories.php:439
+#: src/Admin/views/settings/frontend.php:136
 #, fuzzy
 #| msgid "Number of passwords:"
 msgid "Number of Columns"
 msgstr "Número de contraseñas:"
+
+#: src/Admin/Menu/Categories.php:229 src/Admin/Menu/Categories.php:488
+#: src/Admin/views/settings/frontend.php:188 src/Package/Shortcodes.php:294
+msgid "Order By"
+msgstr "Ordenar por"
+
+#: src/Admin/Menu/Categories.php:231 src/Admin/Menu/Categories.php:490
+#: src/Admin/views/settings/frontend.php:190
+#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:69
+#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:70
+#: src/AuthorDashboard/views/author-dashboard/list-packages-table.php:42
+#: src/Category/views/category-shortcode-toolbar.php:47
+#: src/Category/views/category-shortcode-toolbar.php:81
+#: src/Package/Shortcodes.php:288
+#: src/Package/views/category-shortcode-toolbar.php:64
+#: src/Package/views/category-shortcode-toolbar.php:98
+#: src/Package/views/datatable.php:181
+#: src/Package/views/packages-shortcode-toolbar.php:45
+#: src/Package/views/packages-shortcode-toolbar.php:79
+#: src/Widgets/PackageInfo.php:26 src/Widgets/PackageInfo.php:133
+msgid "Publish Date"
+msgstr "Fecha de publicación"
+
+#: src/Admin/Menu/Categories.php:232 src/Admin/Menu/Categories.php:491
+#: src/Admin/views/metaboxes/file-info.php:66
+#: src/Admin/views/settings/frontend.php:191
+#: src/Category/views/category-shortcode-toolbar.php:49
+#: src/Category/views/category-shortcode-toolbar.php:83
+#: src/Package/Shortcodes.php:289
+#: src/Package/views/category-shortcode-toolbar.php:66
+#: src/Package/views/category-shortcode-toolbar.php:100
+#: src/Package/views/datatable.php:182
+#: src/Package/views/packages-shortcode-toolbar.php:47
+#: src/Package/views/packages-shortcode-toolbar.php:81
+#: src/Widgets/PackageInfo.php:137
+msgid "Update Date"
+msgstr "Fecha de actualización"
+
+#: src/Admin/Menu/Categories.php:233 src/Admin/Menu/Categories.php:492
+#: src/Admin/views/settings/frontend.php:192
+#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:67
+#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:68
+#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:90
+#: src/Modules/strings.php:10 src/Package/views/datatable.php:180
+#: src/Widgets/PackageInfo.php:125
+msgid "Download Count"
+msgstr "Descargar Conde"
+
+#: src/Admin/Menu/Categories.php:234 src/Admin/Menu/Categories.php:493
+#: src/Admin/views/settings/frontend.php:193
+#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:91
+#: src/Widgets/PackageInfo.php:129
+msgid "View Count"
+msgstr "Conteo de visitas"
+
+#: src/Admin/Menu/Categories.php:235 src/Admin/Menu/Categories.php:494
+#: src/Admin/views/edit-store-profile.php:92 src/Admin/views/import.php:358
+#: src/Admin/views/import.php:367
+#: src/Admin/views/metaboxes/attached-files-datatable.php:48
+#: src/Admin/views/metaboxes/lock-options.php:145
+#: src/Admin/views/settings/frontend.php:194
+#: src/Admin/views/settings/social-connects.php:12
+#: src/AuthorDashboard/views/author-dashboard/edit-user-profile.php:15
+#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:65
+#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:66
+#: src/AuthorDashboard/views/author-dashboard/list-packages-table.php:36
+#: src/Category/views/category-shortcode-toolbar.php:48
+#: src/Category/views/category-shortcode-toolbar.php:82
+#: src/DropZone/views/dropzone-admin-file-details.php:42
+#: src/DropZone/views/dropzone-admin-file-requests.php:85
+#: src/DropZone/views/dropzone-admin-files.php:32
+#: src/DropZone/views/dz-file-info.php:20 src/Modules/strings.php:18
+#: src/Package/Shortcodes.php:286
+#: src/Package/views/category-shortcode-toolbar.php:65
+#: src/Package/views/category-shortcode-toolbar.php:99
+#: src/Package/views/datatable.php:179
+#: src/Package/views/packages-shortcode-toolbar.php:46
+#: src/Package/views/packages-shortcode-toolbar.php:80
+msgid "Title"
+msgstr "Título"
+
+#: src/Admin/Menu/Categories.php:239 src/Admin/Menu/Categories.php:498
+#: src/Admin/views/settings/frontend.php:198 src/Package/Shortcodes.php:293
+msgid "Order"
+msgstr "Orden"
+
+#: src/Admin/Menu/Categories.php:241 src/Admin/Menu/Categories.php:500
+#: src/Admin/views/settings/frontend.php:200
+msgid "DESC"
+msgstr ""
+
+#: src/Admin/Menu/Categories.php:242 src/Admin/Menu/Categories.php:501
+#: src/Admin/views/settings/frontend.php:201
+msgid "ASC"
+msgstr ""
+
+#: src/Admin/Menu/Categories.php:246 src/Admin/Menu/Categories.php:505
+#: src/Admin/views/settings/frontend.php:205
+msgid "Pagination"
+msgstr ""
+
+#: src/Admin/Menu/Categories.php:248 src/Admin/Menu/Categories.php:507
+#: src/Admin/views/settings/frontend.php:207
+msgid "Regular"
+msgstr ""
+
+#: src/Admin/Menu/Categories.php:249 src/Admin/Menu/Categories.php:508
+#: src/Admin/views/settings/frontend.php:208
+msgid "Async"
+msgstr ""
 
 #: src/Admin/Menu/ImportExport.php:28
 #, fuzzy
@@ -344,110 +476,123 @@ msgstr "Archivos para Importar &lsaquo; Download Manager"
 msgid "Import & Export"
 msgstr "Importar y Exportar"
 
-#: src/Admin/Menu/ImportExport.php:444 src/Admin/views/import.php:164
+#: src/Admin/Menu/ImportExport.php:450 src/Admin/views/import.php:164
 #: src/Admin/views/settings/addon-update.php:61
 #: src/Admin/views/settings/addon-update.php:107
 #: src/Admin/views/settings/user-interface.php:142
 #: src/Admin/views/settings/user-interface.php:171
+#: src/Admin/views/stats/prepareexport.php:26
 #: src/AssetManager/views/asset-manager-ui.php:607
 #: src/AssetManager/views/embed-asset.php:20
+#: src/AssetManager/views/file-info.php:28
+#: src/AssetManager/views/file-info.php:35
 #: src/DropZone/views/dropzone-admin-file-details.php:26
 #: src/MediaLibrary/views/media-download.php:165
-#: src/MediaLibrary/views/media-shortcode.php:25 src/Package/FileList.php:68
-#: src/Package/FileList.php:227 src/Package/FileList.php:471
-#: src/Package/PackageController.php:177 src/Package/PackageController.php:280
-#: src/Package/PackageController.php:1098
-#: src/Package/PackageController.php:1127
-#: src/Package/PackageController.php:1241
-#: src/Package/PackageController.php:1405
-#: src/Package/PackageController.php:2287 src/Package/PackageLocks.php:59
-#: src/Package/views/all-packages-shortcode.php:394
+#: src/MediaLibrary/views/media-shortcode.php:25 src/Package/FileList.php:209
+#: src/Package/FileList.php:374 src/Package/FileList.php:621
+#: src/Package/PackageController.php:206 src/Package/PackageController.php:309
+#: src/Package/PackageController.php:1133
+#: src/Package/PackageController.php:1162
+#: src/Package/PackageController.php:1276
+#: src/Package/PackageController.php:1442
+#: src/Package/PackageController.php:2340 src/Package/PackageLocks.php:59
+#: src/Package/views/all-packages-shortcode.php:392
 #: src/Package/views/lock-options-iframe.php:348
-#: src/Package/views/lock-options/password-lock.php:42
-#: src/Package/views/lock-options/recaptcha-lock.php:34
-#: src/SocialConnect/FacebookConnect.php:264
+#: src/Package/views/lock-options/password-lock.php:47
+#: src/Package/views/lock-options/recaptcha-lock.php:44
+#: src/SocialConnect/FacebookConnect.php:294
 msgid "Download"
 msgstr "Descargar"
 
-#: src/Admin/Menu/Packages.php:185
+#: src/Admin/Menu/Packages.php:195 src/AssetManager/views/file-info.php:45
 #, fuzzy
 #| msgid "You are not authorized to edit this package!"
 msgid "You are not authorized!"
 msgstr "¡No tienes permiso para descargar este archivo!"
 
-#: src/Admin/Menu/Packages.php:290
+#: src/Admin/Menu/Packages.php:300
 msgid "Embed"
 msgstr ""
 
-#: src/Admin/Menu/Packages.php:292
+#: src/Admin/Menu/Packages.php:304
 #, fuzzy
 #| msgid "Expired"
 msgid "Expire Date"
 msgstr "Muerto"
 
-#: src/Admin/Menu/Packages.php:366
+#: src/Admin/Menu/Packages.php:383
 msgid "Duplicate"
 msgstr ""
 
-#: src/Admin/Menu/Packages.php:367 src/Admin/Menu/Stats.php:30
+#: src/Admin/Menu/Packages.php:384
+#, fuzzy
+#| msgid "Update"
+msgid "Quick Update"
+msgstr "Actualizar"
+
+#: src/Admin/Menu/Packages.php:385 src/Admin/Menu/Stats.php:31
 msgid "Stats"
 msgstr "Estadísticas"
 
-#: src/Admin/Menu/Packages.php:369
+#: src/Admin/Menu/Packages.php:387
 msgid "Generate Download URL"
 msgstr "Editar Paquete Descarga"
 
-#: src/Admin/Menu/Packages.php:372 src/Admin/Menu/Packages.php:525
+#: src/Admin/Menu/Packages.php:390 src/Admin/Menu/Packages.php:568
 msgid "Email Download Link"
 msgstr "Editar Paquete Descarga"
 
-#: src/Admin/Menu/Packages.php:391
+#: src/Admin/Menu/Packages.php:393
+msgid "Click to copy"
+msgstr ""
+
+#: src/Admin/Menu/Packages.php:434
 msgid "Download Availability Period"
 msgstr "Descargar período de disponibilidad"
 
-#: src/Admin/Menu/Packages.php:396
+#: src/Admin/Menu/Packages.php:439
 msgid "Download Available From:"
 msgstr "Descargar disponible desde:"
 
-#: src/Admin/Menu/Packages.php:402
+#: src/Admin/Menu/Packages.php:445
 msgid "Download Expire on:"
 msgstr "Descarga Expira en:"
 
-#: src/Admin/Menu/Packages.php:450
+#: src/Admin/Menu/Packages.php:493
 #, fuzzy
 #| msgid "Edit Package"
 msgid "Embed Package"
 msgstr "Editar Paquete"
 
-#: src/Admin/Menu/Packages.php:462 src/Admin/views/settings/privacy.php:58
+#: src/Admin/Menu/Packages.php:505 src/Admin/views/settings/privacy.php:58
 #: src/AssetManager/views/asset-manager-ui.php:605
 msgid "Copy"
 msgstr ""
 
-#: src/Admin/Menu/Packages.php:467
+#: src/Admin/Menu/Packages.php:510
 msgid ""
 "If you are on Gutenberg Editor or elementor, you may use gutenberg block or "
 "elementor add-on for wpdm to embed wpdm packages and categories or generate "
 "another available layouts"
 msgstr ""
 
-#: src/Admin/Menu/Packages.php:472
+#: src/Admin/Menu/Packages.php:515
 #, fuzzy
 #| msgid "Monthly Stats"
 msgid "Go To Page"
 msgstr "Estadísticas mensuales"
 
-#: src/Admin/Menu/Packages.php:483
+#: src/Admin/Menu/Packages.php:526
 msgid "Go"
 msgstr ""
 
-#: src/Admin/Menu/Packages.php:489
+#: src/Admin/Menu/Packages.php:532
 #, fuzzy
 #| msgid "Create New Package"
 msgid "Create new page"
 msgstr "Crear nuevo paquete"
 
-#: src/Admin/Menu/Packages.php:496
+#: src/Admin/Menu/Packages.php:539
 #, fuzzy
 #| msgid "New user registration on your site WordPress Download Manager:"
 msgid "Install Gutenberg Blocks by WordPress Download Manager"
@@ -455,55 +600,55 @@ msgstr ""
 "Nuevo registro de usuario en su sitio Administrador de descargas de "
 "WordPress:"
 
-#: src/Admin/Menu/Packages.php:501
+#: src/Admin/Menu/Packages.php:544
 msgid "Install Download Manager Addons for Elementor"
 msgstr ""
 
-#: src/Admin/Menu/Packages.php:506
+#: src/Admin/Menu/Packages.php:549
 msgid "Install The Best WordPress Contact Form Builder"
 msgstr ""
 
-#: src/Admin/Menu/Packages.php:513 src/Admin/Menu/Packages.php:585
+#: src/Admin/Menu/Packages.php:556 src/Admin/Menu/Packages.php:628
 msgid "Close"
 msgstr "Cerrar"
 
-#: src/Admin/Menu/Packages.php:534
+#: src/Admin/Menu/Packages.php:577
 msgid "Emails:"
 msgstr "Emails:"
 
-#: src/Admin/Menu/Packages.php:538
+#: src/Admin/Menu/Packages.php:581
 msgid "Multiple emails separated by comma(,)"
 msgstr "Múltiples correos electrónicos separados por comas(,)"
 
-#: src/Admin/Menu/Packages.php:569
+#: src/Admin/Menu/Packages.php:612
 msgid "Subject:"
 msgstr "Asunto:"
 
-#: src/Admin/Menu/Packages.php:575
+#: src/Admin/Menu/Packages.php:618
 msgid "Message:"
 msgstr "Mensaje:"
 
-#: src/Admin/Menu/Packages.php:588
+#: src/Admin/Menu/Packages.php:631
 msgid "Send Now"
 msgstr "Enviar ahora"
 
-#: src/Admin/Menu/Packages.php:600
+#: src/Admin/Menu/Packages.php:643
 msgid "Generate Download Link"
 msgstr "Generar Enlace de Descarga"
 
-#: src/Admin/Menu/Packages.php:607
+#: src/Admin/Menu/Packages.php:650
 msgid "Master Download Link:"
 msgstr "Editar Paquete Descarga:"
 
-#: src/Admin/Menu/Packages.php:622
+#: src/Admin/Menu/Packages.php:665
 msgid "Count"
 msgstr "Contar"
 
-#: src/Admin/Menu/Packages.php:651
+#: src/Admin/Menu/Packages.php:694
 msgid "Direct download:"
 msgstr "Descarga directa:"
 
-#: src/Admin/Menu/Packages.php:660
+#: src/Admin/Menu/Packages.php:703
 msgid "Download page:"
 msgstr "Página de descarga:"
 
@@ -518,47 +663,94 @@ msgstr "Configuración &lsaquo; Download Manager"
 msgid "Settings"
 msgstr "Configuración"
 
-#: src/Admin/Menu/Settings.php:28 src/Admin/Menu/Settings.php:120
-#: src/Admin/Menu/Settings.php:163 src/Admin/Menu/Settings.php:182
-#: src/Admin/Menu/Settings.php:247 src/Admin/Menu/Settings.php:262
-#: src/Admin/Menu/Settings.php:277 src/Admin/Menu/Settings.php:304
-#: src/__/__.php:556
+#: src/Admin/Menu/Settings.php:28 src/Admin/Menu/Settings.php:122
+#: src/Admin/Menu/Settings.php:166 src/Admin/Menu/Settings.php:185
+#: src/Admin/Menu/Settings.php:250 src/Admin/Menu/Settings.php:265
+#: src/Admin/Menu/Settings.php:280 src/Admin/Menu/Settings.php:307
+#: src/__/__.php:636
 msgid "Security token is expired! Refresh the page and try again."
 msgstr ""
 "¡ El token de seguridad ha caducado! Actualice la página e inténtelo de "
 "nuevo."
 
-#: src/Admin/Menu/Settings.php:29 src/Admin/Menu/Settings.php:118
+#: src/Admin/Menu/Settings.php:29 src/Admin/Menu/Settings.php:120
 #, fuzzy
 #| msgid "You are not allowed to download this item!"
 msgid "You are not allowed to change settings!"
 msgstr "¡No tienes permiso para descargar este archivo!"
 
-#: src/Admin/Menu/Settings.php:43 src/Admin/views/settings.php:132
+#: src/Admin/Menu/Settings.php:43 src/Admin/views/settings.php:133
 msgid "Something is wrong!"
 msgstr "¡Algo está mal!"
 
-#: src/Admin/Menu/Settings.php:173
+#: src/Admin/Menu/Settings.php:72 src/Admin/views/settings.php:156
+#: src/Settings/General.php:42
+msgid "General"
+msgstr ""
+
+#: src/Admin/Menu/Settings.php:73
+#, fuzzy
+#| msgid "Username"
+msgid "User Interface"
+msgstr "Usuario"
+
+#: src/Admin/Menu/Settings.php:74
+#, fuzzy
+#| msgid "Front-end Settings"
+msgid "Frontend Access"
+msgstr "Configuraciones de front-end"
+
+#: src/Admin/Menu/Settings.php:75
+#, fuzzy
+#| msgid "Save Settings"
+msgid "Social Settings"
+msgstr "Guardar ajustes"
+
+#: src/Admin/Menu/Settings.php:79
+msgid "BuddyPress"
+msgstr ""
+
+#: src/Admin/Menu/Settings.php:83
+msgid "Cloud Storage"
+msgstr ""
+
+#: src/Admin/Menu/Settings.php:93
+#, fuzzy
+#| msgid "Update"
+msgid "Updates"
+msgstr "Actualizar"
+
+#: src/Admin/Menu/Settings.php:94
+msgid "License"
+msgstr ""
+
+#: src/Admin/Menu/Settings.php:95
+#, fuzzy
+#| msgid "Privacy Settings"
+msgid "Privacy"
+msgstr "Configuración de privacidad"
+
+#: src/Admin/Menu/Settings.php:176
 msgid "Settings Saved Successfully"
 msgstr "Ajustes guardados correctamente"
 
-#: src/Admin/Menu/Settings.php:376
+#: src/Admin/Menu/Settings.php:379
 #, fuzzy
 #| msgid "Order"
 msgid "Order ID"
 msgstr "Orden"
 
-#: src/Admin/Menu/Settings.php:384
+#: src/Admin/Menu/Settings.php:387
 #, fuzzy
 #| msgid "Expired"
 msgid "Expiration Date"
 msgstr "Muerto"
 
-#: src/Admin/Menu/Settings.php:404
+#: src/Admin/Menu/Settings.php:407
 msgid "Privacy Settings Saved Successfully"
 msgstr "Configuración de privacidad guardada correctamente"
 
-#: src/Admin/Menu/Stats.php:30
+#: src/Admin/Menu/Stats.php:31
 msgid "Stats &lsaquo; Download Manager"
 msgstr "Estadísticas &lsaquo; Download Manager"
 
@@ -586,16 +778,16 @@ msgstr "Plantillas"
 msgid "Template is saved successfully!"
 msgstr "Configuración de privacidad guardada correctamente"
 
-#: src/Admin/Menu/Templates.php:165 src/__/Email.php:385
+#: src/Admin/Menu/Templates.php:166 src/__/Email.php:429
 msgid "Sample Package Name"
 msgstr "Nombre del paquete de muestra"
 
-#: src/Admin/Menu/Templates.php:177
+#: src/Admin/Menu/Templates.php:178
 #, php-format
 msgid "Test email sent to %s"
 msgstr ""
 
-#: src/Admin/Menu/Templates.php:179
+#: src/Admin/Menu/Templates.php:180
 #, fuzzy
 #| msgid "Security token is expired! Refresh the page and try again."
 msgid "Session Expired! Refreah the page and try again."
@@ -603,11 +795,11 @@ msgstr ""
 "¡ El token de seguridad ha caducado! Actualice la página e inténtelo de "
 "nuevo."
 
-#: src/Admin/Menu/Templates.php:192
+#: src/Admin/Menu/Templates.php:193
 msgid "Unauthorized Access!"
 msgstr "¡Acceso no autorizado!"
 
-#: src/Admin/Menu/Templates.php:211
+#: src/Admin/Menu/Templates.php:212
 msgid ""
 "No package found! Please create at least 1 package to see template preview"
 msgstr ""
@@ -638,7 +830,7 @@ msgstr "Paquetes totales"
 #: src/Admin/views/dashboard-widget.php:86
 #: src/Admin/views/dashboard-widgets/overview.php:20
 #: src/Admin/views/stats/overview.php:106
-#: src/User/views/dashboard/profile.php:36 src/Widgets/PackageInfo.php:24
+#: src/User/views/dashboard/profile.php:37 src/Widgets/PackageInfo.php:24
 msgid "Total Downloads"
 msgstr "Descargas totales"
 
@@ -693,30 +885,6 @@ msgstr "Acciones de LinkedIn"
 #: src/AuthorDashboard/views/author-dashboard/edit-user-profile.php:10
 msgid "Public Profile Info"
 msgstr "Información del perfil público"
-
-#: src/Admin/views/edit-store-profile.php:92 src/Admin/views/import.php:358
-#: src/Admin/views/import.php:367
-#: src/Admin/views/metaboxes/attached-files-datatable.php:48
-#: src/Admin/views/metaboxes/lock-options.php:145
-#: src/Admin/views/settings/social-connects.php:12
-#: src/AuthorDashboard/views/author-dashboard/edit-user-profile.php:15
-#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:65
-#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:66
-#: src/AuthorDashboard/views/author-dashboard/list-packages-table.php:36
-#: src/Category/views/category-shortcode-toolbar.php:48
-#: src/Category/views/category-shortcode-toolbar.php:82
-#: src/DropZone/views/dropzone-admin-file-details.php:42
-#: src/DropZone/views/dropzone-admin-file-requests.php:85
-#: src/DropZone/views/dropzone-admin-files.php:32
-#: src/DropZone/views/dz-file-info.php:20 src/Modules/strings.php:18
-#: src/Package/Shortcodes.php:279
-#: src/Package/views/category-shortcode-toolbar.php:65
-#: src/Package/views/category-shortcode-toolbar.php:99
-#: src/Package/views/datatable.php:179
-#: src/Package/views/packages-shortcode-toolbar.php:46
-#: src/Package/views/packages-shortcode-toolbar.php:80
-msgid "Title"
-msgstr "Título"
 
 #: src/Admin/views/edit-store-profile.php:96
 #: src/AuthorDashboard/views/author-dashboard/edit-user-profile.php:19
@@ -780,7 +948,7 @@ msgstr "Selecciona el archivo CSV"
 #: src/AssetManager/views/asset-manager-ui.php:941
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/attach-file.php:46
 #: src/DropZone/views/dropzone.php:230 src/DropZone/views/file-request.php:332
-#: src/wpdm-functions.php:386
+#: src/wpdm-functions.php:435
 msgid "Allowed Files"
 msgstr "Archivos permitidos"
 
@@ -796,7 +964,7 @@ msgstr "Importar: "
 msgid "Packages Found: "
 msgstr "Paquetes encontrados: "
 
-#: src/Admin/views/import.php:146
+#: src/Admin/views/import.php:146 src/Admin/views/stats/prepareexport.php:36
 msgid "Preparing: "
 msgstr "Preparando: "
 
@@ -804,7 +972,7 @@ msgstr "Preparando: "
 msgid "Packages Found"
 msgstr "No se encontraron paquetes"
 
-#: src/Admin/views/import.php:165
+#: src/Admin/views/import.php:165 src/Admin/views/stats/prepareexport.php:27
 msgid "Export file is ready"
 msgstr "El archivo de exportación está listo"
 
@@ -822,7 +990,7 @@ msgstr "Actualizar Paquete"
 msgid "Create Export File"
 msgstr "Crear archivo de exportación"
 
-#: src/Admin/views/import.php:199
+#: src/Admin/views/import.php:199 src/Admin/views/stats/prepareexport.php:11
 #, fuzzy
 #| msgid "Processing..."
 msgid "Processing"
@@ -841,8 +1009,8 @@ msgstr "Nombre del archivo"
 
 #: src/Admin/views/import.php:360 src/Admin/views/import.php:369
 #: src/Admin/views/metaboxes/attached-files-datatable.php:49
-#: src/MediaLibrary/MediaAccessControl.php:208 src/Package/FileList.php:92
-#: src/Package/FileList.php:161 src/User/Login.php:63 src/User/Register.php:67
+#: src/MediaLibrary/MediaAccessControl.php:271 src/Package/FileList.php:233
+#: src/Package/FileList.php:303 src/User/Login.php:63 src/User/Register.php:67
 msgid "Password"
 msgstr "Contraseña"
 
@@ -915,7 +1083,7 @@ msgid "File type is blocked for security reason!"
 msgstr ""
 
 #: src/Admin/views/metaboxes/attached-files-backup.php:76
-#: src/wpdm-functions.php:58
+#: src/wpdm-functions.php:59
 #, fuzzy
 #| msgid "File not found!"
 msgid "File Not Found!"
@@ -923,8 +1091,8 @@ msgstr "Archivo no encontrado!"
 
 #: src/Admin/views/metaboxes/attached-files-backup.php:91
 #: src/Admin/views/metaboxes/attached-files-backup.php:92
-#: src/Admin/views/metaboxes/file-info.php:18
-#: src/Admin/views/metaboxes/file-info.php:19
+#: src/Admin/views/metaboxes/file-info.php:22
+#: src/Admin/views/metaboxes/file-info.php:23
 #: src/Admin/views/metaboxes/file-info.tpl.php:12
 #: src/Admin/views/metaboxes/file-info.tpl.php:13
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/attach-file.php:227
@@ -934,8 +1102,8 @@ msgstr "Título del archivo"
 
 #: src/Admin/views/metaboxes/attached-files-backup.php:113
 #: src/Admin/views/metaboxes/attached-files-backup.php:114
-#: src/Admin/views/metaboxes/file-info.php:40
-#: src/Admin/views/metaboxes/file-info.php:41
+#: src/Admin/views/metaboxes/file-info.php:44
+#: src/Admin/views/metaboxes/file-info.php:45
 #: src/Admin/views/metaboxes/file-info.tpl.php:34
 #: src/Admin/views/metaboxes/file-info.tpl.php:35
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/attach-file.php:229
@@ -944,7 +1112,7 @@ msgid "File Password"
 msgstr "Contraseña de archivo"
 
 #: src/Admin/views/metaboxes/attached-files-backup.php:169
-#: src/Admin/views/metaboxes/file-info.php:131
+#: src/Admin/views/metaboxes/file-info.php:135
 #: src/Admin/views/metaboxes/file-info.tpl.php:114
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/attach-file.php:261
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/attached-files.php:106
@@ -955,42 +1123,29 @@ msgstr "Precio:"
 msgid "Filename"
 msgstr "Nombre del archivo"
 
-#: src/Admin/views/metaboxes/attached-files.php:131
+#: src/Admin/views/metaboxes/attached-files.php:156
 #, fuzzy
 #| msgid "Attached Files"
 msgid "Search in Attached Files..."
 msgstr "Archivos adjuntos"
 
-#: src/Admin/views/metaboxes/file-info.php:58
+#: src/Admin/views/metaboxes/file-info.php:62
 #, fuzzy
 #| msgid "Version"
 msgid "File Version"
 msgstr "Versión:"
 
-#: src/Admin/views/metaboxes/file-info.php:62
-#: src/Category/views/category-shortcode-toolbar.php:49
-#: src/Category/views/category-shortcode-toolbar.php:83
-#: src/Package/Shortcodes.php:282
-#: src/Package/views/category-shortcode-toolbar.php:66
-#: src/Package/views/category-shortcode-toolbar.php:100
-#: src/Package/views/datatable.php:182
-#: src/Package/views/packages-shortcode-toolbar.php:47
-#: src/Package/views/packages-shortcode-toolbar.php:81
-#: src/Widgets/PackageInfo.php:137
-msgid "Update Date"
-msgstr "Fecha de actualización"
-
-#: src/Admin/views/metaboxes/file-info.php:92
+#: src/Admin/views/metaboxes/file-info.php:96
 #: src/Admin/views/metaboxes/file-info.tpl.php:75
 msgid "License specific file price:"
 msgstr ""
 
-#: src/Admin/views/metaboxes/file-info.php:107
+#: src/Admin/views/metaboxes/file-info.php:111
 #: src/Admin/views/metaboxes/file-info.tpl.php:90
 msgid "File availability with license pack:"
 msgstr ""
 
-#: src/Admin/views/metaboxes/file-info.php:121
+#: src/Admin/views/metaboxes/file-info.php:125
 #: src/Admin/views/metaboxes/file-info.tpl.php:104
 #, fuzzy
 #| msgid "Disable"
@@ -1047,7 +1202,7 @@ msgstr "Habilitar Bloqueo Contraseña"
 
 #: src/Admin/views/metaboxes/lock-options.php:38
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/lock-options.php:27
-#: src/MediaLibrary/MediaAccessControl.php:207
+#: src/MediaLibrary/MediaAccessControl.php:270
 msgid "Password:"
 msgstr "Contraseña:"
 
@@ -1286,12 +1441,14 @@ msgid "Package&nbsp;Size:"
 msgstr "Paquete&nbsp;Tamaño:"
 
 #: src/Admin/views/metaboxes/package-settings.php:60
+#: src/Admin/views/quick-update-form.php:22
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/package-settings.php:56
-#: src/MediaLibrary/MediaAccessControl.php:209
+#: src/MediaLibrary/MediaAccessControl.php:272
 msgid "Allow Access:"
 msgstr "Permitir el acceso:"
 
 #: src/Admin/views/metaboxes/package-settings.php:68
+#: src/Admin/views/quick-update-form.php:30
 msgid "Who should be able to download?"
 msgstr "¿Quién debería poder descargar?"
 
@@ -1332,21 +1489,38 @@ msgstr ""
 "Desea almacenar en caché el archivo zip creado a partir de archivos adjuntos"
 
 #: src/Admin/views/metaboxes/package-settings.php:135
+#: src/Admin/views/quick-update-form.php:69
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/package-settings.php:131
 msgid "Page Template:"
 msgstr "Plantilla Página:"
 
 #: src/Admin/views/metaboxes/package-settings.php:144
+#: src/Admin/views/quick-update-form.php:78
 msgid "Master Key"
 msgstr "Llave maestra"
 
 #: src/Admin/views/metaboxes/package-settings.php:145
+#: src/Admin/views/quick-update-form.php:79
 msgid "Regenerate Master Key for Download"
 msgstr "Regenerar clave maestra para descargar"
 
 #: src/Admin/views/metaboxes/package-settings.php:145
+#: src/Admin/views/quick-update-form.php:79
 msgid "This key can be used for direct download"
 msgstr "Esta clave puede ser utilizada para descarga directa."
+
+#: src/Admin/views/quick-update-form.php:86
+#: src/Admin/views/templates/email-template-editor.php:84
+#: src/Admin/views/templates/email-template-settings.php:113
+#: src/Admin/views/templates/templates-beta.php:187
+#: src/Admin/views/templates/templates-beta.php:424
+#: src/Admin/views/templates/templates.php:174
+#: src/AssetManager/views/asset-manager-picker.php:755
+#: src/AssetManager/views/asset-manager-ui.php:617
+#: src/AuthorDashboard/views/author-dashboard/edit-user-profile.php:68
+#: src/User/views/dashboard/edit-profile.php:60
+msgid "Save Changes"
+msgstr "Guardar cambios"
 
 #: src/Admin/views/settings.php:23 src/Admin/views/settings.php:70
 #: src/Admin/views/settings.php:86
@@ -1354,10 +1528,6 @@ msgstr "Esta clave puede ser utilizada para descarga directa."
 #: src/Settings/views/settings.php:30
 msgid "Save Settings"
 msgstr "Guardar ajustes"
-
-#: src/Admin/views/settings.php:154 src/Settings/General.php:42
-msgid "General"
-msgstr ""
 
 #: src/Admin/views/settings/addon-update.php:3
 msgid "Check For Updates"
@@ -1426,7 +1596,7 @@ msgid "Expired"
 msgstr "Muerto"
 
 #: src/Admin/views/settings/addon-update.php:145
-#: src/User/views/dashboard/edit-profile.php:58
+#: src/User/views/dashboard/edit-profile.php:74
 #: src/User/views/lost-password-form.php:58 src/User/views/reg-form.php:98
 #: src/User/views/reset-password-form.php:52
 msgid "Please Wait..."
@@ -1453,10 +1623,10 @@ msgid "Author Dashboard Page"
 msgstr "Página del panel de autor"
 
 #: src/Admin/views/settings/author-dashboard.php:79
-#: src/Admin/views/settings/basic.php:308
+#: src/Admin/views/settings/basic.php:326
 #: src/Admin/views/settings/frontend.php:10
 #: src/Admin/views/settings/frontend.php:24
-#: src/Admin/views/settings/frontend.php:33
+#: src/Admin/views/settings/frontend.php:34
 #: src/Admin/views/settings/profile-dashboard.php:7
 msgid "None Selected"
 msgstr "Ninguna seleccionada"
@@ -1507,19 +1677,30 @@ msgstr "Página de archivo de WPDM"
 msgid "Archive Page Slug"
 msgstr "Babosa de página de archivo"
 
-#: src/Admin/views/settings/basic.php:66
-#, fuzzy
-#| msgid "Misc Settings"
-msgid "Editor Settings"
-msgstr "Configuraciones Misc"
-
 #: src/Admin/views/settings/basic.php:70
+msgid "Automatically delete expired packages"
+msgstr ""
+
+#: src/Admin/views/settings/basic.php:73
+#: src/Admin/views/settings/privacy.php:54
+#, fuzzy
+#| msgid "Icon URL"
+msgid "Cron URL"
+msgstr "URL del icono"
+
+#: src/Admin/views/settings/basic.php:82
+msgid ""
+"Your need to configure a cron job from your hosting control panel using the "
+"url above for reliable cron execution."
+msgstr ""
+
+#: src/Admin/views/settings/basic.php:88
 msgid ""
 "Delete a file when it is detached from a package (Only administrator can use "
 "this option)"
 msgstr ""
 
-#: src/Admin/views/settings/basic.php:74
+#: src/Admin/views/settings/basic.php:92
 #, fuzzy
 #| msgid "show list of all files in a package"
 msgid ""
@@ -1527,7 +1708,7 @@ msgid ""
 "this option)"
 msgstr "mostrar lista de todos los archivos en el paquete"
 
-#: src/Admin/views/settings/basic.php:78
+#: src/Admin/views/settings/basic.php:96
 #, fuzzy
 #| msgid "New user registration on your site WordPress Download Manager:"
 msgid "Enable Gutenberg editor for WordPress Download Manager"
@@ -1535,93 +1716,95 @@ msgstr ""
 "Nuevo registro de usuario en su sitio Administrador de descargas de "
 "WordPress:"
 
-#: src/Admin/views/settings/basic.php:84
+#: src/Admin/views/settings/basic.php:102
 msgid "Access Settings"
 msgstr "Ajustes de acceso"
 
-#: src/Admin/views/settings/basic.php:89
+#: src/Admin/views/settings/basic.php:107
 msgid "Exclude from search"
 msgstr ""
 
-#: src/Admin/views/settings/basic.php:91
+#: src/Admin/views/settings/basic.php:109
 msgid "Whether to exclude wpdm packages from front end search results."
 msgstr ""
 
-#: src/Admin/views/settings/basic.php:96
+#: src/Admin/views/settings/basic.php:114
 msgid "When user is not allowed to download:"
 msgstr "Cuando el usuario no tiene permitido descargar:"
 
-#: src/Admin/views/settings/basic.php:98
+#: src/Admin/views/settings/basic.php:116
 msgid "Only Block Download Link"
 msgstr "Solo bloquear enlace de descarga"
 
-#: src/Admin/views/settings/basic.php:99
+#: src/Admin/views/settings/basic.php:117
 msgid "Hide Everything"
 msgstr "Ocultar todo"
 
-#: src/Admin/views/settings/basic.php:104
+#: src/Admin/views/settings/basic.php:122
 msgid "File Browser Root:"
 msgstr "Raíz del Navegador Archivos:"
 
-#: src/Admin/views/settings/basic.php:105
+#: src/Admin/views/settings/basic.php:123
 #, fuzzy
 #| msgid "Who will have access to server file browser"
 msgid "Root dir for server file browser"
 msgstr "¿Quién tendrá acceso al navegador de archivos del servidor?"
 
-#: src/Admin/views/settings/basic.php:111
+#: src/Admin/views/settings/basic.php:129
 msgid "Reset Base Dir"
 msgstr "Restablecer Base Dir"
 
-#: src/Admin/views/settings/basic.php:120
+#: src/Admin/views/settings/basic.php:138
 msgid "File Browser Access:"
 msgstr "Acceso al navegador de archivos:"
 
-#: src/Admin/views/settings/basic.php:123
+#: src/Admin/views/settings/basic.php:141
 msgid "Who will have access to server file browser"
 msgstr "¿Quién tendrá acceso al navegador de archivos del servidor?"
 
-#: src/Admin/views/settings/basic.php:150
-msgid "reCAPTCHA Lock Settings"
+#: src/Admin/views/settings/basic.php:168
+#, fuzzy
+#| msgid "reCAPTCHA Lock Settings"
+msgid "reCAPTCHA Settings"
 msgstr "ReCAPTCHA Lock Settings"
 
-#: src/Admin/views/settings/basic.php:151
+#: src/Admin/views/settings/basic.php:169
 #, fuzzy
 #| msgid "Register Page"
 msgid "Register Site"
 msgstr "Página de registro"
 
-#: src/Admin/views/settings/basic.php:156
+#: src/Admin/views/settings/basic.php:174
 msgid "reCAPTCHA Site Key"
 msgstr "ReCAPTCHA Site Key"
 
-#: src/Admin/views/settings/basic.php:162
+#: src/Admin/views/settings/basic.php:180
 msgid "reCAPTCHA Secret Key"
 msgstr "clave secreta reCAPTCHA"
 
-#: src/Admin/views/settings/basic.php:171
+#: src/Admin/views/settings/basic.php:189
 msgid "Enable sign up form CAPTCHA validation"
 msgstr "Habilitar validación de formulario CAPTCHA"
 
-#: src/Admin/views/settings/basic.php:177
+#: src/Admin/views/settings/basic.php:195
 #, fuzzy
 #| msgid "Enable sign up form CAPTCHA validation"
 msgid "Enable sign in form CAPTCHA validation"
 msgstr "Habilitar validación de formulario CAPTCHA"
 
-#: src/Admin/views/settings/basic.php:188
+#: src/Admin/views/settings/basic.php:206
 msgid "Verification Settings"
 msgstr "Configuraciones de Verificación"
 
-#: src/Admin/views/settings/basic.php:192
+#: src/Admin/views/settings/basic.php:210
 msgid "Blocked IPs"
 msgstr "IPs bloqueadas"
 
-#: src/Admin/views/settings/basic.php:195
+#: src/Admin/views/settings/basic.php:213
 msgid "One IP per line"
 msgstr "Una IP por línea"
 
-#: src/Admin/views/settings/basic.php:198
+#: src/Admin/views/settings/basic.php:216
 msgid ""
 "List IP Addresses to blacklist. One IP per line ( Ex: IPv4 - 192.168.23.12 "
 "or 192.168.23.1/24 or 192.168.23.* , IPv6 - 2a01:8760:2:3001::1 or "
@@ -1631,68 +1814,68 @@ msgstr ""
 "192.168.23.12 o 192.168.23.1/24 o 192.168.23. *, IPv6 - 2a01: 8760: 2: "
 "3001 :: 1 o 2620: 112: 3000 :: / 44)"
 
-#: src/Admin/views/settings/basic.php:201
-#: src/Admin/views/settings/basic.php:204
+#: src/Admin/views/settings/basic.php:219
+#: src/Admin/views/settings/basic.php:222
 msgid "Message to show when an IP is blocked"
 msgstr "Mensaje para mostrar cuando una descarga está bloqueada"
 
-#: src/Admin/views/settings/basic.php:209
+#: src/Admin/views/settings/basic.php:227
 msgid "Block Emails"
 msgstr "Bloquear correos electrónicos"
 
-#: src/Admin/views/settings/basic.php:212
+#: src/Admin/views/settings/basic.php:230
 msgid "Blocked Domains:"
 msgstr "Dominios bloqueados:"
 
-#: src/Admin/views/settings/basic.php:219
+#: src/Admin/views/settings/basic.php:237
 msgid "Blocked Emails:"
 msgstr "Correos electrónicos bloqueados:"
 
-#: src/Admin/views/settings/basic.php:226
-#: src/Admin/views/settings/basic.php:229
+#: src/Admin/views/settings/basic.php:244
+#: src/Admin/views/settings/basic.php:247
 msgid "Message to show when a email or domain is blocked"
 msgstr "Mensaje para mostrar cuando una descarga está bloqueada"
 
-#: src/Admin/views/settings/basic.php:240
+#: src/Admin/views/settings/basic.php:258
 msgid "Upload Settings"
 msgstr "Cargar Configuraciones"
 
-#: src/Admin/views/settings/basic.php:243
+#: src/Admin/views/settings/basic.php:261
 #, fuzzy
 #| msgid "Allowed File Types From Front-end:"
 msgid "Allowed file types to upload"
 msgstr "Tipos de archivo permitidos desde el front-end:"
 
-#: src/Admin/views/settings/basic.php:248
+#: src/Admin/views/settings/basic.php:266
 msgid "Keep empty to use wordpress defaults"
 msgstr ""
 
-#: src/Admin/views/settings/basic.php:250
+#: src/Admin/views/settings/basic.php:268
 msgid ""
 "Enter the file extensions you want to allow to upload through WPDM ( ex: png,"
 "jpg,pdf )"
 msgstr ""
 
-#: src/Admin/views/settings/basic.php:257
-#: src/Admin/views/settings/frontend.php:52
+#: src/Admin/views/settings/basic.php:275
+#: src/Admin/views/settings/frontend.php:53
 msgid "When File Already Exists:"
 msgstr "Cuando el archivo ya existe:"
 
-#: src/Admin/views/settings/basic.php:259
-#: src/Admin/views/settings/frontend.php:54
+#: src/Admin/views/settings/basic.php:277
+#: src/Admin/views/settings/frontend.php:55
 msgid "Rename New File"
 msgstr "Cambiar nombre de archivo nuevo"
 
-#: src/Admin/views/settings/basic.php:260
-#: src/Admin/views/settings/frontend.php:55
+#: src/Admin/views/settings/basic.php:278
+#: src/Admin/views/settings/frontend.php:56
 msgid "Overwrite"
 msgstr "Sobre escribir"
 
-#: src/Admin/views/settings/basic.php:269
+#: src/Admin/views/settings/basic.php:287
 msgid "Sanitize Filename"
 msgstr "Desinfectar nombre de archivo"
 
-#: src/Admin/views/settings/basic.php:271
+#: src/Admin/views/settings/basic.php:289
 #, fuzzy
 #| msgid ""
 #| "Check the option if you want to sanitize uploaded file names to remove "
@@ -1703,11 +1886,11 @@ msgstr ""
 "Marque la opción si desea limpiar los nombres de los archivos cargados para "
 "eliminar caracteres ilegales"
 
-#: src/Admin/views/settings/basic.php:282
+#: src/Admin/views/settings/basic.php:300
 msgid "Chunk Upload"
 msgstr "Subida de Chunk"
 
-#: src/Admin/views/settings/basic.php:283
+#: src/Admin/views/settings/basic.php:301
 #, fuzzy
 #| msgid ""
 #| "Check the option if you want to enable chunk upload to override http "
@@ -1717,83 +1900,101 @@ msgstr ""
 "Marque la opción si desea habilitar la carga de trozos para anular los "
 "límites de carga de http"
 
-#: src/Admin/views/settings/basic.php:288
+#: src/Admin/views/settings/basic.php:306
 msgid "Chunk Size"
 msgstr "Tamaño de porción"
 
-#: src/Admin/views/settings/basic.php:303
+#: src/Admin/views/settings/basic.php:321
 #, fuzzy
 #| msgid "Front-end Settings"
 msgid "DropZone Settings"
 msgstr "Configuraciones de front-end"
 
-#: src/Admin/views/settings/basic.php:307
+#: src/Admin/views/settings/basic.php:325
 #, fuzzy
 #| msgid "Login Page"
 msgid "DropZone Page"
 msgstr "Página de inicio de sesión"
 
-#: src/Admin/views/settings/basic.php:309
+#: src/Admin/views/settings/basic.php:327
 #: src/Admin/views/settings/frontend.php:26
-#: src/Admin/views/settings/frontend.php:34
+#: src/Admin/views/settings/frontend.php:35
 #, fuzzy, php-format
 #| msgid "The page where you used short-code %s"
 msgid "The page where you used the short-code %s"
 msgstr "La página donde usaste el código corto% s"
 
-#: src/Admin/views/settings/basic.php:313
+#: src/Admin/views/settings/basic.php:331
 #, fuzzy
 #| msgid "Enable Email Lock"
 msgid "Enable DropZone for"
 msgstr "Habilitar bloqueo Email"
 
-#: src/Admin/views/settings/basic.php:321
+#: src/Admin/views/settings/basic.php:339
 #, fuzzy
 #| msgid "Who will have access to server file browser"
 msgid "Who will have access to DropZone"
 msgstr "¿Quién tendrá acceso al navegador de archivos del servidor?"
 
-#: src/Admin/views/settings/basic.php:336
+#: src/Admin/views/settings/basic.php:354
 msgid "Select user roles too allow access to DropZone"
 msgstr ""
 
-#: src/Admin/views/settings/basic.php:346
+#: src/Admin/views/settings/basic.php:364
+msgid "Media Files Access Control"
+msgstr ""
+
+#: src/Admin/views/settings/basic.php:369
+msgid "Enable Media File Access Control For"
+msgstr ""
+
+#: src/Admin/views/settings/basic.php:377
+#, fuzzy
+#| msgid "Select CSV File"
+msgid "Select roles"
+msgstr "Selecciona el archivo CSV"
+
+#: src/Admin/views/settings/basic.php:392
+msgid "Select user roles too allow access to Media File Access Control option"
+msgstr ""
+
+#: src/Admin/views/settings/basic.php:402
 msgid "Messages"
 msgstr "Mensajes"
 
-#: src/Admin/views/settings/basic.php:350
+#: src/Admin/views/settings/basic.php:406
 msgid "Plugin Update Notice:"
 msgstr "Actualizar Fecha:"
 
-#: src/Admin/views/settings/basic.php:352
-#: src/Admin/views/settings/basic.php:484
-#: src/Admin/views/settings/basic.php:491
+#: src/Admin/views/settings/basic.php:408
+#: src/Admin/views/settings/basic.php:547
+#: src/Admin/views/settings/basic.php:554
 msgid "Enabled"
 msgstr "Habilitado"
 
-#: src/Admin/views/settings/basic.php:353
-#: src/Admin/views/settings/basic.php:485
-#: src/Admin/views/settings/basic.php:492
+#: src/Admin/views/settings/basic.php:409
+#: src/Admin/views/settings/basic.php:548
+#: src/Admin/views/settings/basic.php:555
 msgid "Disabled"
 msgstr "Deshabilitado"
 
-#: src/Admin/views/settings/basic.php:358
+#: src/Admin/views/settings/basic.php:414
 msgid "Permission Denied Message for Packages:"
 msgstr "Mensaje de permiso denegado para paquetes:"
 
-#: src/Admin/views/settings/basic.php:364
+#: src/Admin/views/settings/basic.php:420
 msgid "Download Limit Message:"
 msgstr "Mensaje de límite descargas:"
 
-#: src/Admin/views/settings/basic.php:366 src/__/Messages.php:104
+#: src/Admin/views/settings/basic.php:422 src/__/Messages.php:104
 msgid "Download Limit Exceeded!"
 msgstr "Límite de descarga excedido!"
 
-#: src/Admin/views/settings/basic.php:371
+#: src/Admin/views/settings/basic.php:427
 msgid "Login Required Message:"
 msgstr "Mensaje Usuario registrado:"
 
-#: src/Admin/views/settings/basic.php:374
+#: src/Admin/views/settings/basic.php:430
 #, php-format
 msgid ""
 "If you want to show login form instead of message user short-code "
@@ -1801,34 +2002,52 @@ msgid ""
 "doc here %s"
 msgstr ""
 
-#: src/Admin/views/settings/basic.php:382
+#: src/Admin/views/settings/basic.php:438
 msgid "File Download"
 msgstr "Descarga de archivos"
 
-#: src/Admin/views/settings/basic.php:389
+#: src/Admin/views/settings/basic.php:445
 msgid "Enable Parallel Download"
 msgstr "Editar Paquete Descarga"
 
-#: src/Admin/views/settings/basic.php:393
+#: src/Admin/views/settings/basic.php:449
 msgid "Disable Parallel Download"
 msgstr "Deshabilitar descarga paralela"
 
-#: src/Admin/views/settings/basic.php:394
+#: src/Admin/views/settings/basic.php:450
 #, fuzzy
 msgid "Enable/Disable multiple simultaneous downloads from same IP address"
 msgstr ""
 "Habilitar / deshabilitar múltiples descargas simultáneas desde la misma "
 "dirección IP"
 
-#: src/Admin/views/settings/basic.php:400
+#: src/Admin/views/settings/basic.php:456
 msgid "Message to show when a download is blocked"
 msgstr "Mensaje para mostrar cuando una descarga está bloqueada"
 
-#: src/Admin/views/settings/basic.php:408
+#: src/Admin/views/settings/basic.php:463
+#, fuzzy
+#| msgid "Enable Parallel Download"
+msgid "Enable Auto Download"
+msgstr "Editar Paquete Descarga"
+
+#: src/Admin/views/settings/basic.php:464
+#, fuzzy
+#| msgid "Disable Parallel Download"
+msgid "Disable Auto Download"
+msgstr "Deshabilitar descarga paralela"
+
+#: src/Admin/views/settings/basic.php:465
+msgid ""
+"Enable or disable auto-download once the lock option validation has been "
+"completed"
+msgstr ""
+
+#: src/Admin/views/settings/basic.php:471
 msgid "Private Download Link Usage Limit"
 msgstr "Límite de uso de enlaces de descarga privada"
 
-#: src/Admin/views/settings/basic.php:411
+#: src/Admin/views/settings/basic.php:474
 msgid ""
 "Private download links ( package with any lock option active ) will expire "
 "after it exceeds the limit"
@@ -1836,11 +2055,11 @@ msgstr ""
 "Los enlaces de descarga privados (paquete con cualquier opción de bloqueo "
 "activa) caducarán una vez que exceda el límite"
 
-#: src/Admin/views/settings/basic.php:415
+#: src/Admin/views/settings/basic.php:478
 msgid "Private Download Link Expiration Period"
 msgstr "Límite de uso de enlaces de descarga privada"
 
-#: src/Admin/views/settings/basic.php:435
+#: src/Admin/views/settings/basic.php:498
 msgid ""
 "Private download links ( package with any lock option active ) will expire "
 "after the period starting from it's generation time"
@@ -1848,17 +2067,17 @@ msgstr ""
 "Los enlaces de descarga privados (paquete con cualquier opción de bloqueo "
 "activa) caducarán una vez que exceda el límite"
 
-#: src/Admin/views/settings/basic.php:443
+#: src/Admin/views/settings/basic.php:506
 #, fuzzy
 msgid "Mask Download Link"
 msgstr "Editar Paquete Descarga"
 
-#: src/Admin/views/settings/basic.php:445
+#: src/Admin/views/settings/basic.php:508
 #, fuzzy
 msgid "Unmask Download Link"
 msgstr "Editar Paquete Descarga"
 
-#: src/Admin/views/settings/basic.php:446
+#: src/Admin/views/settings/basic.php:509
 #, fuzzy
 msgid ""
 "Check this option if you want to mask/unmask file download link. If you "
@@ -1869,17 +2088,17 @@ msgstr ""
 "del archivo. Si desenmascara el enlace de descarga, los bots podrán "
 "encontrar fácilmente cualquier enlace de descarga público."
 
-#: src/Admin/views/settings/basic.php:452
+#: src/Admin/views/settings/basic.php:515
 #, fuzzy
 msgid "Enable Single File Download"
 msgstr "Habilitar descarga de archivo único"
 
-#: src/Admin/views/settings/basic.php:455
+#: src/Admin/views/settings/basic.php:518
 #, fuzzy
 msgid "Disable Single File Download"
 msgstr "Deshabilitar descarga de archivo único"
 
-#: src/Admin/views/settings/basic.php:456
+#: src/Admin/views/settings/basic.php:519
 #, fuzzy
 msgid ""
 "Check this option if you want to enable/disable single file download from "
@@ -1888,11 +2107,11 @@ msgstr ""
 "Marque esta opción si desea habilitar / deshabilitar la descarga de un solo "
 "archivo del paquete de varios archivos"
 
-#: src/Admin/views/settings/basic.php:461
+#: src/Admin/views/settings/basic.php:524
 msgid "Cache created zip file from multi-file package"
 msgstr "La caché creó un archivo zip desde un paquete de varios archivos"
 
-#: src/Admin/views/settings/basic.php:463
+#: src/Admin/views/settings/basic.php:526
 msgid ""
 "Check this option if you want to cache the zip file created from multi-file "
 "package when someone tries to download"
@@ -1900,11 +2119,11 @@ msgstr ""
 "Marque esta opción si desea almacenar en caché el archivo zip creado a "
 "partir de un paquete de varios archivos cuando alguien intenta descargar"
 
-#: src/Admin/views/settings/basic.php:468
+#: src/Admin/views/settings/basic.php:531
 msgid "Download Speed:"
 msgstr "Velocidad de Descarga:"
 
-#: src/Admin/views/settings/basic.php:476
+#: src/Admin/views/settings/basic.php:539
 msgid ""
 "If you get broken download, then try enabling/disabling following options, "
 "as sometimes server may not support output buffering or partial downloads"
@@ -1913,21 +2132,21 @@ msgstr ""
 "siguientes opciones, ya que a veces el servidor no admite el búfer de salida "
 "o descargas parciales"
 
-#: src/Admin/views/settings/basic.php:482
+#: src/Admin/views/settings/basic.php:545
 msgid "Resumable Downloads"
 msgstr "Descargas reanudables"
 
-#: src/Admin/views/settings/basic.php:489
+#: src/Admin/views/settings/basic.php:552
 msgid "Output Buffering"
 msgstr "Buffer de salida"
 
-#: src/Admin/views/settings/basic.php:502
+#: src/Admin/views/settings/basic.php:565
 #, fuzzy
 #| msgid "Open in Browser"
 msgid "Open in browser"
 msgstr "Abrir en el navegador"
 
-#: src/Admin/views/settings/basic.php:503
+#: src/Admin/views/settings/basic.php:566
 #, fuzzy
 #| msgid ""
 #| "Try to Open in Browser instead of download when someone clicks on "
@@ -1939,13 +2158,13 @@ msgstr ""
 "Intente abrir en el navegador en lugar de descargarlo cuando alguien haga "
 "clic en el enlace de descarga"
 
-#: src/Admin/views/settings/basic.php:509
+#: src/Admin/views/settings/basic.php:572
 #, fuzzy
 #| msgid "Opening Edit Window ..."
 msgid "Open in new window"
 msgstr "Datos del Paquete guardados satisfacctoriamente, Ahora..."
 
-#: src/Admin/views/settings/basic.php:510
+#: src/Admin/views/settings/basic.php:573
 #, fuzzy
 #| msgid ""
 #| "Try to Open in Browser instead of download when someone clicks on "
@@ -1956,19 +2175,29 @@ msgstr ""
 "Intente abrir en el navegador en lugar de descargarlo cuando alguien haga "
 "clic en el enlace de descarga"
 
-#: src/Admin/views/settings/basic.php:515
+#: src/Admin/views/settings/basic.php:582
+#, fuzzy
+#| msgid "Disable Parallel Download"
+msgid "Disable Master Download URL"
+msgstr "Deshabilitar descarga paralela"
+
+#: src/Admin/views/settings/basic.php:583
+msgid "Enabling this option will disable any old and new master download link"
+msgstr ""
+
+#: src/Admin/views/settings/basic.php:589
 msgid "Skip Lock for Loggedin User:"
 msgstr "Omitir bloqueo para usuario registrado:"
 
-#: src/Admin/views/settings/basic.php:517
+#: src/Admin/views/settings/basic.php:591
 msgid "Select..."
 msgstr "Seleccionar..."
 
-#: src/Admin/views/settings/basic.php:547
+#: src/Admin/views/settings/basic.php:621
 msgid "Ask for email only once in a session for email locked downloads"
 msgstr ""
 
-#: src/Admin/views/settings/basic.php:554
+#: src/Admin/views/settings/basic.php:628
 msgid "Misc Settings"
 msgstr "Configuraciones Misc"
 
@@ -2009,45 +2238,49 @@ msgid "Enable email verification on signup"
 msgstr ""
 
 #: src/Admin/views/settings/frontend.php:28
+msgid "Enable password strength check on signup"
+msgstr ""
+
+#: src/Admin/views/settings/frontend.php:29
 msgid "Login automatically after signup is completed"
 msgstr ""
 
-#: src/Admin/views/settings/frontend.php:32
+#: src/Admin/views/settings/frontend.php:33
 msgid "Public Profile Page"
 msgstr "Pagina perfil publico"
 
-#: src/Admin/views/settings/frontend.php:38
+#: src/Admin/views/settings/frontend.php:39
 #, fuzzy
 msgid "Message For Blocked Users:"
 msgstr "Mensaje para usuarios bloqueados:"
 
-#: src/Admin/views/settings/frontend.php:44
+#: src/Admin/views/settings/frontend.php:45
 msgid "When Someone Create a Package:"
 msgstr "Cuando alguien crea un paquete:"
 
-#: src/Admin/views/settings/frontend.php:46
+#: src/Admin/views/settings/frontend.php:47
 #, fuzzy
 msgid "Publish Instantly"
 msgstr "Publicar al instante"
 
-#: src/Admin/views/settings/frontend.php:47
+#: src/Admin/views/settings/frontend.php:48
 msgid "Pending for Review"
 msgstr "Pendiente de revisión"
 
-#: src/Admin/views/settings/frontend.php:60
+#: src/Admin/views/settings/frontend.php:61
 msgid "Allowed File Types From Front-end:"
 msgstr "Tipos de archivo permitidos desde el front-end:"
 
-#: src/Admin/views/settings/frontend.php:65
+#: src/Admin/views/settings/frontend.php:66
 msgid "Max Upload Size From Front-end"
 msgstr "Tamaño máximo de carga desde el front-end"
 
-#: src/Admin/views/settings/frontend.php:71
+#: src/Admin/views/settings/frontend.php:72
 #, fuzzy
 msgid "Disable New Package Notification Email"
 msgstr "Deshabilitar correo electrónico de notificación de paquete nuevo"
 
-#: src/Admin/views/settings/frontend.php:72
+#: src/Admin/views/settings/frontend.php:73
 msgid ""
 "Check if you do not want to receive email notification when someone creates "
 "new package from frontend"
@@ -2055,11 +2288,11 @@ msgstr ""
 "Compruebe si no desea recibir notificaciones por correo electrónico cuando "
 "alguien crea un nuevo paquete desde la interfaz"
 
-#: src/Admin/views/settings/frontend.php:78
+#: src/Admin/views/settings/frontend.php:79
 msgid "Enable Search in File List"
 msgstr "Habilitar búsqueda en la lista de archivos"
 
-#: src/Admin/views/settings/frontend.php:79
+#: src/Admin/views/settings/frontend.php:80
 msgid ""
 "Check this option if you want to enable pagination & search in file list "
 "where there are more than 30 files attached with a package"
@@ -2067,11 +2300,11 @@ msgstr ""
 "Marque esta opción si desea habilitar la paginación y la búsqueda en la "
 "lista de archivos donde hay más de 30 archivos adjuntos con un paquete"
 
-#: src/Admin/views/settings/frontend.php:86
+#: src/Admin/views/settings/frontend.php:87
 msgid "Include Packages in Main RSS Feed"
 msgstr "Incluir paquetes en RSS principal"
 
-#: src/Admin/views/settings/frontend.php:87
+#: src/Admin/views/settings/frontend.php:88
 #, php-format
 msgid ""
 "Check this option if you want to show wpdm packages in your main <a "
@@ -2080,7 +2313,7 @@ msgstr ""
 "Marque esta opción si desea mostrar los paquetes wpdm en su <a "
 "target=\"_blank\" href=\"%s\"> fuente RSS </a> principal"
 
-#: src/Admin/views/settings/frontend.php:99
+#: src/Admin/views/settings/frontend.php:100
 #, fuzzy
 #| msgid "Archive Page Slug"
 msgid "Archive Page Options"
@@ -2145,12 +2378,6 @@ msgid ""
 "This option uses wp cron. You do not need to check this option if you are "
 "configuring cron job from your hosting control panel"
 msgstr ""
-
-#: src/Admin/views/settings/privacy.php:54
-#, fuzzy
-#| msgid "Icon URL"
-msgid "Cron URL"
-msgstr "URL del icono"
 
 #: src/Admin/views/settings/privacy.php:61
 msgid ""
@@ -2447,7 +2674,9 @@ msgstr ""
 "registro"
 
 #: src/Admin/views/stats.php:10
-msgid "Export History"
+#, fuzzy
+#| msgid "Export History"
+msgid "Export Full History"
 msgstr "Historial de exportaciones"
 
 #: src/Admin/views/stats.php:14
@@ -2464,51 +2693,47 @@ msgstr ""
 msgid "History and Stats"
 msgstr ""
 
-#: src/Admin/views/stats/history.php:122 src/Admin/views/stats/insight.php:72
-#, fuzzy
-#| msgid "From Name"
-msgid "From Date"
-msgstr "De Nombre"
-
-#: src/Admin/views/stats/history.php:132 src/Admin/views/stats/insight.php:82
-#, fuzzy
-#| msgid "Create Date"
-msgid "To Date"
-msgstr "Fecha de Creación"
-
-#: src/Admin/views/stats/history.php:140
-msgid "Count Unique Downloads Only"
-msgstr ""
-
-#: src/Admin/views/stats/history.php:152
+#: src/Admin/views/stats/history.php:149
 #, fuzzy
 #| msgid "User/IP"
 msgid "Users"
 msgstr "Usuario / IP"
 
-#: src/Admin/views/stats/history.php:177
+#: src/Admin/views/stats/history.php:221
 #, fuzzy
 #| msgid "Package"
 msgid "Packages"
 msgstr "Paquete"
 
-#: src/Admin/views/stats/history.php:204 src/Admin/views/stats/insight.php:91
+#: src/Admin/views/stats/history.php:256 src/Admin/views/stats/insight.php:72
+#, fuzzy
+#| msgid "From Name"
+msgid "From Date"
+msgstr "De Nombre"
+
+#: src/Admin/views/stats/history.php:267 src/Admin/views/stats/insight.php:82
+#, fuzzy
+#| msgid "Create Date"
+msgid "To Date"
+msgstr "Fecha de Creación"
+
+#: src/Admin/views/stats/history.php:277 src/Admin/views/stats/insight.php:91
 #, fuzzy
 #| msgid "Filter »"
 msgid "Filter"
 msgstr "Filtro »"
 
-#: src/Admin/views/stats/history.php:205
+#: src/Admin/views/stats/history.php:279
 #, fuzzy
-#| msgid "Export All"
-msgid "Export"
-msgstr "Exportar todo"
+#| msgid "Export file is ready"
+msgid "Export Filtered Stats"
+msgstr "El archivo de exportación está listo"
 
-#: src/Admin/views/stats/history.php:206 src/Admin/views/stats/insight.php:92
+#: src/Admin/views/stats/history.php:281 src/Admin/views/stats/insight.php:92
 msgid "Reset"
 msgstr ""
 
-#: src/Admin/views/stats/history.php:228 src/Admin/views/stats/insight.php:111
+#: src/Admin/views/stats/history.php:303 src/Admin/views/stats/insight.php:111
 #: src/Admin/views/stats/insight.php:233
 #: src/Admin/views/subscribers/email.php:20
 #: src/Admin/views/subscribers/email.php:32
@@ -2516,42 +2741,47 @@ msgstr ""
 #: src/Admin/views/subscribers/google.php:34
 #: src/Admin/views/subscribers/linkedin.php:23
 #: src/Admin/views/subscribers/linkedin.php:34
-#: src/User/views/dashboard/download-history.php:9
-#: src/User/views/dashboard/profile.php:118
-#: src/User/views/dashboard/profile.php:147
+#: src/User/views/dashboard/profile.php:119
+#: src/User/views/dashboard/profile.php:148
 msgid "Package Name"
 msgstr "Nombre del paquete"
 
-#: src/Admin/views/stats/history.php:229 src/Modules/strings.php:11
+#: src/Admin/views/stats/history.php:304
+#, fuzzy
+#| msgid "Filename"
+msgid "File Name"
+msgstr "Nombre del archivo"
+
+#: src/Admin/views/stats/history.php:305 src/Modules/strings.php:11
 #: src/Widgets/PackageInfo.php:29 src/Widgets/PackageInfo.php:140
 msgid "Version"
 msgstr "Versión:"
 
-#: src/Admin/views/stats/history.php:230
+#: src/Admin/views/stats/history.php:306
 #: src/User/views/dashboard/download-history.php:10
-#: src/User/views/dashboard/profile.php:148
+#: src/User/views/dashboard/profile.php:149
 msgid "Download Time"
 msgstr "Tiempo de descarga"
 
-#: src/Admin/views/stats/history.php:231
+#: src/Admin/views/stats/history.php:307
 #, fuzzy
 #| msgid "User/IP"
 msgid "User"
 msgstr "Usuario / IP"
 
-#: src/Admin/views/stats/history.php:232
+#: src/Admin/views/stats/history.php:308
 #: src/User/views/dashboard/download-history.php:11
-#: src/User/views/dashboard/profile.php:149
+#: src/User/views/dashboard/profile.php:150
 msgid "IP"
 msgstr "IP"
 
-#: src/Admin/views/stats/history.php:233
+#: src/Admin/views/stats/history.php:309
 #, fuzzy
 #| msgid "Browse"
 msgid "Browser"
 msgstr "Buscar"
 
-#: src/Admin/views/stats/history.php:234
+#: src/Admin/views/stats/history.php:310
 msgid "OS"
 msgstr ""
 
@@ -2604,6 +2834,16 @@ msgstr ""
 msgid "This year"
 msgstr ""
 
+#: src/Admin/views/stats/prepareexport.php:7
+#, fuzzy
+#| msgid "Create Export File"
+msgid "Preparing Export File"
+msgstr "Crear archivo de exportación"
+
+#: src/Admin/views/stats/prepareexport.php:36
+msgid "Entries Found"
+msgstr ""
+
 #: src/Admin/views/stats/pvupd.php:81 src/Admin/views/subscribers/google.php:72
 #: src/Admin/views/subscribers/linkedin.php:68
 #: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:117
@@ -2645,7 +2885,7 @@ msgstr "Ninguna seleccionada"
 msgid "Select one or more item to delete."
 msgstr ""
 
-#: src/Admin/views/subscribers.php:64
+#: src/Admin/views/subscribers.php:64 src/Admin/views/subscribers/email.php:113
 #: src/Admin/views/templates/templates-beta.php:447
 #: src/Admin/views/templates/templates-beta.php:491
 #: src/Admin/views/templates/templates.php:210
@@ -2665,7 +2905,7 @@ msgstr "ID"
 #: src/Admin/views/subscribers/google.php:32
 #: src/Admin/views/subscribers/linkedin.php:21
 #: src/Admin/views/subscribers/linkedin.php:32
-#: src/Package/views/lock-options/email-lock-form.php:59
+#: src/Package/views/lock-options/email-lock-form.php:63
 #: src/User/Register.php:59 src/User/views/review-user-status.php:33
 msgid "Email"
 msgstr "Email"
@@ -2735,13 +2975,19 @@ msgstr ""
 msgid "Delete Selected"
 msgstr "Eliminar seleccionado"
 
-#: src/Admin/views/subscribers/email.php:89
+#: src/Admin/views/subscribers/email.php:88
+#, fuzzy
+#| msgid "Delete"
+msgid "Delete All"
+msgstr "Borrar"
+
+#: src/Admin/views/subscribers/email.php:90
 #: src/Admin/views/subscribers/google.php:85
 #: src/Admin/views/subscribers/linkedin.php:81
 msgid "Reset Search"
 msgstr "Reiniciar búsqueda"
 
-#: src/Admin/views/subscribers/email.php:96
+#: src/Admin/views/subscribers/email.php:97
 #: src/Admin/views/subscribers/google.php:91
 #: src/Admin/views/subscribers/linkedin.php:87
 #: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:128
@@ -2755,8 +3001,8 @@ msgstr "Viendo %s&#8211;%s de %s"
 #: src/Admin/views/subscribers/linkedin.php:36
 #: src/Admin/views/templates/custom-tags.php:20
 #: src/Admin/views/templates/templates-beta.php:199
-#: src/DropZone/views/dropzone-admin-files.php:35 src/Package/FileList.php:94
-#: src/User/views/dashboard/profile.php:119
+#: src/DropZone/views/dropzone-admin-files.php:35 src/Package/FileList.php:236
+#: src/User/views/dashboard/profile.php:120
 msgid "Action"
 msgstr "Acción"
 
@@ -2772,8 +3018,8 @@ msgid "Value"
 msgstr "Valor"
 
 #: src/Admin/views/templates/custom-tags.php:39
-#: src/Admin/views/templates/list-templates.php:79
-#: src/Admin/views/templates/list-templates.php:101
+#: src/Admin/views/templates/list-templates.php:86
+#: src/Admin/views/templates/list-templates.php:117
 #: src/Admin/views/templates/templates-beta.php:62
 #: src/Admin/views/templates/templates-beta.php:84
 #: src/Admin/views/templates/templates-beta.php:218
@@ -2784,7 +3030,7 @@ msgid "Edit"
 msgstr "Editar"
 
 #: src/Admin/views/templates/custom-tags.php:40
-#: src/Admin/views/templates/list-templates.php:80
+#: src/Admin/views/templates/list-templates.php:87
 #: src/Admin/views/templates/templates-beta.php:63
 #: src/Admin/views/templates/templates-beta.php:219
 #: src/Admin/views/templates/templates-beta.php:472
@@ -2855,18 +3101,6 @@ msgstr "De Nombre"
 #: src/Admin/views/templates/email-template-editor.php:73
 msgid "From Email"
 msgstr "Desde Email"
-
-#: src/Admin/views/templates/email-template-editor.php:84
-#: src/Admin/views/templates/email-template-settings.php:113
-#: src/Admin/views/templates/templates-beta.php:187
-#: src/Admin/views/templates/templates-beta.php:424
-#: src/Admin/views/templates/templates.php:174
-#: src/AssetManager/views/asset-manager-picker.php:755
-#: src/AssetManager/views/asset-manager-ui.php:617
-#: src/AuthorDashboard/views/author-dashboard/edit-user-profile.php:68
-#: src/User/views/dashboard/edit-profile.php:44
-msgid "Save Changes"
-msgstr "Guardar cambios"
 
 #: src/Admin/views/templates/email-template-editor.php:109
 #: src/Admin/views/templates/template-editor.php:236
@@ -3015,27 +3249,39 @@ msgid "Status"
 msgstr "Estado"
 
 #: src/Admin/views/templates/list-templates.php:28
+#, fuzzy
+#| msgid "Misc Settings"
+msgid "Email Status"
+msgstr "Configuraciones Misc"
+
+#: src/Admin/views/templates/list-templates.php:30
 #: src/AuthorDashboard/views/author-dashboard/list-packages-table.php:44
 #: src/DropZone/views/dropzone-admin-file-requests.php:42
 msgid "Actions"
 msgstr "Acciones"
 
-#: src/Admin/views/templates/list-templates.php:77
+#: src/Admin/views/templates/list-templates.php:67
+#, fuzzy
+#| msgid "Show all dates"
+msgid "Show file path"
+msgstr "Mostrar todas las fechas"
+
+#: src/Admin/views/templates/list-templates.php:84
 #: src/Admin/views/templates/templates-beta.php:60
 msgid "Clone"
 msgstr "Clonar"
 
-#: src/Admin/views/templates/list-templates.php:93
+#: src/Admin/views/templates/list-templates.php:103
 #: src/Admin/views/templates/templates-beta.php:76
 msgid "To:"
 msgstr "Para:"
 
-#: src/Admin/views/templates/list-templates.php:119
+#: src/Admin/views/templates/list-templates.php:135
 #: src/Admin/views/templates/templates-beta.php:265
 msgid "Template Preview"
 msgstr "Vista previa"
 
-#: src/Admin/views/templates/list-templates.php:125
+#: src/Admin/views/templates/list-templates.php:141
 #: src/Admin/views/templates/templates-beta.php:271
 msgid ""
 "This is a preview, original template color scheme may look little different, "
@@ -3256,30 +3502,30 @@ msgstr ""
 msgid "Something went wrong! Please refresh the page and try again."
 msgstr "¡Algo está mal! Actualiza la página y vuelve a intentarlo."
 
-#: src/AssetManager/AssetManager.php:116 src/AssetManager/AssetManager.php:231
-#: src/AssetManager/AssetManager.php:246 src/AssetManager/AssetManager.php:268
-#: src/AssetManager/AssetManager.php:355 src/AssetManager/AssetManager.php:371
-#: src/AssetManager/AssetManager.php:388 src/AssetManager/AssetManager.php:407
-#: src/AssetManager/AssetManager.php:475 src/AssetManager/AssetManager.php:540
-#: src/AssetManager/AssetManager.php:552 src/AssetManager/AssetManager.php:564
-#: src/AssetManager/AssetManager.php:575 src/AssetManager/AssetManager.php:589
-#: src/AssetManager/AssetManager.php:601 src/AssetManager/AssetManager.php:624
-#: src/AssetManager/AssetManager.php:644 src/AssetManager/AssetManager.php:672
+#: src/AssetManager/AssetManager.php:124 src/AssetManager/AssetManager.php:239
+#: src/AssetManager/AssetManager.php:254 src/AssetManager/AssetManager.php:276
+#: src/AssetManager/AssetManager.php:363 src/AssetManager/AssetManager.php:379
+#: src/AssetManager/AssetManager.php:396 src/AssetManager/AssetManager.php:415
+#: src/AssetManager/AssetManager.php:483 src/AssetManager/AssetManager.php:548
+#: src/AssetManager/AssetManager.php:560 src/AssetManager/AssetManager.php:572
+#: src/AssetManager/AssetManager.php:583 src/AssetManager/AssetManager.php:597
+#: src/AssetManager/AssetManager.php:609 src/AssetManager/AssetManager.php:632
+#: src/AssetManager/AssetManager.php:652 src/AssetManager/AssetManager.php:680
 msgid "Error! Session Expired. Try refreshing page."
 msgstr "¡Error! Sesión expirada. Intenta actualizar la página."
 
-#: src/AssetManager/AssetManager.php:119 src/AssetManager/AssetManager.php:358
-#: src/AssetManager/AssetManager.php:374
+#: src/AssetManager/AssetManager.php:127 src/AssetManager/AssetManager.php:366
+#: src/AssetManager/AssetManager.php:382
 msgid "<b>Unauthorized Action!</b><br/>Execution is cancelled by the system."
 msgstr ""
 
-#: src/AssetManager/AssetManager.php:129
+#: src/AssetManager/AssetManager.php:137
 #, fuzzy
 #| msgid "You are not authorized to edit this package!"
 msgid "You are not authorized to access this page"
 msgstr "¡No tienes permiso para descargar este archivo!"
 
-#: src/AssetManager/AssetManager.php:189
+#: src/AssetManager/AssetManager.php:197
 #, fuzzy
 msgid ""
 "Download link is expired! Go back and Refresh the page to regenerate "
@@ -3288,92 +3534,110 @@ msgstr ""
 "¡El enlace de descarga ha caducado! Regrese y actualice la página para "
 "regenerar el enlace de descarga"
 
-#: src/AssetManager/AssetManager.php:214
+#: src/AssetManager/AssetManager.php:222
 msgid "Asset Manager"
 msgstr "Gestor de activos"
 
-#: src/AssetManager/AssetManager.php:237 src/AssetManager/AssetManager.php:252
-#: src/AssetManager/AssetManager.php:278 src/AssetManager/AssetManager.php:363
-#: src/AssetManager/AssetManager.php:379 src/AssetManager/AssetManager.php:394
-#: src/AssetManager/AssetManager.php:412 src/AssetManager/AssetManager.php:480
-#: src/AssetManager/AssetManager.php:495 src/AssetManager/AssetManager.php:510
-#: src/AssetManager/AssetManager.php:521 src/AssetManager/AssetManager.php:608
-#: src/AssetManager/AssetManager.php:778
+#: src/AssetManager/AssetManager.php:245 src/AssetManager/AssetManager.php:260
+#: src/AssetManager/AssetManager.php:286 src/AssetManager/AssetManager.php:371
+#: src/AssetManager/AssetManager.php:387 src/AssetManager/AssetManager.php:402
+#: src/AssetManager/AssetManager.php:420 src/AssetManager/AssetManager.php:488
+#: src/AssetManager/AssetManager.php:503 src/AssetManager/AssetManager.php:518
+#: src/AssetManager/AssetManager.php:529 src/AssetManager/AssetManager.php:616
+#: src/AssetManager/AssetManager.php:786
 msgid "Error! Unauthorized Path."
 msgstr "¡Error! Ruta no autorizada"
 
-#: src/AssetManager/AssetManager.php:256 src/AssetManager/AssetManager.php:610
-#: src/AssetManager/AssetManager.php:634 src/AssetManager/AssetManager.php:653
-#: src/AssetManager/AssetManager.php:686
+#: src/AssetManager/AssetManager.php:264 src/AssetManager/AssetManager.php:618
+#: src/AssetManager/AssetManager.php:642 src/AssetManager/AssetManager.php:661
+#: src/AssetManager/AssetManager.php:694
 msgid "Error! FileType is not allowed."
 msgstr ""
 
-#: src/AssetManager/AssetManager.php:338
+#: src/AssetManager/AssetManager.php:346 src/AssetManager/AssetManager.php:853
 #: src/AssetManager/views/asset-manager-ui.php:599
 #: src/Modules/ServerDirBrowser.php:83 src/Modules/ServerDirBrowser.php:231
 #: src/User/views/lost-password-form.php:33
 msgid "Home"
 msgstr "Inicio"
 
-#: src/AssetManager/AssetManager.php:390 src/AssetManager/AssetManager.php:409
-#: src/AssetManager/AssetManager.php:542 src/AssetManager/AssetManager.php:554
-#: src/AssetManager/AssetManager.php:566 src/AssetManager/AssetManager.php:577
-#: src/AssetManager/AssetManager.php:591 src/AssetManager/AssetManager.php:603
-#: src/AssetManager/AssetManager.php:626 src/AssetManager/AssetManager.php:646
-#: src/AssetManager/AssetManager.php:674
+#: src/AssetManager/AssetManager.php:398 src/AssetManager/AssetManager.php:417
+#: src/AssetManager/AssetManager.php:550 src/AssetManager/AssetManager.php:562
+#: src/AssetManager/AssetManager.php:574 src/AssetManager/AssetManager.php:585
+#: src/AssetManager/AssetManager.php:599 src/AssetManager/AssetManager.php:611
+#: src/AssetManager/AssetManager.php:634 src/AssetManager/AssetManager.php:654
+#: src/AssetManager/AssetManager.php:682
 #, fuzzy
 #| msgid "You are not authorized to edit this package!"
 msgid "Error! You are not authorized to execute this action."
 msgstr "¡No tienes permiso para descargar este archivo!"
 
-#: src/AssetManager/AssetManager.php:477
+#: src/AssetManager/AssetManager.php:485
 msgid "Error! Unauthorized Access."
 msgstr "¡Error! Acceso no autorizado."
 
-#: src/AssetManager/AssetManager.php:534
+#: src/AssetManager/AssetManager.php:542
 msgid "Permissions are changed!"
 msgstr ""
 
-#: src/AssetManager/AssetManager.php:658 src/AssetManager/AssetManager.php:682
+#: src/AssetManager/AssetManager.php:666 src/AssetManager/AssetManager.php:690
 #, fuzzy
 msgid "Invalid source path"
 msgstr "Ruta de origen no válida"
 
-#: src/AssetManager/AssetManager.php:659 src/AssetManager/AssetManager.php:683
+#: src/AssetManager/AssetManager.php:667 src/AssetManager/AssetManager.php:691
 msgid "Invalid destination path"
 msgstr "Ruta de destino inválida"
 
-#: src/AssetManager/AssetManager.php:667
+#: src/AssetManager/AssetManager.php:675
 msgid "File moved successfully"
 msgstr "Archivo movido exitosamente"
 
-#: src/AssetManager/AssetManager.php:690
+#: src/AssetManager/AssetManager.php:698
 msgid "File copied successfully"
 msgstr "Archivo copiado exitosamente"
 
-#: src/AssetManager/AssetManager.php:742
+#: src/AssetManager/AssetManager.php:750
 msgid "Asset not found!"
 msgstr "¡Activo no encontrado!"
 
-#: src/AssetManager/AssetManager.php:777
+#: src/AssetManager/AssetManager.php:785
 msgid "Error! Only Administrator can execute this operation."
 msgstr ""
 
-#: src/AssetManager/AssetManager.php:779
+#: src/AssetManager/AssetManager.php:787
 msgid "Error! Invalid Destination Path."
 msgstr "¡Error! Ruta de destino no válida."
 
-#: src/AssetManager/AssetManager.php:780
+#: src/AssetManager/AssetManager.php:788
 msgid "Please activate \"zlib\" in your server to perform zip operations"
 msgstr "Active \"zlib\" en su servidor para realizar operaciones zip"
 
-#: src/AssetManager/AssetManager.php:785
+#: src/AssetManager/AssetManager.php:793
 msgid "Unzipped successfully."
 msgstr "Descomprimido con éxito."
 
-#: src/AssetManager/AssetManager.php:787
+#: src/AssetManager/AssetManager.php:795
 msgid "Error! Couldn't open the zip file."
 msgstr "¡Error! No se pudo abrir el archivo zip."
+
+#: src/AssetManager/AssetManager.php:839
+#, fuzzy
+#| msgid "Invalid dir path."
+msgid "[1] Invalid dir path!"
+msgstr "Ruta de acceso dir no válida."
+
+#: src/AssetManager/AssetManager.php:842
+#, fuzzy
+#| msgid "Invalid dir path."
+msgid "[2] Invalid dir path!"
+msgstr "Ruta de acceso dir no válida."
+
+#: src/AssetManager/AssetManager.php:872
+#, fuzzy
+#| msgid "Invalid dir path."
+msgid "Invalid dir path!"
+msgstr "Ruta de acceso dir no válida."
 
 #: src/AssetManager/views/asset-manager-picker.php:9
 #, fuzzy
@@ -3556,6 +3820,13 @@ msgstr "Guardando…"
 msgid "You do not have access to this asset"
 msgstr "No tienes acceso a este activo"
 
+#: src/AssetManager/views/dir-explorer.php:93
+#: src/DropZone/views/dropzone-admin.php:18
+#, fuzzy
+#| msgid "File not found!"
+msgid "File Info"
+msgstr "Archivo no encontrado!"
+
 #: src/AuthorDashboard/AuthorDashboard.php:56
 #: src/AuthorDashboard/AuthorDashboard.php:57
 #: src/AuthorDashboard/AuthorDashboard.php:382
@@ -3612,29 +3883,6 @@ msgstr "Configuración de Paquetes"
 msgid "PayPal Email"
 msgstr "Email de PayPal"
 
-#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:67
-#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:68
-#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:90
-#: src/Modules/strings.php:10 src/Package/views/datatable.php:180
-#: src/Widgets/PackageInfo.php:125
-msgid "Download Count"
-msgstr "Descargar Conde"
-
-#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:69
-#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:70
-#: src/AuthorDashboard/views/author-dashboard/list-packages-table.php:42
-#: src/Category/views/category-shortcode-toolbar.php:47
-#: src/Category/views/category-shortcode-toolbar.php:81
-#: src/Package/Shortcodes.php:281
-#: src/Package/views/category-shortcode-toolbar.php:64
-#: src/Package/views/category-shortcode-toolbar.php:98
-#: src/Package/views/datatable.php:181
-#: src/Package/views/packages-shortcode-toolbar.php:45
-#: src/Package/views/packages-shortcode-toolbar.php:79
-#: src/Widgets/PackageInfo.php:26 src/Widgets/PackageInfo.php:133
-msgid "Publish Date"
-msgstr "Fecha de publicación"
-
 #: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:73
 #: src/AuthorDashboard/views/author-dashboard/list-packages-table.php:26
 #: src/AuthorDashboard/views/author-dashboard/new-package-form/categories.php:14
@@ -3642,11 +3890,6 @@ msgstr "Fecha de publicación"
 #: src/Package/views/datatable.php:172 src/Widgets/Search.php:24
 msgid "Search..."
 msgstr "Buscar..."
-
-#: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:91
-#: src/Widgets/PackageInfo.php:129
-msgid "View Count"
-msgstr "Conteo de visitas"
 
 #: src/AuthorDashboard/views/author-dashboard/list-packages-panel.php:93
 msgid "Product Price"
@@ -3895,13 +4138,13 @@ msgstr "Aplicar Filtro"
 
 #: src/Category/views/taxonomy-wpdmcategory.php:59
 #: src/Package/views/all-packages-shortcode.php:58
-#: src/User/views/dashboard/download-history.php:45 src/wpdm-functions.php:1041
+#: src/User/views/dashboard/download-history.php:48 src/wpdm-functions.php:1177
 msgid "Previous"
 msgstr "Anterior"
 
 #: src/Category/views/taxonomy-wpdmcategory.php:60
 #: src/Package/views/all-packages-shortcode.php:57
-#: src/User/views/dashboard/download-history.php:46 src/wpdm-functions.php:1042
+#: src/User/views/dashboard/download-history.php:49 src/wpdm-functions.php:1178
 msgid "Next"
 msgstr "Siguiente"
 
@@ -3933,7 +4176,7 @@ msgid "Accept"
 msgstr "Acceso:"
 
 #: src/DropZone/views/dropzone-admin-file-details.php:28
-#: src/DropZone/views/dropzone-admin-files.php:30 src/Package/FileList.php:104
+#: src/DropZone/views/dropzone-admin-files.php:30 src/Package/FileList.php:246
 msgid "File"
 msgstr "Expediente"
 
@@ -4056,12 +4299,6 @@ msgstr "Archivos permitidos"
 msgid "File requests"
 msgstr "Número de archivos"
 
-#: src/DropZone/views/dropzone-admin.php:18
-#, fuzzy
-#| msgid "File not found!"
-msgid "File Info"
-msgstr "Archivo no encontrado!"
-
 #: src/DropZone/views/dropzone.php:149 src/Modules/strings.php:22
 msgid "Total Files"
 msgstr "Total de archivos"
@@ -4114,58 +4351,64 @@ msgstr "Emails"
 msgid "Share the link instead"
 msgstr ""
 
-#: src/MediaLibrary/MediaAccessControl.php:66
+#: src/MediaLibrary/MediaAccessControl.php:67
 msgid "<b>Error:</b> Wrong Password! Try Again."
 msgstr "<b>Error:</b> ¡Contraseña incorrecta! Vuelve a intentarlo."
 
-#: src/MediaLibrary/MediaAccessControl.php:70
+#: src/MediaLibrary/MediaAccessControl.php:71
 #, fuzzy
 #| msgid "ID missing!"
 msgid "Missing ID!"
 msgstr "Falta la identificación"
 
-#: src/MediaLibrary/MediaAccessControl.php:87
+#: src/MediaLibrary/MediaAccessControl.php:135
 #, fuzzy
 #| msgid "File not found!"
 msgid "Media not found!"
 msgstr "Archivo no encontrado!"
 
-#: src/MediaLibrary/MediaAccessControl.php:198
+#: src/MediaLibrary/MediaAccessControl.php:149
+#, fuzzy
+#| msgid "Invalid dir path."
+msgid "Invalid file path!"
+msgstr "Ruta de acceso dir no válida."
+
+#: src/MediaLibrary/MediaAccessControl.php:261
 msgid "This file is not protected."
 msgstr "Este archivo no está protegido."
 
-#: src/MediaLibrary/MediaAccessControl.php:201
+#: src/MediaLibrary/MediaAccessControl.php:264
 msgid "Protect this file"
 msgstr "Proteger este archivo"
 
-#: src/MediaLibrary/MediaAccessControl.php:206
+#: src/MediaLibrary/MediaAccessControl.php:269
 msgid "This file is protected"
 msgstr "Este archivo está protegido"
 
-#: src/MediaLibrary/MediaAccessControl.php:220
+#: src/MediaLibrary/MediaAccessControl.php:283
 msgid "Public"
 msgstr "Público"
 
-#: src/MediaLibrary/MediaAccessControl.php:241
+#: src/MediaLibrary/MediaAccessControl.php:304
 msgid "Shortcode:"
 msgstr "Shortcode:"
 
-#: src/MediaLibrary/MediaAccessControl.php:247
+#: src/MediaLibrary/MediaAccessControl.php:310
 msgid "Apply restrictions"
 msgstr "Aplicar restricciones"
 
-#: src/MediaLibrary/MediaAccessControl.php:250
+#: src/MediaLibrary/MediaAccessControl.php:313
 msgid "Remove all restrictions"
 msgstr "Eliminar todas las restricciones"
 
-#: src/MediaLibrary/MediaAccessControl.php:284
-#: src/MediaLibrary/MediaAccessControl.php:299
+#: src/MediaLibrary/MediaAccessControl.php:350
+#: src/MediaLibrary/MediaAccessControl.php:365
 msgid "This file is not protected yet!"
 msgstr "¡Este archivo aún no está protegido!"
 
-#: src/MediaLibrary/MediaAccessControl.php:286
-#: src/MediaLibrary/MediaAccessControl.php:301
-#: src/MediaLibrary/MediaAccessControl.php:344
+#: src/MediaLibrary/MediaAccessControl.php:352
+#: src/MediaLibrary/MediaAccessControl.php:367
+#: src/MediaLibrary/MediaAccessControl.php:413
 msgid "Checking status..."
 msgstr "Comprobación del estado..."
 
@@ -4177,7 +4420,7 @@ msgstr "Download Manager"
 msgid "Wrong Password. Try Again!"
 msgstr "Contraseña incorrecta. ¡Vuelve a intentarlo!"
 
-#: src/MediaLibrary/views/media-download.php:137 src/__/FileSystem.php:89
+#: src/MediaLibrary/views/media-download.php:137 src/__/FileSystem.php:95
 msgid "File not found!"
 msgstr "Archivo no encontrado!"
 
@@ -4256,7 +4499,7 @@ msgstr "Last Updated ES"
 msgid "Package Info"
 msgstr "Información de paquete"
 
-#: src/Modules/strings.php:23 src/Package/views/all-packages-shortcode.php:365
+#: src/Modules/strings.php:23 src/Package/views/all-packages-shortcode.php:363
 msgid "file(s)"
 msgstr "archivo (s)"
 
@@ -4274,121 +4517,121 @@ msgstr "Ver Perfil"
 msgid "Price"
 msgstr "Precio"
 
-#: src/Package/FileList.php:103
+#: src/Package/FileList.php:245
 #, php-format
 msgid "Search File... ( Total Files: %d )"
 msgstr ""
 
-#: src/Package/Hooks.php:59 src/Package/PackageLocks.php:202
+#: src/Package/Hooks.php:61 src/Package/PackageLocks.php:210
 #, fuzzy
 #| msgid "Package Not Found"
 msgid "Package not found!"
 msgstr "Descarga no encontrada"
 
-#: src/Package/PackageController.php:57
+#: src/Package/PackageController.php:82
 msgid "ID missing!"
 msgstr "Falta la identificación"
 
-#: src/Package/PackageController.php:64
+#: src/Package/PackageController.php:89
 msgid "Invalid Package ID!"
 msgstr "Paquete Inválido!"
 
-#: src/Package/PackageController.php:263 src/Package/PackageController.php:268
-#: src/Package/PackageController.php:270
+#: src/Package/PackageController.php:292 src/Package/PackageController.php:297
+#: src/Package/PackageController.php:299
 msgid "Icon"
 msgstr "Icono"
 
-#: src/Package/PackageController.php:304 src/Package/PackageController.php:1113
+#: src/Package/PackageController.php:333 src/Package/PackageController.php:1148
 msgid "Download was expired on"
 msgstr "La descarga ha caducado el"
 
-#: src/Package/PackageController.php:307 src/Package/PackageController.php:314
-#: src/Package/PackageController.php:1473
+#: src/Package/PackageController.php:336 src/Package/PackageController.php:343
+#: src/Package/PackageController.php:1512
 msgid "DOWNLOAD ERROR:"
 msgstr "ERROR DE DESCARGA:"
 
-#: src/Package/PackageController.php:311 src/Package/PackageController.php:1121
+#: src/Package/PackageController.php:340 src/Package/PackageController.php:1156
 msgid "Download will be available from "
 msgstr "La descarga estará disponible desde"
 
-#: src/Package/PackageController.php:319
+#: src/Package/PackageController.php:348
 msgid "You are not allowed to download."
 msgstr "No tienes permiso para descargar este archivo."
 
-#: src/Package/PackageController.php:370
+#: src/Package/PackageController.php:399
 msgid "Terms and Conditions"
 msgstr "Términos y Condiciones"
 
-#: src/Package/PackageController.php:372
+#: src/Package/PackageController.php:401
 msgid "I Agree With Terms and Conditions"
 msgstr "Estoy de acuerdo con los términos y condiciones"
 
-#: src/Package/PackageController.php:783
+#: src/Package/PackageController.php:816
 msgid "No File Attached!"
 msgstr "No hay archivo adjunto!"
 
-#: src/Package/PackageController.php:957
+#: src/Package/PackageController.php:992
 #, fuzzy
 #| msgid "Package Size"
 msgid "Package Expired"
 msgstr "Mostrar el tamaño del paquete"
 
-#: src/Package/PackageController.php:957
+#: src/Package/PackageController.php:992
 #, fuzzy, php-format
 #| msgid "Download was expired on"
 msgid "This package was expired on %s"
 msgstr "La descarga ha caducado el"
 
-#: src/Package/PackageController.php:1116
-#: src/Package/PackageController.php:1124
-#: src/Package/PackageController.php:1134
+#: src/Package/PackageController.php:1151
+#: src/Package/PackageController.php:1159
+#: src/Package/PackageController.php:1169
 msgid "Download:"
 msgstr "Descargar:"
 
-#: src/Package/PackageController.php:1453 src/wpdm-start-download.php:34
+#: src/Package/PackageController.php:1491 src/wpdm-start-download.php:35
 #, fuzzy, php-format
 #| msgid "Download was expired on"
 msgid "Download was expired on %s"
 msgstr "La descarga ha caducado el"
 
-#: src/Package/PackageController.php:1454
+#: src/Package/PackageController.php:1492
 #, fuzzy
 #| msgid "Expired"
 msgid "Expired!"
 msgstr "Muerto"
 
-#: src/Package/PackageController.php:1462 src/wpdm-start-download.php:39
+#: src/Package/PackageController.php:1500 src/wpdm-start-download.php:40
 #, fuzzy, php-format
 #| msgid "Download will be available from "
 msgid "Download will be available from %s"
 msgstr "La descarga estará disponible desde"
 
-#: src/Package/PackageController.php:1513 src/User/Login.php:324
-#: src/User/views/login-form.php:64 src/User/views/lost-password-form.php:34
+#: src/Package/PackageController.php:1552 src/User/Login.php:324
+#: src/User/views/login-form.php:65 src/User/views/lost-password-form.php:34
 #: src/User/views/modal-login-form.php:47 src/User/views/reg-form.php:74
 #: src/__/Messages.php:113
 msgid "Login"
 msgstr "Iniciar sesión"
 
-#: src/Package/PackageController.php:1578
+#: src/Package/PackageController.php:1617
 msgid "Limit Over!"
 msgstr "Límite de más!"
 
-#: src/Package/PackageController.php:1980
-#: src/Package/PackageController.php:2380
+#: src/Package/PackageController.php:2033
+#: src/Package/PackageController.php:2433
 msgid "Add to favourite"
 msgstr "Añadir a favoritos"
 
-#: src/Package/PackageController.php:1981
-#: src/Package/PackageController.php:2381
+#: src/Package/PackageController.php:2034
+#: src/Package/PackageController.php:2434
 msgid "Remove from favourite"
 msgstr "Eliminar de favoritos"
 
-#: src/Package/PackageController.php:2548
+#: src/Package/PackageController.php:2601
 msgid "Sample Package"
 msgstr "Nombre del paquete de muestra"
 
-#: src/Package/PackageController.php:2699
+#: src/Package/PackageController.php:2752
 msgid "No related download found!"
 msgstr "¡No se encontró ninguna descarga relacionada!"
 
@@ -4401,7 +4644,7 @@ msgid "Subscribe To Download"
 msgstr "Suscríbete para descargar"
 
 #: src/Package/PackageLocks.php:60
-#: src/Package/views/lock-options/password-lock.php:23
+#: src/Package/views/lock-options/password-lock.php:27
 msgid "Submit"
 msgstr "Enviar"
 
@@ -4409,91 +4652,89 @@ msgstr "Enviar"
 msgid "Like"
 msgstr "Me gusta"
 
-#: src/Package/PackageLocks.php:113
+#: src/Package/PackageLocks.php:115
 msgid "Captcha Verification Failed!"
 msgstr "Captcha Verification Failed!"
 
-#: src/Package/PackageLocks.php:125 src/Package/PackageLocks.php:172
+#: src/Package/PackageLocks.php:128 src/Package/PackageLocks.php:178
 #, fuzzy
 #| msgid "Invalid directory path!"
 msgid "Invalid request!"
 msgstr "¡Ruta de directorio no válida!"
 
-#: src/Package/PackageLocks.php:139 src/Package/PackageLocks.php:145
+#: src/Package/PackageLocks.php:142 src/Package/PackageLocks.php:148
 msgid "Wrong Password!"
 msgstr "Contraseña incorrecta!"
 
-#: src/Package/PackageLocks.php:139 src/Package/PackageLocks.php:145
+#: src/Package/PackageLocks.php:142 src/Package/PackageLocks.php:148
 msgid "Try Again"
 msgstr "Volver a intentarlo"
 
-#: src/Package/PackageLocks.php:152 src/Package/PackageLocks.php:180
+#: src/Package/PackageLocks.php:155 src/Package/PackageLocks.php:186
 msgid "Password usages limit exceeded"
 msgstr "Límite de uso de contraseña excedido"
 
-#: src/Package/PackageLocks.php:191
+#: src/Package/PackageLocks.php:197
 msgid "Invalid password"
 msgstr "Contraseña inválida"
 
-#: src/Package/PackageLocks.php:215
+#: src/Package/PackageLocks.php:223
 #, fuzzy
 #| msgid "No file is attached with this package!"
 msgid "Email lock is not enabled for this package"
 msgstr "¡No se adjunta ningún archivo con este paquete!"
 
-#: src/Package/PackageLocks.php:225
+#: src/Package/PackageLocks.php:233
 #, fuzzy
 #| msgid "Download Link"
 msgid "Your Download Link"
 msgstr "Enlace de descarga"
 
-#: src/Package/PackageLocks.php:272 src/__/Apply.php:748
+#: src/Package/PackageLocks.php:284
 msgid "Download link sent to your email!"
 msgstr "¡Enlace de descarga también enviado a su correo electrónico!"
 
-#: src/Package/PackageLocks.php:276 src/__/Apply.php:752
+#: src/Package/PackageLocks.php:288
 msgid "Admin will review your request soon!"
 msgstr "¡El administrador revisará su solicitud pronto!"
 
-#: src/Package/PackageLocks.php:280 src/__/Apply.php:755
+#: src/Package/PackageLocks.php:292
 #, fuzzy
 #| msgid "File Count"
 msgid "Review the request"
 msgstr "Número de archivos"
 
-#: src/Package/PackageLocks.php:294 src/__/Apply.php:767
+#: src/Package/PackageLocks.php:307
 msgid "Download link also sent to your email!"
 msgstr "¡Enlace de descarga también enviado a su correo electrónico!"
 
-#: src/Package/PackageLocks.php:296
+#: src/Package/PackageLocks.php:309
 #, fuzzy
 #| msgid "Show Download Link"
 msgid "Your download link is ready!"
 msgstr "Mostrar enlace descargar"
 
-#: src/Package/PackageLocks.php:313 src/__/Apply.php:796
+#: src/Package/PackageLocks.php:326
 msgid "Invalid Email Address!"
 msgstr "Dirección de correo electrónico no válida!"
 
-#: src/Package/Shortcodes.php:283 src/Package/views/datatable.php:188
+#: src/Package/Shortcodes.php:260
+#, fuzzy
+#| msgid "No related download found!"
+msgid "No downloads found!"
+msgstr "¡No se encontró ninguna descarga relacionada!"
+
+#: src/Package/Shortcodes.php:290 src/Package/views/datatable.php:188
 msgid "Asc"
 msgstr "Asc"
 
-#: src/Package/Shortcodes.php:284 src/Package/views/datatable.php:189
+#: src/Package/Shortcodes.php:291 src/Package/views/datatable.php:189
 msgid "Desc"
 msgstr "Desc"
 
-#: src/Package/Shortcodes.php:285
+#: src/Package/Shortcodes.php:292
 msgid "Search"
 msgstr "Búscar"
-
-#: src/Package/Shortcodes.php:286
-msgid "Order"
-msgstr "Orden"
-
-#: src/Package/Shortcodes.php:287
-msgid "Order By"
-msgstr "Ordenar por"
 
 #: src/Package/views/all-packages-shortcode.php:43
 msgid "Display _MENU_ downloads per page"
@@ -4524,8 +4765,8 @@ msgid "Loading..."
 msgstr "Cargando..."
 
 #: src/Package/views/all-packages-shortcode.php:52
-#: src/Package/views/lock-options/password-lock.php:15
-#: src/Package/views/lock-options/password-lock.php:31
+#: src/Package/views/lock-options/password-lock.php:16
+#: src/Package/views/lock-options/password-lock.php:35
 msgid "Processing..."
 msgstr "Procesando..."
 
@@ -4555,23 +4796,23 @@ msgstr "activar para ordenar la columna descendente"
 msgid "Reset Filter"
 msgstr "Filtro »"
 
-#: src/Package/views/all-packages-shortcode.php:371
+#: src/Package/views/all-packages-shortcode.php:369
 msgid "downloads"
 msgstr "descargas"
 
-#: src/Package/views/all-packages-shortcode.php:371
+#: src/Package/views/all-packages-shortcode.php:369
 msgid "download"
 msgstr "descargar"
 
-#: src/Package/views/all-packages-shortcode.php:377
+#: src/Package/views/all-packages-shortcode.php:375
 msgid "views"
 msgstr "puntos de vista"
 
-#: src/Package/views/all-packages-shortcode.php:377
+#: src/Package/views/all-packages-shortcode.php:375
 msgid "view"
 msgstr "ver"
 
-#: src/Package/views/all-packages-shortcode.php:437
+#: src/Package/views/all-packages-shortcode.php:436
 msgid "No Packages Found"
 msgstr "No se encontraron paquetes"
 
@@ -4588,7 +4829,7 @@ msgid "Please enter a valid email address"
 msgstr "Por favor introduce una dirección de correo electrónico válida"
 
 #: src/Package/views/email-to-download.php:27
-#: src/Package/views/lock-options/email-lock-form.php:60
+#: src/Package/views/lock-options/email-lock-form.php:64
 msgid "Email Address"
 msgstr "Email address"
 
@@ -4602,35 +4843,35 @@ msgstr "Comprar"
 msgid "Your download link is ready"
 msgstr "Mostrar enlace descargar"
 
-#: src/Package/views/lock-options/email-lock-form.php:50
+#: src/Package/views/lock-options/email-lock-form.php:54
 msgid "Your Name"
 msgstr "Tu nombre"
 
-#: src/Package/views/lock-options/email-lock-form.php:51
+#: src/Package/views/lock-options/email-lock-form.php:55
 msgid "Your Full Name"
 msgstr "Su nombre"
 
-#: src/Package/views/lock-options/email-lock-form.php:60
+#: src/Package/views/lock-options/email-lock-form.php:64
 #: src/Settings/General.php:52
 msgid "Enter a valid email address"
 msgstr "Introduce una dirección de correo electrónico válida"
 
-#: src/Package/views/lock-options/password-lock.php:11
+#: src/Package/views/lock-options/password-lock.php:12
 msgid "Enter Correct Password to Download"
 msgstr "Introduzca la contraseña correcta para descargar"
 
-#: src/Package/views/lock-options/password-lock.php:12
-#: src/Package/views/lock-options/recaptcha-lock.php:15
+#: src/Package/views/lock-options/password-lock.php:13
+#: src/Package/views/lock-options/recaptcha-lock.php:17
 #, fuzzy
 #| msgid "Show Download Link"
 msgid "Your Download Link is Ready"
 msgstr "Mostrar enlace descargar"
 
-#: src/Package/views/lock-options/password-lock.php:22 src/User/Login.php:65
+#: src/Package/views/lock-options/password-lock.php:26 src/User/Login.php:65
 msgid "Enter Password"
 msgstr "Introducir la contraseña"
 
-#: src/Package/views/lock-options/recaptcha-lock.php:14
+#: src/Package/views/lock-options/recaptcha-lock.php:16
 msgid "Verify CAPTCHA to Download"
 msgstr "Verificar CAPTCHA para descargar"
 
@@ -4899,9 +5140,9 @@ msgstr "Usuario"
 msgid "Limit"
 msgstr "Límite de más!"
 
-#: src/SocialConnect/FacebookConnect.php:87
-#: src/SocialConnect/FacebookConnect.php:213
-#: src/SocialConnect/FacebookConnect.php:236
+#: src/SocialConnect/FacebookConnect.php:88
+#: src/SocialConnect/FacebookConnect.php:230
+#: src/SocialConnect/FacebookConnect.php:256
 #: src/SocialConnect/GoogleConnect.php:86
 #: src/SocialConnect/GoogleConnect.php:110
 #: src/SocialConnect/LinkedinConnect.php:44
@@ -4930,7 +5171,7 @@ msgstr "Nombre de usuario o correo electrónico"
 msgid "Invalid CAPTCHA!"
 msgstr "¡Captcha inválido!"
 
-#: src/User/Login.php:196 src/User/views/reg-form.php:107
+#: src/User/Login.php:196 src/User/views/reg-form.php:109
 msgid "Success! Redirecting..."
 msgstr "¡Éxito! Redireccionando ..."
 
@@ -5002,25 +5243,31 @@ msgstr "El registro de usuario está deshabilitado"
 msgid "Error: User registration is disabled!"
 msgstr "Error: ¡El registro de usuario está deshabilitado!"
 
-#: src/User/Register.php:210
+#: src/User/Register.php:206
+#, fuzzy
+#| msgid "Invalid directory path!"
+msgid "Invalid Username!"
+msgstr "¡Ruta de directorio no válida!"
+
+#: src/User/Register.php:223
 msgid "Username is Empty!"
 msgstr "El nombre de usuario está vacío!"
 
-#: src/User/Register.php:225
+#: src/User/Register.php:238
 msgid "Invalid email address!"
 msgstr "¡Dirección de correo electrónico no válida!"
 
-#: src/User/Register.php:249
+#: src/User/Register.php:262
 #, fuzzy
 #| msgid "Password Updated"
 msgid "Passwords not matched!"
 msgstr "Contraseña actualizada"
 
-#: src/User/Register.php:330
+#: src/User/Register.php:343
 msgid "Edit User"
 msgstr "Editar Usuario"
 
-#: src/User/Register.php:349
+#: src/User/Register.php:362
 msgid ""
 "Your account has been created successfully and login info sent to your mail "
 "address."
@@ -5028,23 +5275,23 @@ msgstr ""
 "Su cuenta se ha creado correctamente y la información de inicio de sesión se "
 "envió a su dirección de correo electrónico."
 
-#: src/User/Register.php:351 src/User/Register.php:357
-#: src/User/views/login-form.php:29
+#: src/User/Register.php:364 src/User/Register.php:370
+#: src/User/views/login-form.php:30
 msgid "Your account has been created successfully."
 msgstr "Su cuenta ha sido creada correctamente"
 
-#: src/User/Register.php:375
+#: src/User/Register.php:388
 #, fuzzy
 #| msgid "Username already exists."
 msgid "Email already exist!"
 msgstr "Disculpa, este usuario ya existe."
 
-#: src/User/Register.php:388
+#: src/User/Register.php:401
 msgid "Username already exists."
 msgstr "Disculpa, este usuario ya existe."
 
-#: src/User/Register.php:408 src/__/Apply.php:606 src/__/Apply.php:632
-#: src/wpdm-start-download.php:25
+#: src/User/Register.php:421 src/__/Apply.php:605 src/__/Apply.php:631
+#: src/wpdm-start-download.php:26
 msgid "Your email address is blocked!"
 msgstr "¡Tu dirección de correo electrónico está bloqueada!"
 
@@ -5065,19 +5312,7 @@ msgstr "Cuenta"
 msgid "Update account status"
 msgstr "Actualizar Paquete"
 
-#: src/User/UserController.php:153
-msgid "Congratulation! Your signup request is approved"
-msgstr ""
-
-#: src/User/UserController.php:161
-msgid "Your signup request is declined"
-msgstr ""
-
-#: src/User/UserController.php:170
-msgid "Your account is suspended"
-msgstr ""
-
-#: src/User/UserController.php:177
+#: src/User/UserController.php:180
 #, fuzzy
 #| msgid "Settings Saved Successfully"
 msgid "Operation executed successfully"
@@ -5096,6 +5331,12 @@ msgstr "Ya se ha autentificado."
 #| msgid "Account"
 msgid "My Account"
 msgstr "Cuenta"
+
+#: src/User/views/dashboard/download-history.php:9
+#, fuzzy
+#| msgid "Package Title"
+msgid "Package / File"
+msgstr "Título Paquete"
 
 #: src/User/views/dashboard/edit-profile.php:12
 msgid "Basic Profile"
@@ -5126,78 +5367,88 @@ msgid "About Me:"
 msgstr ""
 
 #: src/User/views/dashboard/edit-profile.php:29
+#, fuzzy
+#| msgid "Profile"
+msgid "Profile Picture"
+msgstr "Perfil"
+
+#: src/User/views/dashboard/edit-profile.php:34
+msgid "Select Profile Picture..."
+msgstr ""
+
+#: src/User/views/dashboard/edit-profile.php:45
 #: src/User/views/reset-password-form.php:38
 msgid "Update Password"
 msgstr "Actualizar Contraseña"
 
-#: src/User/views/dashboard/edit-profile.php:33
+#: src/User/views/dashboard/edit-profile.php:49
 msgid "New Password:"
 msgstr "Contraseña nueva:"
 
-#: src/User/views/dashboard/edit-profile.php:34
+#: src/User/views/dashboard/edit-profile.php:50
 msgid "Re-type New Password:"
 msgstr "Vuelva a ingresar la Nueva Contraseña:"
 
-#: src/User/views/dashboard/edit-profile.php:36
+#: src/User/views/dashboard/edit-profile.php:52
 #, fuzzy
 #| msgid "Use nothing if you don't want to change old password"
 msgid "Keep empty if you don't want to change old password"
 msgstr "No use nada si no desea cambiar la contraseña antigua"
 
-#: src/User/views/dashboard/profile.php:24
+#: src/User/views/dashboard/profile.php:25
 msgid "User Level"
 msgstr "Nivel de usuario"
 
-#: src/User/views/dashboard/profile.php:44
+#: src/User/views/dashboard/profile.php:45
 msgid "Today's Download"
 msgstr "Descarga de hoy"
 
-#: src/User/views/dashboard/profile.php:56
+#: src/User/views/dashboard/profile.php:57
 msgid "Recommended Downloads"
 msgstr "Descargas Recomendadas"
 
-#: src/User/views/dashboard/profile.php:113
+#: src/User/views/dashboard/profile.php:114
 msgid "My Favourites"
 msgstr "Mis Favoritos"
 
-#: src/User/views/dashboard/profile.php:128
+#: src/User/views/dashboard/profile.php:129
 msgid "Remove"
 msgstr "Eliminar"
 
-#: src/User/views/dashboard/profile.php:143
+#: src/User/views/dashboard/profile.php:144
 msgid "Last 5 Downloads"
 msgstr "Últimas 5 descargas"
 
-#: src/User/views/login-form.php:59 src/User/views/modal-login-form.php:37
+#: src/User/views/login-form.php:60 src/User/views/modal-login-form.php:37
 msgid "Remember Me"
 msgstr "Recordarme"
 
-#: src/User/views/login-form.php:60 src/User/views/modal-login-form.php:38
+#: src/User/views/login-form.php:61 src/User/views/modal-login-form.php:38
 msgid "Forgot Password?"
 msgstr "¿Se te olvidó tu contraseña?"
 
-#: src/User/views/login-form.php:66 src/User/views/modal-login-form.php:75
+#: src/User/views/login-form.php:67 src/User/views/modal-login-form.php:75
 msgid "Don't have an account yet?"
 msgstr "¿Aún no tienes una cuenta?"
 
-#: src/User/views/login-form.php:66 src/User/views/modal-login-form.php:75
+#: src/User/views/login-form.php:67 src/User/views/modal-login-form.php:75
 #: src/User/views/reg-form.php:45
 msgid "Register Now"
 msgstr "Regístrate ahora"
 
-#: src/User/views/login-form.php:76
+#: src/User/views/login-form.php:77
 #, fuzzy
 #| msgid "Or connect using your social account"
 msgid "Or login using your social account"
 msgstr "O conéctese usando su cuenta social"
 
-#: src/User/views/login-form.php:78
+#: src/User/views/login-form.php:79
 #, fuzzy
 #| msgid "Connect using your social account"
 msgid "Login using your social account"
 msgstr "Conéctese con su cuenta social"
 
-#: src/User/views/login-form.php:114 src/User/views/modal-login-form.php:90
+#: src/User/views/login-form.php:115 src/User/views/modal-login-form.php:90
 msgid "Logging In..."
 msgstr "Iniciar sesión..."
 
@@ -5278,11 +5529,11 @@ msgstr "¿Ya tienes una cuenta?"
 msgid "Password did not match with the confirm password"
 msgstr ""
 
-#: src/User/views/reg-form.php:120
+#: src/User/views/reg-form.php:124
 msgid "Signup Error:"
 msgstr ""
 
-#: src/User/views/reg-form.php:143
+#: src/User/views/reg-form.php:147
 msgid "Registration is disabled!"
 msgstr "¡El registro está inhabilitado!"
 
@@ -5309,8 +5560,10 @@ msgid "Password Updated"
 msgstr "Contraseña actualizada"
 
 #: src/User/views/reset-password-form.php:56
-msgid "Go to your account dashboard"
-msgstr "Ve al panel de tu cuenta"
+#, fuzzy
+#| msgid "Login Page"
+msgid "Go to the Login Page"
+msgstr "Página de inicio de sesión"
 
 #: src/User/views/reset-password-form.php:58
 msgid "Password Update Failed"
@@ -5458,91 +5711,117 @@ msgstr "Download Manager"
 msgid "The file is already removed from the server!"
 msgstr "¡El archivo ya está eliminado del servidor!"
 
-#: src/__/Apply.php:374
+#: src/__/Apply.php:373
 #, fuzzy
 msgid "&mdash; Invalid download link &mdash;"
 msgstr "& mdash; Enlace de descarga no válido & mdash;"
 
-#: src/__/Apply.php:380
+#: src/__/Apply.php:379
 msgid "&mdash; You are not allowed to download &mdash;"
 msgstr "& mdash; No está permitido descargar & mdash;"
 
-#: src/__/Apply.php:400
+#: src/__/Apply.php:399
 msgid "You don't have permission to download this file"
 msgstr "No tienes permiso para descargar este archivo."
 
-#: src/__/Apply.php:409
+#: src/__/Apply.php:408
 msgid "Stock Limit Reached"
 msgstr "Límite de stock alcanzado"
 
-#: src/__/Apply.php:769
-msgid "Download will be started shortly!"
-msgstr "¡La descarga comenzará en breve!"
-
-#: src/__/Email.php:109
+#: src/__/Email.php:120
 msgid "General Email Template"
 msgstr "Plantilla general de correo electrónico"
 
-#: src/__/Email.php:118 src/__/Email.php:128
+#: src/__/Email.php:129 src/__/Email.php:139
 msgid "User Signup Notification"
 msgstr "Notificación de registro de usuario"
 
-#: src/__/Email.php:121
+#: src/__/Email.php:132
 #, php-format
 msgid "Welcome to %s"
 msgstr "Bienvenido a %s"
 
-#: src/__/Email.php:131
+#: src/__/Email.php:142
 #, php-format
 msgid "[ %s ] New User Registration"
 msgstr "[ %s ] Nuevo registro de usuarios"
 
-#: src/__/Email.php:135
+#: src/__/Email.php:146
 msgid "New user registration on your site WordPress Download Manager:"
 msgstr ""
 "Nuevo registro de usuario en su sitio Administrador de descargas de "
 "WordPress:"
 
-#: src/__/Email.php:139
+#: src/__/Email.php:150
+#, fuzzy
+#| msgid "User Signup Notification"
+msgid "User Signup Approved"
+msgstr "Notificación de registro de usuario"
+
+#: src/__/Email.php:153
+msgid "Congratulation! Your signup request is approved"
+msgstr ""
+
+#: src/__/Email.php:160
+#, fuzzy
+#| msgid "User Signup Notification"
+msgid "User Signup Declined"
+msgstr "Notificación de registro de usuario"
+
+#: src/__/Email.php:163
+msgid "Your signup request is declined"
+msgstr ""
+
+#: src/__/Email.php:170
+msgid "User Account Suspended"
+msgstr ""
+
+#: src/__/Email.php:173
+#, fuzzy
+#| msgid "None Selected"
+msgid "Your account has been suspended"
+msgstr "Ninguna seleccionada"
+
+#: src/__/Email.php:180
 msgid "Password Reset Notification"
 msgstr "Notificación de restablecimiento de contraseña"
 
-#: src/__/Email.php:142
+#: src/__/Email.php:183
 #, php-format
 msgid "Request to reset your %s password"
 msgstr "Solicitud para restablecer su contraseña% s"
 
-#: src/__/Email.php:149
+#: src/__/Email.php:190
 msgid "Email Lock Notification"
 msgstr "Notificación de bloqueo de correo electrónico"
 
-#: src/__/Email.php:152
+#: src/__/Email.php:193
 #, fuzzy
 #| msgid "Download [#package_name#]"
 msgid "Download {{package_name}}"
 msgstr "Descargar [# package_name #]"
 
-#: src/__/Email.php:159
+#: src/__/Email.php:200
 msgid "New Package Notification"
 msgstr "Notificación de nuevo paquete"
 
-#: src/__/Email.php:162
+#: src/__/Email.php:203
 #, fuzzy
 #| msgid "New Package is Added By [#name#]"
 msgid "New Package is Added By {{name}}"
 msgstr "Nuevo paquete añadido por [#name #]"
 
-#: src/__/Email.php:170
+#: src/__/Email.php:211
 #, fuzzy
 #| msgid "New Package Notification"
 msgid "Package Approval Notification"
 msgstr "Notificación de nuevo paquete"
 
-#: src/__/Email.php:173
+#: src/__/Email.php:214
 msgid "Congratulation! {{package_name}} has been approved"
 msgstr ""
 
-#: src/__/FileSystem.php:317
+#: src/__/FileSystem.php:337
 msgid "<b>Zlib</b> is not active! Failed to initiate <b>ZipArchive</b>"
 msgstr "<b>¡Zlib</b> no está activo! No se pudo iniciar <b>ZipArchive</b>"
 
@@ -5554,13 +5833,13 @@ msgstr "Acceso denegado"
 msgid "Failed To Open File!"
 msgstr "¡Fallo al abrir el archivo!"
 
-#: src/__/__.php:554
+#: src/__/__.php:628
 #, fuzzy
 #| msgid "Captcha Verification Failed!"
 msgid "Referer verification failed"
 msgstr "Captcha Verification Failed!"
 
-#: src/__/__.php:557
+#: src/__/__.php:648
 #, fuzzy
 #| msgid "You are not authorized to edit this package!"
 msgid "You are not allowed to execute this action!"
@@ -5603,45 +5882,66 @@ msgstr "Selecciona una categoría"
 msgid "[%s] Update Available"
 msgstr "[%s] Actualizar Paquete"
 
-#: src/wpdm-functions.php:58
+#: src/wpdm-functions.php:59
 msgid "Download Error"
 msgstr "Error de descarga"
 
-#: src/wpdm-functions.php:327
+#: src/wpdm-functions.php:375
 msgid "Select Image"
 msgstr "Seleccionar imagen"
 
-#: src/wpdm-functions.php:362
+#: src/wpdm-functions.php:409
 msgid "SELECT IMAGE"
 msgstr "SELECCIONAR IMAGEN"
 
-#: src/wpdm-start-download.php:16
+#: src/wpdm-start-download.php:17
 msgid "Your IP address is blocked!"
 msgstr "Su dirección IP está bloqueada!"
 
-#: src/wpdm-start-download.php:54
+#: src/wpdm-start-download.php:55
 msgid "Package you are trying to download is not available!"
 msgstr "Paquete que está tratando de descargar no está disponible!"
 
-#: src/wpdm-start-download.php:65
+#: src/wpdm-start-download.php:66
 msgid "No Files"
 msgstr "Sin Archivos"
 
-#: src/wpdm-start-download.php:65
+#: src/wpdm-start-download.php:66
 msgid "No file is attached with this package!"
 msgstr "¡No se adjunta ningún archivo con este paquete!"
 
-#: src/wpdm-start-download.php:156
+#: src/wpdm-start-download.php:132
 #, fuzzy
 #| msgid "No file is attached with this package!"
 msgid "No file attached with the package!"
 msgstr "¡No se adjunta ningún archivo con este paquete!"
 
-#: src/wpdm-start-download.php:160
+#: src/wpdm-start-download.php:136
 #, fuzzy
 #| msgid "File not found!"
 msgid "Sorry! File not found!"
 msgstr "Archivo no encontrado!"
+
+#, fuzzy
+#~| msgid "Misc Settings"
+#~ msgid "Editor Settings"
+#~ msgstr "Configuraciones Misc"
+
+#, fuzzy
+#~| msgid "Export All"
+#~ msgid "Export"
+#~ msgstr "Exportar todo"
+
+#, fuzzy
+#~| msgid "No Package Found"
+#~ msgid "No Package Found!"
+#~ msgstr "Paquete no encontrado"
+
+#~ msgid "Download will be started shortly!"
+#~ msgstr "¡La descarga comenzará en breve!"
+
+#~ msgid "Go to your account dashboard"
+#~ msgstr "Ve al panel de tu cuenta"
 
 #~ msgid "Special Offer"
 #~ msgstr "Oferta especial"
@@ -5729,9 +6029,6 @@ msgstr "Archivo no encontrado!"
 
 #~ msgid "Dashboard"
 #~ msgstr "Escritorio"
-
-#~ msgid "Package Title"
-#~ msgstr "Título Paquete"
 
 #~ msgid "Register"
 #~ msgstr "Registrarse"
@@ -5856,9 +6153,6 @@ msgstr "Archivo no encontrado!"
 
 #~ msgid "Please enter your email address:"
 #~ msgstr "Introduzca aquí su dirección de correo electrónico:"
-
-#~ msgid "Invalid dir path."
-#~ msgstr "Ruta de acceso dir no válida."
 
 #~ msgid "Insert From Media Library"
 #~ msgstr "Insertar desde la biblioteca de medios"

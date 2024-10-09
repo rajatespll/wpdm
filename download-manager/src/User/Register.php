@@ -35,7 +35,39 @@ class Register
 
 		add_action('user_register', [$this, 'pendingApproval'], 10, 2);
 
+	    add_action("register_form", [$this, 'reCaptcha']);
+	    add_action("registration_errors", [$this, 'reCaptchaVerify'], 10, 3);
+
     }
+
+	function reCpathcaActive() {
+		$active_captcha = (int)get_option('__wpdm_recaptcha_regform', 0) === 1 && get_option('_wpdm_recaptcha_secret_key', '') != '';
+		$active_captcha = apply_filters("signup_form_captcha", $active_captcha);
+		return $active_captcha;
+	}
+
+	function reCaptcha() {
+		if($this->reCpathcaActive()) {
+			$form = new Form(['__recap' => [
+				'type' => 'reCaptcha',
+				'attrs' => ['name' => '__recap', 'id' => '__recap'],
+			]], ['noForm' => true]);
+			echo $form->render();
+		}
+	}
+
+
+	function reCaptchaVerify($errors, $sanitized_user_login, $user_email) {
+		if ($this->reCpathcaActive()) {
+			$ret = wpdm_remote_post('https://www.google.com/recaptcha/api/siteverify', array('secret' => get_option('_wpdm_recaptcha_secret_key', ''), 'response' => wpdm_query_var('__recap')));
+			$ret = json_decode($ret);
+			if (!$ret->success) {
+				if (!$errors) $errors = new \WP_Error();
+				$errors->add('recaptcha_failed', __('<strong>Error:</strong> Captcha verification failed', 'download-manager'));
+			}
+		}
+		return $errors;
+	}
 
     static function formFields($params = [])
     {
@@ -64,12 +96,12 @@ class Register
         if ((int)get_option('__wpdm_signup_email_verify', 0) === 0) {
             $reg_data_fields['password'] = array(
                 'cols' => [
-                    ['label' => __("Password", "download-manager"), 'type' => 'password', 'grid_class' => 'col-md-6 col-sm-12', 'attrs' => ['name' => 'wpdm_reg[user_pass]', 'id' => 'reg_password', 'placeholder' => __("Be Secure", "download-manager"), 'required' => 'required']],
+                    ['label' => __("Password", "download-manager"), 'type' => 'password', 'grid_class' => 'col-md-6 col-sm-12', 'attrs' => ['name' => 'wpdm_reg[user_pass]', 'id' => 'reg_password', 'placeholder' => __("Be Secure", "download-manager"), 'required' => 'required', 'strength' => (int)get_option('__wpdm_pwsc', 0)]],
                     ['label' => __("Confirm Password", "download-manager"), 'type' => 'password', 'grid_class' => 'col-md-6 col-sm-12', 'attrs' => ['name' => 'confirm_user_pass', 'data-match' => '#reg_password', 'id' => 'reg_confirm_pass', 'placeholder' => __("Do Not Forget", "download-manager"), 'required' => 'required']]
                 ]
             );
         }
-        if (!isset($params['captcha']) || $params['captcha'] === true) {
+        /*if (!isset($params['captcha']) || $params['captcha'] === true) {
             $show_captcha = (int)get_option('__wpdm_recaptcha_regform', 0) === 1 && get_option('_wpdm_recaptcha_secret_key', '') != '';
             $show_captcha = apply_filters("signup_form_captcha", $show_captcha);
             if ($show_captcha) {
@@ -78,7 +110,7 @@ class Register
                     'attrs' => array('name' => '__recap', 'id' => '__recap'),
                 );
             }
-        }
+        }*/
         $reg_data_fields = apply_filters("wpdm_register_form_fields", $reg_data_fields);
         $form = new Form($reg_data_fields, ['name' => 'wpdm_reg_form', 'id' => 'wpdm_reg_form', 'method' => 'POST', 'action' => '', 'submit_button' => [], 'noForm' => true]);
         return $form->render();
@@ -144,6 +176,7 @@ class Register
         global $wp_query, $wpdb;
         if (!isset($_POST['wpdm_reg'])) return;
 
+		__::isAuthentic('wdpmregnonce', WPDM_PUB_NONCE, 'read');
 
         $shortcode_params = Crypt::decrypt(wpdm_query_var('__phash'), true);
 
@@ -162,7 +195,7 @@ class Register
             die();
         }
 
-        if(!isset($shortcode_params['captcha']) || $shortcode_params['captcha'] ===  true) {
+        /*if(!isset($shortcode_params['captcha']) || $shortcode_params['captcha'] ===  true) {
             $active_captcha = (int)get_option('__wpdm_recaptcha_regform', 0) === 1 && get_option('_wpdm_recaptcha_secret_key', '') != '';
             $active_captcha = apply_filters("signup_form_captcha", $active_captcha);
             if ($active_captcha) {
@@ -179,7 +212,7 @@ class Register
                     die();
                 }
             }
-        }
+        }*/
 
         if (!get_option('users_can_register') && isset($_POST['wpdm_reg'])) {
             $reg_error = apply_filters("wpdm_signup_error", __("Error: User registration is disabled!", "download-manager"), $error_type = 'signup_disabled');

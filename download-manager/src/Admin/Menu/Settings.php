@@ -2,6 +2,7 @@
 
 namespace WPDM\Admin\Menu;
 
+use WPDM\__\__;
 use WPDM\__\Installer;
 use WPDM\__\Session;
 
@@ -69,18 +70,18 @@ class Settings
     {
         global $stabs;
         $tabs = array();
-        $tabs['basic'] = array('id' => 'basic','icon'=>'fa-solid fa-sliders', 'link' => 'edit.php?post_type=wpdmpro&page=settings', 'title' => 'General', 'callback' => array($this, 'basic'));
-        $tabs['wpdmui'] = array('id' => 'wpdmui','icon'=>'fas fa-fill-drip', 'link' => 'edit.php?post_type=wpdmpro&page=settings', 'title' => 'User Interface', 'callback' => array($this, 'userInterface'));
-        $tabs['frontend'] = array('id' => 'frontend','icon'=>'fa fa-desktop', 'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=frontend', 'title' => 'Frontend Access', 'callback' => array($this, 'Frontend'));
-        $tabs['social-connects'] = array('id' => 'social-connects','icon'=>'fab fa-twitter', 'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=social-connects', 'title' => 'Social Settings', 'callback' => array($this, 'socialConnects'));
+        $tabs['basic'] = array('id' => 'basic','icon'=>'fa-solid fa-sliders', 'link' => 'edit.php?post_type=wpdmpro&page=settings', 'title' => __('General', 'download-manager'), 'callback' => array($this, 'basic'));
+        $tabs['wpdmui'] = array('id' => 'wpdmui','icon'=>'fas fa-fill-drip', 'link' => 'edit.php?post_type=wpdmpro&page=settings', 'title' => __('User Interface', 'download-manager'), 'callback' => array($this, 'userInterface'));
+        $tabs['frontend'] = array('id' => 'frontend','icon'=>'fa fa-desktop', 'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=frontend', 'title' => __('Frontend Access', 'download-manager'), 'callback' => array($this, 'Frontend'));
+        $tabs['social-connects'] = array('id' => 'social-connects','icon'=>'fab fa-twitter', 'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=social-connects', 'title' => __('Social Settings', 'download-manager'), 'callback' => array($this, 'socialConnects'));
 
         // Add buddypress settings menu when buddypress plugin is active
         if (function_exists('bp_is_active')) {
-            $tabs['buddypress'] = array('id' => 'buddypress','icon'=>'fa fa-users', 'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=buddypress', 'title' => 'BuddyPress', 'callback' => array($this, 'buddypress'));
+            $tabs['buddypress'] = array('id' => 'buddypress','icon'=>'fa fa-users', 'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=buddypress', 'title' => __('BuddyPress', 'download-manager'), 'callback' => array($this, 'buddypress'));
         }
 
         if(defined('WPDM_CLOUD_STORAGE')){
-            $tabs['cloud-storage'] = array('id' => 'cloud-storage','icon'=>'fa-solid fa-cloud-arrow-up',  'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=cloud-storage', 'title' => 'Cloud Storage', 'callback' => array($this, 'cloudStorage'));
+            $tabs['cloud-storage'] = array('id' => 'cloud-storage','icon'=>'fa-solid fa-cloud-arrow-up',  'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=cloud-storage', 'title' => __('Cloud Storage', 'download-manager'), 'callback' => array($this, 'cloudStorage'));
         }
 
         if(!$stabs) $stabs = array();
@@ -90,9 +91,9 @@ class Settings
 
         $stabs = apply_filters("add_wpdm_settings_tab", $stabs);
 
-        $stabs['plugin-update'] = array('id' => 'plugin-update','icon'=>'fa fa-sync',  'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=plugin-update', 'title' => 'Updates', 'callback' => array($this, 'pluginUpdate'));
-        $stabs['license'] = array('id' => 'license','icon'=>'fa fa-key',  'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=license', 'title' => 'License', 'callback' => array($this, 'License'));
-        $stabs['privacy'] = array('id' => 'privacy','icon'=>'fas fa-user-shield',  'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=privacy', 'title' => 'Privacy', 'callback' => array($this, 'privacy'));
+        $stabs['plugin-update'] = array('id' => 'plugin-update','icon'=>'fa fa-sync',  'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=plugin-update', 'title' => __('Updates', 'download-manager'), 'callback' => array($this, 'pluginUpdate'));
+        $stabs['license'] = array('id' => 'license','icon'=>'fa fa-key',  'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=license', 'title' => __('License', 'download-manager'), 'callback' => array($this, 'License'));
+        $stabs['privacy'] = array('id' => 'privacy','icon'=>'fas fa-user-shield',  'link' => 'edit.php?post_type=wpdmpro&page=settings&tab=privacy', 'title' => __('Privacy', 'download-manager'), 'callback' => array($this, 'privacy'));
 
     }
 
@@ -107,7 +108,9 @@ class Settings
 
         foreach ($stabs as $tab) {
             $isactive = ($sel == $tab['id']) ? 'class="active"' : '';
-            echo "<li {$isactive}><a id='{$tab['id']}' data-icon='{$tab['icon']}' href='{$tab['link']}'><i class='{$tab['icon']}'></i>{$tab['title']}</a></li>";
+            $icon = isset($tab['icon']) ? "<i class='{$tab['icon']}'></i>" : "";
+            $icon = apply_filters("wpdm_settings_menu_item_icon", $icon, $tab);
+            echo "<li {$isactive}><a id='{$tab['id']}' data-icon='{$tab['icon']}' href='{$tab['link']}'>{$icon}{$tab['title']}</a></li>";
         }
     }
 
@@ -127,6 +130,7 @@ class Settings
                     if($optn === '_wpdm_file_browser_root') {
 	                    $optv = realpath($optv);
 	                    $optv = $optv ? trailingslashit($optv) : get_home_path();
+	                    $optv = str_replace("\\", "/", $optv);
                     }
                     $optv = wpdm_sanitize_array($optv);
                     update_option($optn, $optv, false);
@@ -193,7 +197,9 @@ class Settings
             global $wp_roles;
 
             $roleids = array_keys($wp_roles->roles);
-            $roles = maybe_unserialize(get_option('__wpdm_front_end_access',array()));
+            $adb_roles = maybe_unserialize(get_option('__wpdm_front_end_access',array()));
+            $dzn_roles = maybe_unserialize(get_option('__wpdm_dropzone_access',array()));
+            $roles = array_unique(array_merge($adb_roles, $dzn_roles));
             $naroles = array_diff($roleids, $roles);
 
             foreach($roles as $role) {
@@ -369,7 +375,9 @@ class Settings
                                            name="_wpdm_license_key"/></div>
 
         </div>
-        <?php if($license && $license->order_id) { ?>
+        <?php if($license && $license->order_id) {
+
+            ?>
         <div class="row">
             <div class="col-md-6">
                 <div class="panel panel-default">
@@ -381,7 +389,7 @@ class Settings
             </div>
             <div class="col-md-6">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><?= __('Expiration Date', WPDM_TEXT_DOMAIN) ?></div>
+                    <div class="panel-heading"><?= __::valueof($license, 'auto_renew', [], 'int') ? __('Next Billing Date', WPDM_TEXT_DOMAIN) :  __('Expiration Date', WPDM_TEXT_DOMAIN) ?></div>
                     <div class="panel-body">
                         <?= date(get_option('date_format'), $license->expire); ?>
                     </div>

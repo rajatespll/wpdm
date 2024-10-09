@@ -37,7 +37,11 @@ $files = WPDM()->dropZone->getFiles();
     }
     .modal-dialog .btn{
         padding: 6px 20px !important;
-        font-size: 13px !important;
+        font-size: 11px !important;
+    }
+    .w3eden .modal-header .close{
+        color: var(--color-danger-active);
+        opacity: 0.7;
     }
     #__comments .media-body{
         font-size: 13px;
@@ -54,7 +58,7 @@ $files = WPDM()->dropZone->getFiles();
     .filet{
         text-overflow: ellipsis;
         overflow: hidden;
-        max-width: 400px;
+        max-width: 300px;
         white-space: nowrap;
         display: block;
         font-weight: bold;
@@ -308,6 +312,18 @@ $files = WPDM()->dropZone->getFiles();
                             WPDM.blockUI('#efin');
                             $(this).ajaxSubmit({
                                 url: wpdm_url.ajax+'?act='+ufint,
+                                success: function (response) {
+                                    WPDM.unblockUI('#efin');
+                                }
+                            });
+                        });
+
+
+                        $body.on('submit', '#sharedropzonefile', function (e) {
+                            e.preventDefault();
+                            WPDM.blockUI('#efin');
+                            $(this).ajaxSubmit({
+                                url: wpdm_url.ajax,
                                 success: function (response) {
                                     WPDM.unblockUI('#efin');
                                 }

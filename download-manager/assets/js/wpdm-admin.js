@@ -41,9 +41,9 @@ var WPDM = {
         WPDM.actions[action].push(func);
     },
 
-    doAction: function (action, params) {
+    doAction: function (action, ...params) {
         if(typeof WPDM.actions[action] !== 'undefined')
-            WPDM.actions[action].forEach(fn => fn(params));
+            WPDM.actions[action].forEach(fn => fn(...params));
     },
 
     copy: function ($id) {
@@ -125,7 +125,7 @@ var WPDM = {
         let modal_id = '__bootModal_' + WPDM.uniqueID();
         if(typeof content === 'object') {
             url = content.url;
-            content = `<div id='${modal_id}_cont'><i class='fa fa-sun fa-spin'></i> Loading...</div>`;
+            content = `<div id='${modal_id}_cont'><div  style="padding: 40px;text-align: center"><i class='fa fa-sun fa-spin'></i> Loading...</div></div>`;
         }
         if (!width) width = 400;
         html = '<div class="w3eden" id="w3eden' + modal_id + '"><div id="' + modal_id + '" class="modal fade" tabindex="-1" role="dialog">\n' +
@@ -142,6 +142,9 @@ var WPDM = {
             '</div></div>';
         jQuery('body').append(html);
         jQuery("#" + modal_id).modal({show: true, backdrop: 'static'});
+        jQuery("#" + modal_id).on('hidden.bs.modal', function (event) {
+            jQuery("#" + modal_id).remove()
+        })
 
         if(url !== '') {
             url = url.indexOf('?') > 0 ? url+'&__mdid=' + modal_id : url+'?__mdid=' + modal_id;

@@ -13,6 +13,10 @@ if(!defined("ABSPATH")) die("Shit happens!");
                 <img class="file-ico"
                      onerror="this.src='<?php echo FileSystem::fileTypeIcon($ext); ?>';"
                      src="<?php echo $thumb && __::is_url($thumb) ? $thumb : FileSystem::fileTypeIcon($ext); ?>"/>
+                <div class="text-center mt-1">
+	                <strong><?php echo (int)wpdm_valueof($fdc, $file); ?></strong><br/>
+                    <small><?= __('Downloads', WPDM_TEXT_DOMAIN); ?></small>
+                </div>
             </div>
             <div class="media-body">
                 <input placeholder="<?php _e("File Title", "download-manager"); ?>"

@@ -7,7 +7,7 @@ $base_page_uri = "edit.php?post_type=wpdmpro&page=wpdm-stats";
     <?php
 
     $actions = [
-        ['link' => "edit.php?post_type=wpdmpro&page=wpdm-stats&task=export&__xnonce=".wp_create_nonce(NONCE_KEY), "class" => "primary", "name" => '<i class="sinc far fa-arrow-alt-circle-down"></i> ' . __("Export History", "download-manager")]
+        ['link' => "edit.php?post_type=wpdmpro&page=wpdm-stats&type=prepare-export&__xnonce=".wp_create_nonce(NONCE_KEY), "class" => "success", "name" => '<i class="sinc far fa-arrow-alt-circle-down"></i> ' . __("Export Full History", "download-manager")]
     ];
 
     $menus = [

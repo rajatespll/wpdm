@@ -25,6 +25,7 @@
                              <label style="margin-top: 2px"><input type="hidden" name="__wpdm_clean_signup" value="0"><input <?php checked(1, get_option('__wpdm_clean_signup', 0)); ?> style="margin: 0 3px 0 5px" value="1" name="__wpdm_clean_signup" type="checkbox" /> <?php _e("Clean signup page", "download-manager");  ?></label><br/>
                              <em class="note"><?php printf(__( "The page where you used the short-code %s" , "download-manager" ),'<input style="width: 135px" readonly="readonly" type="text" value="[wpdm_reg_form]" class="txtsc">'); ?></em>
                              <label style="margin-top: 2px;display: block"><input type="hidden" name="__wpdm_signup_email_verify" value="0"><input <?php checked(1, get_option('__wpdm_signup_email_verify', 0)); ?> style="margin: 0 3px 0 5px" value="1" name="__wpdm_signup_email_verify" type="checkbox" /> <?php _e("Enable email verification on signup", "download-manager");  ?></label>
+                             <label style="margin-top: 2px;display: block"><input type="hidden" name="__wpdm_pwsc" value="0"><input <?php checked(1, get_option('__wpdm_pwsc', 0)); ?> style="margin: 0 3px 0 5px" value="1" name="__wpdm_pwsc" type="checkbox" /> <?php _e("Enable password strength check on signup", "download-manager");  ?></label>
                              <label style="margin-top: 2px;display: block"><input type="hidden" name="__wpdm_signup_autologin" value="0"><input <?php checked(1, get_option('__wpdm_signup_autologin', 0)); ?> style="margin: 0 3px 0 5px" value="1" name="__wpdm_signup_autologin" type="checkbox" /> <?php _e("Login automatically after signup is completed", "download-manager");  ?></label>
                          </div>
                          <hr/>
@@ -107,7 +108,7 @@
                              <div class="panel-body">
                                  <?php
                                  $cpage = maybe_unserialize(get_option('__wpdm_cpage'));
-                                 $cpage = !is_array($cpage) ? [ 'template' => 'link-template-default', 'cols' => 2, 'colsphone' => 1, 'colspad' => 1, 'heading' => 1 ] : $cpage;
+                                 $cpage = !is_array($cpage) ? [ 'template' => 'link-template-default', 'cols' => 2, 'colsphone' => 1, 'colspad' => 1, 'heading' => 1, 'orderby' => 'date', 'order' => 'desc', 'async' => 0 ] : $cpage;
                                  ?>
 
                                  <div class="form-group">
@@ -178,6 +179,34 @@
                                                      <i class="fa fa-mobile"></i>
                                                  </div>
                                              </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="form-group">
+                                     <div class="row">
+                                         <div class="col-md-4">
+                                             <label><?= __('Order By', WPDM_TEXT_DOMAIN); ?></label>
+                                             <select class="form-control system-ui wpdm-custom-select" name="__wpdm_cpage[orderby]">
+                                                 <option value="date"><?= __('Publish Date', WPDM_TEXT_DOMAIN); ?></option>
+                                                 <option value="modified" <?php selected('modified', wpdm_valueof($cpage, 'orderby')) ?>><?= __('Update Date', WPDM_TEXT_DOMAIN); ?></option>
+                                                 <option value="download_count" <?php selected('download_count', wpdm_valueof($cpage, 'orderby')) ?>><?= __('Download Count', WPDM_TEXT_DOMAIN); ?></option>
+                                                 <option value="view_count" <?php selected('view_count', wpdm_valueof($cpage, 'orderby')) ?>><?= __('View Count', WPDM_TEXT_DOMAIN); ?></option>
+                                                 <option value="title" <?php selected('title', wpdm_valueof($cpage, 'orderby')) ?>><?= __('Title', WPDM_TEXT_DOMAIN); ?></option>
+                                             </select>
+                                         </div>
+                                         <div class="col-md-4">
+                                             <label><?= __('Order', WPDM_TEXT_DOMAIN); ?></label>
+                                             <select class="form-control system-ui wpdm-custom-select" name="__wpdm_cpage[order]">
+                                                 <option value="desc"><?= __('DESC', WPDM_TEXT_DOMAIN); ?></option>
+                                                 <option value="asc" <?php selected('asc', wpdm_valueof($cpage, 'orderby')) ?>><?= __('ASC', WPDM_TEXT_DOMAIN); ?></option>
+                                             </select>
+                                         </div>
+                                         <div class="col-md-4">
+                                             <label><?= __('Pagination', WPDM_TEXT_DOMAIN); ?></label>
+                                             <select class="form-control system-ui wpdm-custom-select" name="__wpdm_cpage[async]">
+                                                 <option value="0"><?= __('Regular', WPDM_TEXT_DOMAIN); ?></option>
+                                                 <option value="1" <?php selected(1, (int)wpdm_valueof($cpage, 'orderby')) ?>><?= __('Async', WPDM_TEXT_DOMAIN); ?></option>
+                                             </select>
                                          </div>
                                      </div>
                                  </div>

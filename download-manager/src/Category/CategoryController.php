@@ -238,7 +238,75 @@ class CategoryController
         return $template;
     }
 
+    function treeView($name, $selected = array(), $extras = array())
+    {
+        echo "<ul class='ptypes m-0 p-0' id='wpdmcat-tree'>";
+        $parent = wpdm_valueof($extras, 'parent', ['validate' => 'int']);
+        $allcats = $this->hArray(0, $parent);
+
+        if($parent > 0 && wpdm_valueof($extras, 'hide_parent', ['validate' => 'int', 'default' => 0]) == 0) {
+            $term = get_term($parent);
+            $value = wpdm_valueof($extras, 'value') === 'slug' ? $term->slug : $term->term_id;
+            ?>
+            <!-- <ul>
+                <li class="<?php echo wpdm_valueof($extras, 'liclass'); ?>">
+                    <label>
+                        <input type="checkbox" <?php checked(1, in_array($value, $selected)); ?>
+                               name="<?php echo $name; ?>[]"
+                               class="<?php echo wpdm_valueof($extras, 'cbclass'); ?>"
+                               value="<?php echo $value; ?>"> <?php echo $term->name; ?>
+                    </label>
+                    <ul> -->
 
 
+            <?php
+        }
+
+        $this->treeViewBranch($name, $allcats, $selected, $extras);
+
+        if ($parent > 0 && wpdm_valueof($extras, 'hide_parent', ['validate' => 'int', 'default' => 0]) == 0) echo "</li></ul>";
+        echo "</ul>";
+    ?>
+
+    <?php
+    }
+
+
+
+    private function treeViewBranch($name, $allcats, $selected = array(), $extras = array())
+    {
+        foreach ($allcats as $cat_id => $cat) {
+
+            if(isset($cat['category']) && is_object($cat['category'])) {
+            $value = wpdm_valueof($extras, 'value') === 'slug' ? $cat['category']->slug : $cat_id;
+            $category = $cat['category'];
+            ?>
+
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header <?= $category->parent > 0 ? ' child-cat' : '' ?>" id="headingOne<?php echo $cat_id; ?>">
+                        <div class="text-left d-flex justify-content-between<?php echo wpdm_valueof($extras, 'liclass'); ?>"  aria-expanded="true" aria-controls="collapseOne<?php echo $cat_id; ?>">
+
+                            <a href="#" class="cat_filter"  data-value="<?php echo $category->slug; ?>"><?php echo $category->name; ?></a>
+                            <?php if (count($cat['childs']) > 0) : ?>
+                            <a href="#" class="toggle-icon"  type="button" data-toggle="collapse" data-target="#collapseOne<?php echo $cat_id; ?>"><i class="fa-solid fa-plus"></i></a>
+                            <?php endif; ?>
+
+                       </div>
+                    </div>
+                    <?php if (count($cat['childs']) > 0) : ?>
+                        <div id="collapseOne<?php echo $cat_id; ?>" class="collapse" style="" aria-labelledby="headingOne<?php echo $cat_id; ?>" >
+                                <div id="wpdmcats-childof-<?php echo $cat_id; ?>">
+                                    <?php $this->treeViewBranch($name, $cat['childs'], $selected, $extras); ?>
+                                </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+
+            <?php
+            }
+        }
+    }
 }
-

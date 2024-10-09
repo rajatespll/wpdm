@@ -14,14 +14,14 @@
     }
 </style>
 
-<?php 
-if($show_db_update_notice) {
+<?php
+if(isset($show_db_update_notice) && $show_db_update_notice) {
     ?>
     <div class="alert alert-success">
-        <?= __('WordPress Download Manager Pro database have been updated successfully', WPDM_TEXT_DOMAIN); ?>
+        <?= __('WordPress Download Manager Pro database has been updated successfully', WPDM_TEXT_DOMAIN); ?>
     </div>
     <?php
-} 
+}
 ?>
 <div class="panel panel-default">
     <div class="panel-heading"><?php _e("URL Structure", "download-manager"); ?></div>
@@ -63,8 +63,26 @@ if($show_db_update_notice) {
 </div>
 
 <div class="panel panel-default">
-    <div class="panel-heading"><?php _e( "Editor Settings" , "download-manager" ); ?></div>
+    <div class="panel-heading"><?php _e( "Package Settings" , "download-manager" ); ?></div>
     <div class="panel-body">
+        <div class="form-group mb-0">
+            <input type="hidden" value="0" name="__wpdm_delete_expired">
+            <label class="fw-4"><input onchange="jQuery(this).is(':checked') ? jQuery('#wpdmde').slideDown():jQuery('#wpdmde').slideUp() ;" type="checkbox" name="__wpdm_delete_expired" value="1" <?php checked(1, get_option('__wpdm_delete_expired')); ?> > <?php echo __("Automatically delete expired packages", "download-manager"); ?></label>
+        </div>
+        <div class="panel panel-default" id="wpdmde" <?= (int)get_option('__wpdm_delete_expired') === 0 ? 'style="display:none"' : '' ?> >
+             <div class="panel-heading"><?= __('Cron URL', WPDM_TEXT_DOMAIN) ?></div>
+             <div class="panel-body">
+                 <div class="input-group">
+                     <input type="text" class="form-control" id="cccronurl" readonly="" value="<?= add_query_arg(['cde' => 'wpdmde', 'cronkey' => WPDM_CRON_KEY], home_url('/')) ?>">
+                     <div class="input-group-btn">
+                         <button class="btn btn-secondary ttip" type="button" title="" onclick="WPDM.copy('cccronurl')" data-original-title="Copy"><i class="fa fa-copy"></i></button>
+                     </div>
+                 </div>
+                 <div class="note">
+                     <em><?= _e('Your need to configure a cron job from your hosting control panel using the url above for reliable cron execution.', WPDM_TEXT_DOMAIN) ?></em>
+                 </div>
+             </div>
+        </div>
         <div class="form-group mb-0">
             <input type="hidden" value="0" name="__wpdm_delete_dfiles">
             <label class="fw-4"><input type="checkbox" name="__wpdm_delete_dfiles" value="1" <?php checked(1, get_option('__wpdm_delete_dfiles')); ?> > <?php echo __("Delete a file when it is detached from a package (Only administrator can use this option)", "download-manager"); ?></label>
@@ -147,7 +165,7 @@ if($show_db_update_notice) {
         <br/>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <?php echo __("reCAPTCHA Lock Settings", "download-manager"); ?>
+                <?php echo __("reCAPTCHA Settings", "download-manager"); ?>
                 <a class="btn btn-xs pull-right btn-info" target="_blank" href="https://www.google.com/recaptcha/admin#list"><?= __('Register Site', WPDM_TEXT_DOMAIN) ?></a>
             </div>
             <div class="panel-body">
@@ -337,6 +355,51 @@ if($show_db_update_notice) {
             <br/>
 
         </div>
+        <div class="form-group">
+            <input type="hidden" value="0" name="__wpdm_dz_p2p_sharing"/>
+            <label><input <?php checked(1, get_option('__wpdm_dz_p2p_sharing', 0)); ?>
+                        type="checkbox" value="1"
+                        name="__wpdm_dz_p2p_sharing" class="mr-2"> <?php _e('Enable user-2-user file sharing', 'download-manager'); ?></label><br/>
+            <em><?php _e('Activating this option will enable front-end dropzone users to share file with publicly sharable link', 'download-manager'); ?></em>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><?php _e("Media Files Access Control", "download-manager"); ?></div>
+    <div class="panel-body">
+
+
+        <div class="form-group">
+            <label><?php _e("Enable Media File Access Control For", "download-manager"); ?></label><br/>
+            <input type="hidden" name="__wpdm_dropzone_access[]" value="[NONE]" <?php echo $sel ?> />
+			<?php
+
+			$currentAccess = maybe_unserialize(get_option('__wpdm_dropzone_access'));
+			if(!is_array($currentAccess)) $currentAccess = [];
+			$selz = '';
+			?>
+            <select id="__wpdm_mac_access" style="width: 100%" name="__wpdm_mac_access[]" multiple="multiple" data-placeholder="<?php _e("Select roles", "download-manager"); ?>">
+				<?php
+				global $wp_roles;
+				$roles = array_reverse($wp_roles->role_names);
+				foreach ($roles as $role => $name) {
+
+
+					if ($currentAccess) $sel = (in_array($role, $currentAccess)) ? 'selected=selected' : '';
+					else $sel = '';
+
+
+					?>
+                    <option value="<?php echo $role; ?>" <?php echo $sel ?>> <?php echo $name; ?></option>
+				<?php } ?>
+            </select>
+            <em><?php _e("Select user roles too allow access to Media File Access Control option", "download-manager"); ?></em>
+            <br/>
+
+        </div>
 
 
     </div>
@@ -403,6 +466,13 @@ if($show_db_update_notice) {
             <hr/>
         </div>
 
+        <div class="form-group">
+            <label><input type="radio" <?php checked(get_option('__wpdm_auto_download', 1), 1); ?> name="__wpdm_auto_download" value="1"> <?php _e("Enable Auto Download", "download-manager"); ?> &nbsp; </label>
+            <label><input type="radio" <?php checked(get_option('__wpdm_auto_download', 1), 0); ?> name="__wpdm_auto_download" value="0"> <?php _e("Disable Auto Download", "download-manager"); ?></label><br/>
+            <em><?php _e("Enable or disable auto-download once the lock option validation has been completed", "download-manager"); ?></em>
+        </div>
+        <hr/>
+
         <div class="row">
             <div class="col-md-5">
                 <label><?php _e("Private Download Link Usage Limit", "download-manager"); ?>:</label><br/>
@@ -434,6 +504,28 @@ if($show_db_update_notice) {
                 </div>
                 <em><?php _e("Private download links ( package with any lock option active ) will expire after the period starting from it's generation time", "download-manager"); ?></em>
             </div>
+        </div>
+
+        <hr/>
+
+        <div class="form-group"><input type="hidden" name="__wpdm_flat_download_url" value="0">
+            <label><input id="fdurl" type="checkbox" <?php checked(get_option('__wpdm_flat_download_url'), 1); ?> name="__wpdm_flat_download_url" value="1"> <?php _e("Enable Flat Download Link", "download-manager"); ?>
+            </label><br/>
+            <em><?php _e("Easy to remember download link", "download-manager"); ?> ** This feature still on test</em>
+        </div>
+        <div class="panel panel-default m-0" id="dlub" <?php echo !(int)get_option('__wpdm_flat_download_url') ? 'style="display:none;"' : ''; ?>>
+            <div class="panel-heading"><?php echo __("Download URL Base", "download-manager"); ?></div>
+            <div class="panel-body">
+                <p><?php echo __('Keep base url unique from download base url and package base url', 'download-manager') ?></p>
+                <input type="text" class="form-control" onkeyup="jQuery('#fdubs').html(this.value);" name="__wpdm_fdurl_base" value="<?php echo get_option('__wpdm_fdurl_base', 'dl'); ?>"/>
+                <em><?= home_url("/") ?><strong style="color: var(--color-primary)" id="fdubs"><?php echo get_option('__wpdm_fdurl_base', 'dl'); ?></strong>/123/file-name.ext</em>
+            </div>
+        </div>
+        <hr/>
+        <div class="form-group"><input type="hidden" name="__wpdm_allow_index" value="0">
+            <label><input id="__wpdm_allow_index" type="checkbox" <?php checked(get_option('__wpdm_allow_index'), 1); ?> name="__wpdm_allow_index" value="1"> <?php _e("Allow search engine to index attached files", "download-manager"); ?>
+            </label><br/>
+            <em><?php _e("Remove no-index from download header", "download-manager"); ?></em>
         </div>
 
         <hr/>
@@ -512,6 +604,17 @@ if($show_db_update_notice) {
         </div>
         <hr/>
         <div class="form-group">
+            <hr/>
+            <input type="hidden" value="0" name="__wpdm_mdl_off"/>
+            <label><input
+                        type="checkbox" <?php checked(get_option('__wpdm_mdl_off'), 1); ?> value="1"
+                        name="__wpdm_mdl_off"><?php _e("Disable Master Download URL", "download-manager"); ?></label><br/>
+            <em><?php _e("Enabling this option will disable any old and new master download link", "download-manager"); ?></em>
+            <br/>
+
+        </div>
+        <hr/>
+        <div class="form-group">
             <label><?php _e("Skip Lock for Loggedin User:", "download-manager"); ?></label><br/>
             <select style="width: 100%" name="__wpdm_skip_locks[]" multiple="multiple"
                     data-placeholder="<?php _e("Select...", "download-manager"); ?>">
@@ -528,7 +631,7 @@ if($show_db_update_notice) {
                     Linkedin Share
                 </option>
                 <option value="gplusone" <?php if (in_array('gplusone', maybe_unserialize(get_option('__wpdm_skip_locks', array())))) echo 'selected=selected'; ?>>
-                    Google+
+                    Google Connect
                 </option>
                 <option value="tweet" <?php if (in_array('tweet', maybe_unserialize(get_option('__wpdm_skip_locks', array())))) echo 'selected=selected'; ?>>
                     Tweet
@@ -577,6 +680,13 @@ if($show_db_update_notice) {
             else
                 $('#aps').attr('disabled', 'disabled');
         });
+        $('body').on('click', '#fdurl', function () {
+            if ($(this).is(':checked'))
+                $('#dlub').slideDown();
+            else
+                $('#dlub').slideUp();
+        });
+
     });
 </script>
 <style>

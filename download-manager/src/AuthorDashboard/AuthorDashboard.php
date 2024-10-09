@@ -126,9 +126,7 @@ class AuthorDashboard
         if (isset($_REQUEST['act']) && in_array($_REQUEST['act'], array('_ap_wpdm', '_ep_wpdm')) && self::hasAccess($current_user->ID)) {
             if (!wp_verify_nonce($_REQUEST['__wpdmepnonce'], NONCE_KEY)) {
                 $data = array('error' => __("Invalid Request! Refresh the page and try again", "download-manager"));
-                header('Content-type: application/json');
-                echo json_encode($data);
-                die();
+                wp_send_json($data);
             }
 
             $pack = $_POST['pack'];
@@ -183,7 +181,7 @@ class AuthorDashboard
                 foreach ($_POST['wpdmtags'] as $tag){
                     $tags[] = (int)$tag;
                 }
-                wp_set_post_terms($id, $tags, 'wpdmtag');
+                wp_set_post_terms($id, $tags, WPDM_TAG);
             }
 
             //Save custom taxonomies
@@ -239,10 +237,12 @@ class AuthorDashboard
             do_action($hook, $id, get_post($id));
 
             $data = array('result' => $_POST['act'], 'id' => $id);
-
-            header('Content-type: application/json');
-            echo json_encode($data);
-            die();
+			if(__::is_ajax()) {
+				wp_send_json( $data );
+			} else {
+				header("location: ".$this->url(['adb_page' => 'edit-package/'.$id]));
+				die();
+			}
 
 
         }

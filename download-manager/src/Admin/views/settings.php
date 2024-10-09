@@ -123,14 +123,16 @@ if ( ! defined( "ABSPATH" ) ) {
                         <input type="hidden" name="task" id="task" value="wdm_save_settings"/>
                         <input type="hidden" name="action" id="action" value="wpdm_settings"/>
                         <input type="hidden" name="section" id="section" value="<?php echo $tab; ?>"/>
-                        <div id="fm_settings">
+                        <div id="fm_settings" style="min-height: 100px">
 							<?php
+
 							global $stabs;
 							if ( isset( $stabs[ $tab ], $stabs[ $tab ]['callback'] ) ) {
 								call_user_func( $stabs[ $tab ]['callback'] );
 							} else {
 								echo "<div class='panel panel-danger'><div class='panel-body color-red'><i class='fa fa-exclamation-triangle'></i> " . __( "Something is wrong!", "download-manager" ) . "</div></div>";
 							}
+
 							?>
                         </div>
 
@@ -156,6 +158,26 @@ if ( ! defined( "ABSPATH" ) ) {
             }
         });
 
+        function loadSettings(section)
+        {
+            let $ = jQuery;
+            WPDM.blockUI('#fm_settings');
+            $.post(ajaxurl, {action: 'wpdm_settings', section: section}, function (res) {
+                $('#fm_settings').html(res);
+                $('#section').val(section)
+                $('select:not(.system-ui)').select2({minimumResultsForSearch: 6});
+                window.history.pushState({
+                    "html": res,
+                    "pageTitle": "response.pageTitle"
+                }, "", "edit.php?post_type=wpdmpro&page=settings&tab=" + section);
+                $('#wpdm-lsp').fadeOut(function () {
+                    $(this).remove();
+                });
+                WPDM.unblockUI('#fm_settings');
+                $('.ttip').tooltip({placement: 'bottom'});
+            });
+        }
+
         jQuery(function ($) {
             var $body = $('body'), section;
             $body.on('click', '#wpdm_message.alert-success', function () {
@@ -178,20 +200,7 @@ if ( ! defined( "ABSPATH" ) ) {
                 $(this).parent('li').addClass('active');
                 WPDM.blockUI('#fm_settings');
                 section = this.id;
-                $.post(ajaxurl, {action: 'wpdm_settings', section: this.id}, function (res) {
-                    $('#fm_settings').html(res);
-                    $('#section').val(section)
-                    $('select:not(.system-ui)').select2({minimumResultsForSearch: 6});
-                    window.history.pushState({
-                        "html": res,
-                        "pageTitle": "response.pageTitle"
-                    }, "", "edit.php?post_type=wpdmpro&page=settings&tab=" + section);
-                    $('#wpdm-lsp').fadeOut(function () {
-                        $(this).remove();
-                    });
-                    WPDM.unblockUI('#fm_settings');
-                    $('#ttip').tooltip({placement: 'bottom'});
-                });
+                loadSettings(section);
                 return false;
             });
 
@@ -252,6 +261,8 @@ if ( ! defined( "ABSPATH" ) ) {
             $(window).on('resize', function () {
                 adjustSidebarHeight();
             });
+
+            /*loadSettings('<?php echo $tab; ?>');*/
 
 
         });

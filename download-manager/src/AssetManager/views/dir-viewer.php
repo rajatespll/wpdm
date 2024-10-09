@@ -27,60 +27,35 @@ function __print_items($items, $level = 0){
 }
 
 ?>
-
+<script id='wpdm-frontjs-js-extra'>
+    var wpdm_url = {"home":"<?= home_url('/') ?>","site":"<?= home_url('/') ?>","ajax":"<?= admin_url('/admin-ajax.php') ?>"};
+    var wpdm_js = {"spinner":"<i class=\"fas fa-sun fa-spin\"><\/i>","client_id":"<?= \WPDM\__\Session::$deviceID ?>"};
+</script>
+<script src="<?= WPDM_ASSET_URL ?>js/front.js" ></script>
+<script src="<?= WPDM_ASSET_URL ?>bootstrap/js/bootstrap.min.js" ></script>
+<link rel="stylesheet" href="<?= WPDM_ASSET_URL ?>fontawesome/css/all.min.css">
+<link rel="stylesheet" href="<?= WPDM_ASSET_URL ?>bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="<?= WPDM_ASSET_URL ?>css/front.css">
 <style>
-    .__wpdm_asset_tree ul{
-        margin-left: 0px;
-        padding-left: 0;
+    #asset-viewer{
+        white-space: normal;
     }
-    .__wpdm_asset_tree li{
-        list-style: none;
-        background: url("<?php echo WPDM_BASE_URL; ?>assets/images/folder.svg") left 4px no-repeat;
-        background-size: 12px;
-        padding-left: 18px;
-        margin-left: 0;
-        font-size: 12px;
-        line-height:20px;
-        cursor: pointer;
+    #dirview,
+    #card,
+    #explorer{
+        min-width: 100%;
+        min-height: 100px;
     }
+
     .container{
         display: flex;
+        height: 100%;
     }
-    .container .sidebar{
-        width: 25%;
-    }
-    .container .content{
-        width: 75%;
-    }
+
 </style>
 
-<div class="container">
-    <div class="sidebar">
-        <ul class="__wpdm_asset_tree">
-            <?php __print_items($dirTree);  ?>
-        </ul>
-    </div>
-    <div class="content" id="dircontent">
-        <div v-for="file in files">
-            <div  class="file-item">{{ file.name }}</div>
-        </div>
+<div  class="w3eden">
+    <div class="container mt-4">
+        <?php echo do_shortcode("[wpdm_dir_view dir='{$this->path}']"); ?>
     </div>
 </div>
-<script src="<?php echo WPDM_BASE_URL ?>assets/js/vue.min.js"></script>
-<script>
-    var dirviewer = new Vue({
-        el: '#dircontent',
-        data: {
-            files: []
-        }
-    });
-
-    var assets = <?php echo json_encode($flatList); ?>;
-    jQuery(function ($) {
-        $('.tree-item').on('click', function () {
-            var asset = assets[$(this).data('index')];
-            console.log(asset.items);
-            dirviewer.files = asset.items;
-        });
-    });
-</script>

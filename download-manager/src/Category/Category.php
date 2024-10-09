@@ -16,6 +16,7 @@ class Category
     public $access;
     public $parent;
     public $packageCount;
+	public $url;
 
     function __construct($ID_SLUG_NAME = null)
     {
@@ -31,6 +32,7 @@ class Category
             $this->parent           = $term->parent;
             $this->packageCount     = $term->count;
             $this->icon             = CategoryController::icon($this->ID);
+	        $this->url              = get_term_link($this->ID);
 
         }
     }

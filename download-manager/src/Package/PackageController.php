@@ -17,12 +17,37 @@ use WPDM\__\UI;
 class PackageController extends PackageTemplate {
 
 	public $ID;
+	public $title;
+	public $description;
+	public $excerpt;
+	/**
+	 * @var FileList
+	 */
+	public $fileList;
+	public $post_status;
+	public $version;
+	public $publish_date;
+	public $publish_date_timestamp;
+	public $update_date;
+	public $update_date_timestamp;
+	public $avail_date;
+	public $expire_date;
+	public $link_label;
+	public $download_count;
+	public $view_count;
+	public $access;
+	public $author;
+	public $quota;
+	public $icon;
+	public $package_size;
 	public $package;
 	public $shortCodes;
 	public $packageData = [];
 	public $files = [];
 	public $restAPI;
 	public $templateDir;
+
+	public $download_limit_per_user;
 
 
 	function __construct( $ID = null ) {
@@ -87,13 +112,17 @@ class PackageController extends PackageTemplate {
 		$post_vars['preview'] = $post_vars['thumb'] = "";
 		if ( has_post_thumbnail( $ID ) ) {
 			$image_id                    = get_post_thumbnail_id( $ID );
-			$src                         = wp_get_attachment_image_src( $image_id, 'full', false );
 			$image_alt                   = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
 			$image_title                 = get_the_title( $image_id );
-			$post_vars['preview']        = $src['0'];
-			$post_vars['preview_alt']    = $image_alt;
-			$post_vars['preview_title']  = $image_title;
-			$post_vars['featured_image'] = get_the_post_thumbnail( $ID, 'full' );
+			$src                         = wp_get_attachment_image_src( $image_id, 'full', false );
+			if ( in_array( 'preview', $template_tags ) )
+				$post_vars['preview']        = __::valueof($src, '0');
+			if ( in_array( 'preview_alt', $template_tags ) )
+				$post_vars['preview_alt']    = $image_alt;
+			if ( in_array( 'preview_title', $template_tags ) )
+				$post_vars['preview_title']  = $image_title;
+			if ( in_array( 'featured_image', $template_tags ) )
+				$post_vars['featured_image'] = get_the_post_thumbnail( $ID, 'full' );
 
 			if ( in_array( 'thumb', $template_tags ) ) {
 				$post_vars['thumb'] = get_the_post_thumbnail( $ID );
@@ -101,14 +130,14 @@ class PackageController extends PackageTemplate {
 		}
 
 		$author               = get_user_by( 'id', $post_vars['post_author'] );
-		if ( is_object( $author ) ) {
+		if ( is_object( $author ) && in_array('author_name', $template_tags ) ) {
 			$post_vars['author_name'] = $author->display_name;
 		}
 		$post_vars['author_profile_url'] = get_author_posts_url( $post_vars['post_author'] );
-		if ( is_object( $author ) ) {
+		if ( is_object( $author ) && in_array('avatar_url', $template_tags ) ) {
 			$post_vars['avatar_url'] = get_avatar_url( $author->user_email );
 		}
-		if ( is_object( $author ) ) {
+		if ( is_object( $author ) && in_array('author', $template_tags ) ) {
 			$post_vars['avatar'] = get_avatar( $author->user_email, 96 );
 		}
 
@@ -145,10 +174,25 @@ class PackageController extends PackageTemplate {
 			}
 		}
 
-		$data = $this->metaData( $post_vars['ID'] );
+		if($template_type === 'page') {
+			$data = $this->metaData( $post_vars['ID'] );
 
-		if ( is_array( $data ) ) {
-			$post_vars = array_merge( $data, $post_vars );
+
+			if ( is_array( $data ) ) {
+				$post_vars = array_merge( $data, $post_vars );
+			}
+		} else {
+
+			$post_vars['link_label'] = $this->getLinkLabel($ID, $template_type);
+
+			if ( in_array( 'icon', $template_tags ) ) $post_vars['icon'] = get_post_meta($ID, '__wpdm_icon', true);
+			if ( in_array( 'view_count', $template_tags ) ) $post_vars['view_count'] = get_post_meta($ID, '__wpdm_view_count', true);
+			if ( in_array( 'download_count', $template_tags ) ) $post_vars['download_count'] = get_post_meta($ID, '__wpdm_download_count', true);
+			if ( in_array( 'version', $template_tags ) ) $post_vars['version'] = get_post_meta($ID, '__wpdm_version', true);
+			if ( in_array( 'quota', $template_tags ) ) $post_vars['quota'] = get_post_meta($ID, '__wpdm_quota', true);
+			if ( in_array( 'package_size', $template_tags ) ) $post_vars['package_size'] = get_post_meta($ID, '__wpdm_package_size', true);
+			if ( in_array( 'publish_date', $template_tags ) || in_array( 'date', $template_tags ) ) $post_vars['publish_date'] = $post_vars['date'] = get_post_meta($ID, '__wpdm_publish_date', true);
+			if ( in_array( 'expire_date', $template_tags ) ) $post_vars['expire_date'] = get_post_meta($ID, '__wpdm_expire_date', true);
 		}
 
 		if ( ! isset( $post_vars['files'] ) || ! is_array( $post_vars['files'] ) ) {
@@ -178,10 +222,9 @@ class PackageController extends PackageTemplate {
 			$post_vars['file_list_extended'] = FileList::extended( $ID );
 		}
 
-		$post_vars['link_label']  = isset( $post_vars['link_label'] ) ? $post_vars['link_label'] : __( "Download", "download-manager" );
 		$post_vars['page_url']    = get_permalink( $post_vars['ID'] );
 		$post_vars['page_link']   = "<a href='" . $post_vars['page_url'] . "'>{$post_vars['title']}</a>";
-		$post_vars['page_url_qr'] = "<img class='wpdm-qr-code wpdm-qr-code{$post_vars['ID']}' style='max-width: 250px' src='https://chart.googleapis.com/chart?cht=qr&chs=450x450&choe=UTF-8&chld=H|0&chl={$post_vars['page_url']}' alt='{$post_vars['title']}' />";
+		$post_vars['page_url_qr'] = "<img class='wpdm-qr-code wpdm-qr-code{$post_vars['ID']}' style='max-width: 250px' src='".__::qrCode($post_vars['page_url'])."' alt='{$post_vars['title']}' />";
 
 
 		if ( ! isset( $post_vars['btnclass'] ) ) {
@@ -189,7 +232,7 @@ class PackageController extends PackageTemplate {
 		}
 
 		if ( in_array( 'tags', $template_tags ) ) {
-			$tags    = wp_get_post_terms( $post_vars['ID'], 'wpdmtag' );
+			$tags    = wp_get_post_terms( $post_vars['ID'], WPDM_TAG );
 			$taghtml = "";
 			if ( is_array( $tags ) ) {
 				foreach ( $tags as $tag ) {
@@ -278,10 +321,7 @@ class PackageController extends PackageTemplate {
 
 		}
 
-
 		$post_vars['link_label'] = apply_filters( 'wpdm_button_image', $post_vars['link_label'], $post_vars, $template_type );
-
-		$post_vars['link_label']          = $post_vars['link_label'] ? $post_vars['link_label'] : __( "Download", "download-manager" );
 		$open_in_new_window               = (int) get_option( '__wpdm_open_in_new_window', 0 ) ? 'target=_blank' : '';
 		$post_vars['download_url']        = $this->getDownloadURL( $post_vars['ID'] );
 		$post_vars['download_link_popup'] =
@@ -351,7 +391,7 @@ class PackageController extends PackageTemplate {
 			//$post_vars['download_link_popup'] = self::activeLocks($post_vars, array('popstyle' => 'popup'));
 		}
 
-		if ( isset( $data['terms_lock'] ) && $data['terms_lock'] != 0 && ( ! function_exists( 'wpdmpp_effective_price' ) || wpdmpp_effective_price( $post_vars['ID'] ) == 0 ) && $limit_over == 0 && self::userCanAccess( $post_vars['ID'] ) ) {
+		if ( isset( $data['terms_lock'] ) && (int)$data['terms_lock'] !== 0 && ( ! function_exists( 'wpdmpp_effective_price' ) || wpdmpp_effective_price( $post_vars['ID'] ) == 0 ) && $limit_over == 0 && self::userCanAccess( $post_vars['ID'] ) ) {
 			//$data['terms_conditions'] = wpautop(strip_tags($data['terms_conditions'], "<p><br><a><strong><b><i>"));
 			/*$data['terms_conditions'] = wpautop(wpdm_escs(get_post_meta($post_vars['ID'], '__wpdm_terms_conditions', true)));
             $data['terms_title'] = wpdm_escs(get_post_meta($post_vars['ID'], '__wpdm_terms_title', true));
@@ -401,7 +441,8 @@ class PackageController extends PackageTemplate {
 		foreach ( $post_vars as $key => $val ) {
 			try {
 				if ( preg_match( '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $key ) ) {
-					$this->{$key} = $val;
+					if(isset($this->{$key}))
+						$this->{$key} = $val;
 				}
 			} catch ( \Exception $e ) {
 			}
@@ -518,7 +559,7 @@ class PackageController extends PackageTemplate {
 		if ( isset( $package['email_lock'] ) && (int) $package['email_lock'] == 1 ) {
 			$lock = 'locked';
 		}
-		if ( isset( $package['password_lock'] ) && (int) $package['password_lock'] == 1 ) {
+		if ( isset( $package['password_lock'] ) && (int) $package['password_lock'] == 1  && trim(get_post_meta( $id, '__wpdm_password', true )) !== '') {
 			$lock = 'locked';
 		}
 		if ( isset( $package['gplusone_lock'] ) && (int) $package['gplusone_lock'] == 1 ) {
@@ -747,6 +788,9 @@ class PackageController extends PackageTemplate {
 			$file = rtrim( $file );
 			$file = html_entity_decode( $file );
 		}
+
+		$files = array_filter($files);
+
 		if ( $include_dir ) {
 			$package_dir = get_post_meta( $ID, '__wpdm_package_dir', true );
 			$package_dir = file_exists( $package_dir ) ? $package_dir : Crypt::decrypt( $package_dir );
@@ -823,6 +867,8 @@ class PackageController extends PackageTemplate {
 				}
 			}
 		}
+
+		$size = apply_filters("wpdm_before_update_package_size", $size, $ID);
 
 		update_post_meta( $ID, '__wpdm_package_size_b', $size );
 		$size = $size / 1024;
@@ -1029,7 +1075,6 @@ class PackageController extends PackageTemplate {
 			'__wpdm_icon'                    => 'txt',
 			'__wpdm_view_count'              => 'int',
 			'__wpdm_download_count'          => 'int',
-			'__wpdm_link_label'              => 'txt',
 			'__wpdm_version'                 => 'txt',
 			'__wpdm_quota'                   => 'int',
 			'__wpdm_access'                  => 'array',
@@ -1046,7 +1091,7 @@ class PackageController extends PackageTemplate {
 			'icon'           => '',
 			'view_count'     => 0,
 			'download_count' => 0,
-			'link_label'     => '',
+			'link_label'     => __('Download', 'download-manager'),
 			'version'        => '',
 			'quota'          => '',
 			'access'         => '',
@@ -1064,15 +1109,18 @@ class PackageController extends PackageTemplate {
 				}
 				if ( $key === 'expire_date' ) {
 					$data['expire_date_ts']  = strtotime( $metaDataRow->meta_value );
-					$metaDataRow->meta_value = wp_date( get_option( 'date_format' ) . " " . get_option( 'time_format' ), strtotime( $metaDataRow->meta_value ) );
+					$data['expire_date_time']  = wp_date( get_option( 'date_format' ) . " " . get_option( 'time_format' ), strtotime( $metaDataRow->meta_value ) );;
+					$metaDataRow->meta_value = wp_date( get_option( 'date_format' ), strtotime( $metaDataRow->meta_value ) );
 				}
 				//if($metaValidate[$metaDataRow->meta_key] === 'array' && !is_array($metaDataRow->meta_value)) $metaDataRow->meta_value = unserialize($metaDataRow->meta_value);
 				//else
 				//    $metaDataRow->meta_value = __::sanitize_var($metaDataRow->meta_value, $metaValidate[$metaDataRow->meta_key]);
+
 				$data[ $key ] = maybe_unserialize( $metaDataRow->meta_value );
 			}
 		}
 		unset( $metaData );
+		$data['link_label'] = $this->getLinkLabel( $ID );
 		$data = apply_filters( 'wpdm_custom_data', $data, $ID );
 		if ( ! is_array( $data ) ) {
 			$data = [];
@@ -1254,7 +1302,8 @@ class PackageController extends PackageTemplate {
 					$adata = "</strong>{$data}";
 				} else {
 					//$dataattrs = $popstyle == 'pop-over'? 'data-title="'.__( "Download" , "download-manager" ).' ' . $package['title'] . '"' : 'data-toggle="modal" data-target="#pkg_' . $package['ID'] . "_" . $unqid . '"';
-					$adata = '<a href="#pkg_' . $package['ID'] . "_" . $unqid . '" data-trigger="manual" data-package="' . $package['ID'] . '" class="wpdm-download-link wpdm-download-locked ' . $popstyle . ' ' . $btnclass . '"><i class=\'' . $wpdm_download_lock_icon . '\'></i>' . $package['link_label'] . '</a>';
+					$data_file = isset($extras['ind']) ? "data-file='{$extras['ind']}'" : "";
+					$adata = '<a href="#pkg_' . $package['ID'] . "_" . $unqid . '" data-trigger="manual" data-package="' . $package['ID'] . '" '.$data_file.' class="wpdm-download-link wpdm-download-locked ' . $popstyle . ' ' . $btnclass . '"><i class=\'' . $wpdm_download_lock_icon . '\'></i>' . $package['link_label'] . '</a>';
 
 //                    if ($popstyle == 'pop-over') {
 //                        if(!get_option('__wpdm_ajax_popup', false))
@@ -1381,7 +1430,8 @@ class PackageController extends PackageTemplate {
 				$link_label = WPDM()->package->getLinkLabel( $ID, $template_type );
 				$style      = wpdm_download_button_style( ( $template_type === 'page' ), $ID );
 				$style      = isset( $params['btnclass'] ) && $params['btnclass'] !== '' ? $params['btnclass'] : $style;
-				$adata      = '<a href="#pkg_' . $ID . "_" . $unqid . '"  data-package="' . $ID . '" data-trigger="manual" class="wpdm-download-link wpdm-download-locked ' . $style . '">' . $link_label . '</a>';
+				$data_file = isset($params['ind']) ? "data-file='{$params['ind']}'" : "";
+				$adata      = '<a href="#pkg_' . $ID . "_" . $unqid . '"  data-package="' . $ID . '" '.$data_file.' data-trigger="manual" class="wpdm-download-link wpdm-download-locked ' . $style . '">' . $link_label . '</a>';
 
 			}
 
@@ -1426,6 +1476,7 @@ class PackageController extends PackageTemplate {
 		if ( is_array( $extras ) ) {
 			extract( $extras );
 		}
+
 		$data          = '';
 		$current_user  = wp_get_current_user();
 		$template_type = isset( $extras['template_type'] ) ? $extras['template_type'] : 'page';
@@ -1471,7 +1522,8 @@ class PackageController extends PackageTemplate {
 		}
 		$open_in_new_window = (int) get_option( '__wpdm_open_in_new_window', 0 ) ? 'target=_blank' : '';
 		if ( $download_url != '#' ) {
-			$download_link = $download_link_extended = $download_link_popup = (int) get_option( '__wpdm_mask_dlink', 1 ) === 1 ? "<a class='wpdm-download-link download-on-click {$style}' rel='nofollow' href='#' data-downloadurl=\"{$download_url}\" {$open_in_new_window}>{$link_label}</a>" : "<a class='wpdm-download-link {$style}' rel='nofollow' href='{$download_url}' {$open_in_new_window}>{$link_label}</a>";
+			//$download_link = $download_link_extended = $download_link_popup = (int) get_option( '__wpdm_mask_dlink', 1 ) === 1 ? "<a class='wpdm-download-link download-on-click {$style}' rel='nofollow' href='#' data-pid='{$ID}' {$open_in_new_window}>{$link_label}</a>" : "<a class='wpdm-download-link {$style}' rel='nofollow' href='{$download_url}' {$open_in_new_window}>{$link_label}</a>";
+			$download_link = $download_link_extended = $download_link_popup = (int) get_option( '__wpdm_mask_dlink', 1 ) === 1 ? "<a class='wpdm-download-link download-on-click {$style}' rel='nofollow' href='#' data-pid='{$ID}' data-downloadurl=\"{$download_url}\" {$open_in_new_window}>{$link_label}</a>" : "<a class='wpdm-download-link {$style}' rel='nofollow' href='{$download_url}' {$open_in_new_window}>{$link_label}</a>";
 		} //$download_link = $download_link_extended = $download_link_popup = (int)get_option('__wpdm_mask_dlink', 1) === 1 ? "<a class='wpdm-download-link {$style}' rel='nofollow' href='#' onclick=\"location.href='{$download_url}';return false;\">{$link_label}</a>" : "<a class='wpdm-download-link {$style}' rel='nofollow' href='{$download_url}'>{$link_label}</a>";
 		else {
 			$download_link = "<div class='alert alert-warning {$alert_size}' data-title='" . __( "DOWNLOAD ERROR:", "download-manager" ) . "'>{$link_label}</div>";
@@ -1558,7 +1610,8 @@ class PackageController extends PackageTemplate {
 			$terms_check_label = get_post_meta( $ID, '__wpdm_terms_check_label', true );
 			if ( $terms_lock !== 0 && ( ! function_exists( 'wpdmpp_effective_price' ) || wpdmpp_effective_price( $ID ) == 0 ) ) {
 				if ( ! $this->isLocked( $ID ) && ! $embed ) {
-					$data = "<a href='#unlock' class='wpdm-download-link wpdm-download-locked {$style}' data-package='{$ID}'>{$link_label}</a>";
+					$data_file = isset($extras['ind']) ? "data-ind='{$extras['ind']}'" : "";
+					$data = "<a href='#unlock' class='wpdm-download-link wpdm-download-locked {$style}' data-package='{$ID}' {$data_file} >{$link_label}</a>";
 				} else {
 					$data = $data ? $data : $download_link;
 				}
@@ -1567,7 +1620,6 @@ class PackageController extends PackageTemplate {
 				}
 
 			}
-
 			if ( $data != "" ) {
 				$data = apply_filters( 'wpdm_download_link', $data, $extras + array( 'ID' => $ID, 'id' => $ID ) );
 
@@ -1614,27 +1666,50 @@ class PackageController extends PackageTemplate {
 			$ext['filename'] = esc_attr( $ext['filename'] );
 		}
 		$download_url = add_query_arg( $ext, $permalink );
-		$flat         = 0; //(int)get_option('__wpdm_flat_download_url', 0);
-		$code         = json_encode( $ext );
-		$code         = base64_encode( $code );
-		$code         = rtrim( $code, '=' );
-		$filename     = isset( $ext['filename'] ) ? $ext['filename'] : '';
-		if ( isset( $ext['ind'] ) && $filename == '' ) {
-			$files    = $this->getFiles( $ID );
-			$filename = wpdm_basename( $files[ $ext['ind'] ] );
-		}
-		if ( ! isset( $ext['ind'] ) && $filename == '' ) {
-			$files = $this->getFiles( $ID );
-			if ( count( $files ) > 1 ) {
-				$filename = sanitize_file_name( get_the_title( $ID ) ) . ".zip";
-			} else {
-				$filename = array_shift( $files );
-				$filename = wpdm_basename( $filename );
-			}
+		$flat         = (int)get_option('__wpdm_flat_download_url', 0);
+		$dlbase         = get_option('__wpdm_fdurl_base', 'wpdmdl');
 
+		/*$filename     = $ext['filename'] ?? '';
+		if ( isset( $ext['ind'] ) && $filename == '' ) {
+			$files    = $this->getFiles( $ID, true );
+			$filename = wpdm_basename( $files[ $ext['ind'] ] );
+		}*/
+
+		if(isset($files) && is_array($files)) {
+			$_files = array_values( $files );
+			$ffile  = $_files[0];
+			if ( substr_count( $ffile, 'magnet:' ) ) {
+				$download_url = $ffile;
+			}
 		}
+
 		if ( $flat ) {
-			$download_url = home_url( "/wpdmdl/{$ID}-{$code}/{$filename}" );
+			if(!isset($ext['filename'])) {
+				$files = $this->getFiles( $ID );
+				if ( count( $files ) > 1 ) {
+					$filename = sanitize_title( get_the_title( $ID ) ) . ".zip";
+				} else {
+					$filename = array_shift( $files );
+					if ( wpdm_is_url( $filename ) ) {
+						$__fileinfo = maybe_unserialize( get_post_meta( $ID, '__wpdm_fileinfo', true ) );
+						if ( is_array( $__fileinfo ) ) {
+							$filename = array_shift( $__fileinfo );
+							$filename = $filename['title'];
+						} else {
+							$filename = sanitize_title( get_the_title( $ID ) );
+						}
+					}
+
+
+				}
+			} else {
+				$filename = $ext['filename'];
+			}
+			//$filename = get_post_meta( $ID, '__wpdm_flat_download_filename', true );
+			if(!isset($ext['ind']))
+				$download_url = home_url( "/{$dlbase}/{$ID}/{$filename}" );
+			else
+				$download_url = home_url( "/{$dlbase}/{$ID}/{$ext['ind']}/{$filename}" );
 		}
 
 		return $download_url;
@@ -1661,7 +1736,7 @@ class PackageController extends PackageTemplate {
 	 * @return bool
 	 */
 	public function validateMasterKey( $ID, $Key ) {
-		if ( $Key === '' ) {
+		if ( $Key === '' || (int)get_option('__wpdm_mdl_off') === 1) {
 			return false;
 		}
 		$masterKey = get_post_meta( $ID, '__wpdm_masterkey', true );
@@ -1685,7 +1760,7 @@ class PackageController extends PackageTemplate {
 	function expirableDownloadLink( $ID, $usageLimit = 10, $expirePeriod = 10800, $sessionOnly = true ) {
 		if(!$ID || get_post_type($ID) !== 'wpdmpro') return false;
 		$key = uniqid();
-		$exp = array( 'use' => $usageLimit, 'expire' => time() + $expirePeriod );
+		$exp = array( 'use' => $usageLimit, 'expire' => time() + $expirePeriod, 'user' => get_current_user_id() );
 		if ( ! $sessionOnly ) {
 			update_post_meta( $ID, "__wpdmkey_" . $key, $exp );
 		} else {
@@ -1693,7 +1768,8 @@ class PackageController extends PackageTemplate {
 		}
 		$permalink    = get_permalink( $ID );
 		$permalink    = apply_filters( "wpdm_download_url_base", $permalink, $ID );
-		$download_url = add_query_arg( array( "wpdmdl" => $ID, "_wpdmkey" => $key ), $permalink );
+		$params = array( "wpdmdl" => $ID, "_wpdmkey" => $key );
+		$download_url = add_query_arg( $params, $permalink );
 
 		return $download_url;
 	}
@@ -1815,15 +1891,15 @@ class PackageController extends PackageTemplate {
 
             }*/
 
+		// Get template content
+		$template = $this->getTemplateContent( $template, $vars['ID'], $type );
+
 		$ret = $this->prepare( $vars['ID'], $template, $type );
 		if ( ! is_wp_error( $ret ) ) {
 			$vars = $this->packageData;
 		} else {
 			return '';
 		}
-
-		// Get template content
-		$template = $this->getTemplateContent( $template, $vars['ID'], $type );
 
 		if ( isset( $vars['__loginform_only'] ) && $vars['__loginform_only'] != '' ) {
 			return $vars['__loginform_only'];
@@ -1858,8 +1934,8 @@ class PackageController extends PackageTemplate {
 		//preg_match_all( "/\[protected_msg=([^\]]+)\]/", $template, $protected_msg );
 
 
-		//$thumb = wp_get_attachment_image_src(get_post_thumbnail_id($vars['ID']), 'full');
-		//$vars['preview'] = $thumb['0'];
+		$thumb = wp_get_attachment_image_src(get_post_thumbnail_id($vars['ID']), 'full');
+		$vars['preview'] = isset($thumb[0]) ? $thumb[0] : '';
 		//$vars['featured_image'] = ($vars['preview'] != '')?"<img src='{$vars['preview']}' alt='{$vars['title']}' />":"";
 
 		$tfiles = $vars['files'];
@@ -1895,12 +1971,16 @@ class PackageController extends PackageTemplate {
 		if ( strpos( $template, 'pdf_thumb' ) ) {
 			if ( $ext == 'pdf' ) {
 				$pdf_preview           = FileSystem::pdfThumbnail( $pdf, $vars['ID'] );
-				$vars['pdf_thumb']     = "<img alt='{$vars['title']}' src='" . $pdf_preview . "' />";
+				$vars['pdf_thumb']     = "<img alt='".esc_attr($vars['title'])."' src='" . $pdf_preview . "' />";
 				$vars['pdf_thumb_url'] = $pdf_preview;
 				$vars['pdf_name']      = str_replace( [ "pdf", "PDF" ], "", wp_basename( $pdf ) );
 			} else {
-				$vars['pdf_thumb'] = $vars['preview'] != '' ? "<img alt='{$vars['title']}' src='{$vars['preview']}' />" : "";
+				$vars['pdf_thumb'] = $vars['preview'] != '' ? "<img alt='".esc_attr($vars['title'])."' src='{$vars['preview']}' />" : "";
 			}
+		}
+
+		if(strpos($template, 'dir_view')) {
+				$vars['dir_view'] = do_shortcode("[wpdm_dir_view pid='{$vars['ID']}']");
 		}
 
 		// Parse [pdf_thumb_WxH] tag in link/page template
@@ -1910,7 +1990,7 @@ class PackageController extends PackageTemplate {
 				$pmatches[2][ $nd ]
 			) );
 			$scode          = str_replace( array( "[", "]" ), "", $scode );
-			$vars[ $scode ] = $imsrc != '' ? "<img src='" . $imsrc . "' alt='{$vars['title']}' />" : '';
+			$vars[ $scode ] = $imsrc != '' ? "<img src='" . $imsrc . "' alt='".esc_attr($vars['title'])."' />" : '';
 		}
 
 		// Parse [file_type] tag in link/page template
@@ -1931,7 +2011,7 @@ class PackageController extends PackageTemplate {
 				$matches[2][ $nd ]
 			), $crop );
 			$scode          = str_replace( array( "[", "]" ), "", $scode );
-			$vars[ $scode ] = $vars['preview'] != '' ? "<img class='wpdm-thumb wpdm-thumb-{$matches[1][$nd]}x{$matches[2][$nd]} wpdm-thumb-{$vars['ID']}' src='" . $imsrc . "' alt='{$vars['title']}' />" : '';
+			$vars[ $scode ] = $vars['preview'] != '' ? "<img class='wpdm-thumb wpdm-thumb-{$matches[1][$nd]}x{$matches[2][$nd]} wpdm-thumb-{$vars['ID']}' src='" . $imsrc . "' alt='".esc_attr($vars['title'])."' />" : '';
 		}
 
 		// [thumb_url...]
@@ -2544,6 +2624,16 @@ class PackageController extends PackageTemplate {
 			}
 		}
 
+		$terms = get_the_terms( $ID, 'wpdmcategory' );
+		foreach ( $terms as $term ) {
+			wp_set_post_terms( $new_ID, (int)$term->term_id, 'wpdmcategory', true );
+		}
+
+		$terms = get_the_terms( $ID, 'wpdmtag' );
+		foreach ( $terms as $term ) {
+			wp_set_post_terms( $new_ID, $term->name, 'wpdmtag', true );
+		}
+
 		return $new_ID;
 	}
 
@@ -2647,7 +2737,7 @@ class PackageController extends PackageTemplate {
 		if ( is_array( $package_id ) ) {
 			$id = $package_id['ID'];
 		}
-		$tags  = wp_get_post_terms( $id, 'wpdmtag' );
+		$tags  = wp_get_post_terms( $id, WPDM_TAG );
 		$cats  = wp_get_post_terms( $id, 'wpdmcategory' );
 		$posts = array();
 		if ( $tags ) {
@@ -2662,7 +2752,7 @@ class PackageController extends PackageTemplate {
 				'post_type'      => 'wpdmpro',
 				'tax_query'      => [
 					[
-						'taxonomy' => 'wpdmtag',
+						'taxonomy' => WPDM_TAG,
 						'field'    => 'id',
 						'terms'    => $tag_ids,
 						'operator' => 'IN'
@@ -2770,6 +2860,5 @@ class PackageController extends PackageTemplate {
 
 
 }
-
 
 

@@ -97,8 +97,11 @@ function wpdm_user_has_access( $id, $type = 'package' ) {
  */
 function wpdm_verify_email( $email ) {
 	$dns_verify      = get_option( '__wpdm_verify_dns', 0 );
-	$blocked_domains = explode( "\n", str_replace( "\r", "", get_option( '__wpdm_blocked_domains', '' ) ) );
-	$blocked_emails  = explode( "\n", str_replace( "\r", "", get_option( '__wpdm_blocked_emails', '' ) ) );
+	$blocked_domains = trim(get_option( '__wpdm_blocked_domains', '' ));
+	$blocked_domains = explode( "\n", str_replace( "\r", "", $blocked_domains ) );
+	$blocked_emails = trim(get_option( '__wpdm_blocked_emails', '' ));
+	$blocked_emails  = explode( "\n", str_replace( "\r", "", $blocked_emails ) );
+
 	$eparts          = explode( "@", $email );
 	if ( ! isset( $eparts[1] ) ) {
 		return false;
@@ -108,10 +111,10 @@ function wpdm_verify_email( $email ) {
 	if ( ! is_email( $email ) ) {
 		return false;
 	}
-	if ( in_array( $email, $blocked_emails ) ) {
+	if ( count($blocked_emails) > 0 && in_array( $email, $blocked_emails ) ) {
 		return false;
 	}
-	if ( in_array( $domain, $blocked_domains ) && $domain !== $self) {
+	if (  count($blocked_domains) > 0 && in_array( $domain, $blocked_domains ) && $domain !== $self) {
 		return false;
 	}
 	if ( $dns_verify && ! checkdnsrr( $domain, 'MX' ) ) {
@@ -275,15 +278,15 @@ function wpdm_thumb( $post, $size = '', $echo = true, $extra = null ) {
 	if ( is_int( $post ) ) {
 		$post = get_post( $post );
 	}
-	if ( ! $post ) {
+	if ( ! is_object( $post ) ) {
 		return '';
 	}
 	$size  = $size ? $size : 'thumbnail';
 	$class = isset( $extra['class'] ) ? $extra['class'] : '';
 	$style = isset( $extra['style'] ) ? $extra['style'] : '';
 	$crop  = isset( $extra['crop'] ) ? $extra['crop'] : get_option( '__wpdm_crop_thumbs', false );
-	$alt   = $post->post_title;
-	if ( is_array( $size ) ) {
+
+    if ( is_array( $size ) ) {
 		$large_image_url = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
 		if ( ! $large_image_url ) {
 			return '';
@@ -581,8 +584,9 @@ function wpdm_option_field( $data ) {
 			break;
 		case 'radio':
 			$html = "";
+            $display = $data['display'] ?? 'inline-block';
 			foreach ( $data['options'] as $value => $label ) {
-				$html .= "<label style='display: inline-block;margin-right: 5px'><input type='radio' name='{$data['name']}' class='{$class}' value='{$value}' " . selected( $data['selected'], $value, false ) . " /> $label</label>";
+				$html .= "<label style='display: $display;margin-right: 5px'><input type='radio' name='{$data['name']}' class='{$class}' value='{$value}' " . checked( $data['selected'], $value, false ) . " /> $label</label>";
 			}
 			$html .= "";
 

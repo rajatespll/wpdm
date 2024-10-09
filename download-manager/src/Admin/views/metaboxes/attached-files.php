@@ -1,11 +1,20 @@
 <?php
 
+global $wpdb;
+
 $files = maybe_unserialize(get_post_meta($post->ID, '__wpdm_files', true));
 
 if (!is_array($files)) $files = array();
 
+$files = array_filter($files);
+
 $fileinfo = get_post_meta($post->ID, '__wpdm_fileinfo', true);
 
+$fdc = [];
+$file_download_counts = $wpdb->get_results('SELECT count(id) as download_count, filename FROM `'.$wpdb->prefix.'ahm_download_stats` WHERE pid = '.(int)$post->ID.' group by filename');
+foreach ($file_download_counts as $entry) {
+    $fdc[$entry->filename] = $entry->download_count;
+}
 
 ?>
 
@@ -123,6 +132,22 @@ $fileinfo = get_post_meta($post->ID, '__wpdm_fileinfo', true);
         border-bottom: 1px solid #e25c7c;
     }
 
+    .filemeta {
+        position: absolute;
+        padding: 4px 12px;
+        background: rgba(0,0,0,0.7);
+        color: #fff;
+        bottom: 0;
+        right: 0;
+        font-family: monospace;
+        display: none;
+        transition: all ease-in-out 300ms;
+    }
+
+    .wpdm-list-item:hover .filemeta {
+        display: block;
+    }
+
 </style>
 
 <div class="w3eden">
@@ -134,9 +159,11 @@ $fileinfo = get_post_meta($post->ID, '__wpdm_fileinfo', true);
                 <div class="wpdm-list-item" style="position: relative" data-target="#file_info_<?= $file_id ?>">
                     <button type="button" class="btn btn-sm btn-danger show-on-hover" style="position: absolute;right: 20px" rel="del"><i class="fas fa-trash"></i></button>
                     <div>
+                        <div class="filemeta"><?php echo (int)wpdm_valueof($fdc, $file); ?> <?= __('Downloads', WPDM_TEXT_DOMAIN); ?></div>
                         <input class="faz" type="hidden" value="<?= $file ?>" name="file[files][<?= $file_id ?>]" />
                         <strong class="d-block"><?= wpdm_valueof($fileinfo, "{$file_id}/title", ['validate' => 'txt']); ?></strong>
                         <?= $file ?>
+
                     </div>
                 </div>
                 <?php } ?>

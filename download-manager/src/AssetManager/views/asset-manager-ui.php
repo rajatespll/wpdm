@@ -642,6 +642,11 @@ if(is_admin()){
                                     </div>
                                 </div>
 
+                                <div class="media" style="border:1px solid #e8e8e8;border-radius: 3px;padding: 10px;">
+                                    <div class="pull-right"><strong>{{ asset.downloads }}</strong></div>
+                                    <div class="media-body" style="max-width: 80%;word-break: break-all"><?php _e('Total Downloads', 'download-manager'); ?></div>
+                                </div>
+
                                 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="rename">
                                     <div class="modal-dialog modal-sm" role="document">
                                         <div class="modal-content">
@@ -678,7 +683,7 @@ if(is_admin()){
                                         <div class="panel panel-default" style="margin-top: 15px;margin-bottom: 0;" v-if="asset.type === 'file'">
                                             <div class="input-group" style="border: 0 !important;">
                                                 <input type="text" readonly="readonly" id="sharecode" class="form-control form-control-lg" v-bind:value="asset.sharecode" />
-                                                <div onclick="jQuery('#sharecode').select();document.execCommand('copy');" class="input-group-addon ttip" title="<?php echo __( "Copy Shortcode", "download-manager" ) ?>" style="border: 0 !important;background: #ffffff;cursor: pointer;"><i class="fa fa-copy color-purple"></i></div>
+                                                <div onclick="WPDM.copy('sharecode')" class="input-group-addon ttip cursor-pointer" title="<?php echo __( "Copy Shortcode", "download-manager" ) ?>" style="border: 0 !important;background: #ffffff;cursor: pointer;"><i class="fa fa-copy color-purple"></i></div>
                                             </div>
                                             <div class="panel-footer text-center">
                                                 <?= esc_attr__( 'Use the shortcode to embed this asset on any page or post', WPDM_TEXT_DOMAIN ); ?>
@@ -745,6 +750,11 @@ if(is_admin()){
 
 
                                                                 <?php } ?>
+
+                                                                <div class="panel-heading"><?php echo __('Link Expiration Date:', 'download-manager') ?></div>
+                                                                <div class="panel-body">
+                                                                    <input class="form-control" type="datetime-local" name="access[expire]" />
+                                                                </div>
 
                                                             </div>
 
@@ -864,14 +874,14 @@ if(is_admin()){
         </div>
     </div>
 
-    <div id="fileTPL" style="display: none">
+    <template id="fileTPL">
 
             <div class="file-row item-row" id="row_{{id}}" data-id="{{id}}">
                 <div class="row panel-file file-tpl">
                     <div class="col-md-8  text-left btn-open-file c-pointer file-info-area" data-id="{{id}}" data-filetype="{{contenttype}}" data-path="{{path}}"  data-item="{{item}}">
 
                         <div class="file-info media">
-                            <img class="icon pull-left" src="{{icon}}" />
+                            {{icon}}
                             <div class="dir-info"><div class="item_label" title="{{item}}">{{item_label}}</div><small class="color-purple">{{note}}</small></div>
                         </div>
                     </div>
@@ -890,7 +900,7 @@ if(is_admin()){
                 </div>
             </div>
 
-    </div>
+    </template>
 
     <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="__upfile">
         <div class="modal-dialog modal-sm" role="document">
@@ -1057,6 +1067,11 @@ if(is_admin()){
 
 
                             <?php } ?>
+
+                            <div class="panel-heading" style="box-shadow: none !important;border-radius: 0;border-top: 1px solid #e3e3e3;"><?php echo __('Link Expiration Date:', 'download-manager') ?></div>
+                            <div class="panel-body">
+                                <input class="form-control" type="datetime-local" name="access[expire]" :value="link.access.expire" />
+                            </div>
 
                         </div>
 
@@ -1326,7 +1341,7 @@ if(is_admin()){
                         if (entry.type == 'file') {
                             ext = entry.contenttype.replace("/", "_");
                             var tpl = $('#fileTPL').html();
-                            tpl = tpl.replace("{{icon}}", entry.icon);
+                            tpl = tpl.replace("{{icon}}", `<img class="icon pull-left" src="${entry.icon}" />` );
                             tpl = tpl.replace("{{ext}}", ext);
                             tpl = tpl.replace("{{contenttype}}", entry.contenttype);
                             tpl = tpl.replace("{{item_label}}", entry.item_label);
@@ -1339,7 +1354,7 @@ if(is_admin()){
                             tpl = tpl.replace(/\{\{star\}\}/ig, _star);
                         } else {
                             var tpl = $('#dirTPL').html();
-                            tpl = tpl.replace("{{icon}}", entry.icon);
+                            tpl = tpl.replace("{{icon}}", `<img class="icon pull-left" src="${entry.icon}" />`);
                             tpl = tpl.replace("{{item_label}}", entry.item_label);
                             tpl = tpl.replace("{{note}}", entry.note);
                             tpl = tpl.replace("{{file_size}}", entry.file_size);
@@ -1376,7 +1391,7 @@ if(is_admin()){
                         if (entry.type == 'file') {
                             ext = entry.contenttype.replace("/", "_");
                             var tpl = $('#fileTPL').html();
-                            tpl = tpl.replace("{{icon}}", entry.icon);
+                            tpl = tpl.replace("{{icon}}", `<img class="icon pull-left" src="${entry.icon}" />`);
                             tpl = tpl.replace("{{ext}}", ext);
                             tpl = tpl.replace("{{contenttype}}", entry.contenttype);
                             tpl = tpl.replace("{{item_label}}", entry.item_label);
@@ -1389,7 +1404,7 @@ if(is_admin()){
                             tpl = tpl.replace(/\{\{star\}\}/ig, _star);
                         } else {
                             var tpl = $('#dirTPL').html();
-                            tpl = tpl.replace("{{icon}}", entry.icon);
+                            tpl = tpl.replace("{{icon}}", `<img class="icon pull-left" src="${entry.icon}" />`);
                             tpl = tpl.replace("{{item_label}}", entry.item_label);
                             tpl = tpl.replace("{{note}}", entry.note);
                             tpl = tpl.replace("{{file_size}}", entry.file_size);
@@ -1449,7 +1464,7 @@ if(is_admin()){
                         if (entry.type == 'file') {
                             ext = entry.contenttype.replace("/", "_");
                             var tpl = $('#fileTPL').html();
-                            tpl = tpl.replace("{{icon}}", entry.icon);
+                            tpl = tpl.replace("{{icon}}", `<img class="icon pull-left" src="${entry.icon}" />`);
                             tpl = tpl.replace("{{ext}}", ext);
                             tpl = tpl.replace("{{contenttype}}", entry.contenttype);
                             tpl = tpl.replace("{{item_label}}", entry.item_label);
@@ -1462,7 +1477,7 @@ if(is_admin()){
                             tpl = tpl.replace(/\{\{star\}\}/ig, _star);
                         } else {
                             var tpl = $('#dirTPL').html();
-                            tpl = tpl.replace("{{icon}}", entry.icon);
+                            tpl = tpl.replace("{{icon}}", `<img class="icon pull-left" src="${entry.icon}" />`);
                             tpl = tpl.replace("{{item_label}}", entry.item_label);
                             tpl = tpl.replace("{{note}}", entry.note);
                             tpl = tpl.replace("{{file_size}}", entry.file_size);

@@ -8,7 +8,7 @@ if(!$logo) $logo = get_site_icon_url();
     <div id="wpdmlogin" <?php if(wpdm_query_var('action') == 'lostpassword') echo 'class="lostpass"'; ?>>
         <?php if($logo && !is_user_logged_in()){ ?>
             <div class="text-center wpdmlogin-logo">
-                <a href="<?php echo home_url('/'); ?>"><img alt="Logo" src="<?php echo $params['logo'];?>" /></a>
+                <a href="<?php echo home_url('/'); ?>"><img alt="Logo" src="<?php echo esc_attr($logo);?>" /></a>
             </div>
         <?php } ?>
 
@@ -64,7 +64,7 @@ if(!$logo) $logo = get_site_icon_url();
             <div class="row">
                 <div class="col-md-12"><button type="submit" name="wp-submit" id="loginform-submit" class="btn btn-block btn-primary btn-lg"><i class="fas fa-user-shield"></i> &nbsp;<?php _e( "Login" , WPDM_TEXT_DOMAIN ); ?></button></div>
                 <?php if(isset($regurl) && $regurl != ''){ ?>
-                    <div class="col-md-12"><br/><a href="<?php echo $regurl; ?>" class="btn btn-block btn-link btn-xs wpdm-reg-link  color-primary"><?php _e( "Don't have an account yet?" , WPDM_TEXT_DOMAIN ); ?> <i class="fas fa-user-plus"></i> <?php _e( "Register Now" , WPDM_TEXT_DOMAIN ); ?></a></div>
+                    <div class="col-md-12"><br/><a href="<?php echo esc_attr($regurl); ?>" class="btn btn-block btn-link btn-xs wpdm-reg-link  color-primary"><?php _e( "Don't have an account yet?" , WPDM_TEXT_DOMAIN ); ?> <i class="fas fa-user-plus"></i> <?php _e( "Register Now" , WPDM_TEXT_DOMAIN ); ?></a></div>
                 <?php } ?>
             </div>
 
@@ -115,8 +115,10 @@ if(!$logo) $logo = get_site_icon_url();
             $('#loginform-submit').html(WPDM.html("i", "", "fa fa-spin fa-sync")+" <?php _e( "Logging In..." , WPDM_TEXT_DOMAIN ); ?>").attr('disabled', 'disabled');
             WPDM.blockUI('#loginform');
             $(this).ajaxSubmit({
-                error: function(error) {
+                error: async function(error) {
                     WPDM.unblockUI('#loginform');
+                    console.log(error);
+                    if(typeof error.responseJSON !== 'undefined') {
                     $('#loginform').prepend(WPDM.html("div", error.responseJSON.messages, "alert alert-danger"));
                     $('#loginform-submit').html(llbl).removeAttr('disabled');
                     <?php if((int)get_option('__wpdm_recaptcha_loginform', 0) === 1 && get_option('_wpdm_recaptcha_site_key') != ''){ ?>
@@ -126,8 +128,13 @@ if(!$logo) $logo = get_site_icon_url();
 
                     }
                     <?php } ?>
+                    } else {
+                        setTimeout(function () {
+                            location.href = "<?= wp_sanitize_redirect(htmlspecialchars_decode($log_redirect)); ?>";
+                        }, 1000);
+                    }
                 },
-                success: function (res) {
+                success: async function (res) {
                     WPDM.unblockUI('#loginform');
                     if (!res.success) {
                         $('form .alert-danger').hide();
@@ -141,8 +148,11 @@ if(!$logo) $logo = get_site_icon_url();
                         }
                         <?php } ?>
                     } else {
+                        let proceed = await WPDM.doAction("wpdm_user_login", res);
                         $('#loginform-submit').html(WPDM.html("i", "", "fa fa-sun fa-spider") + " " + res.message);
-                        location.href = "<?= wp_sanitize_redirect(htmlspecialchars_decode($log_redirect)); ?>";
+                        setTimeout(function () {
+                            location.href = "<?= wp_sanitize_redirect(htmlspecialchars_decode($log_redirect)); ?>";
+                        }, 1000);
                     }
                 }
             });

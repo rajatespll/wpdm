@@ -25,13 +25,14 @@ class DownloadStats
      * @param $filename
      * @param $oid
      */
-    function add($pid, $filename, $oid = null){
+    function add($pid, $filename, $oid = null, $type = 'package'){
         global $wpdb;
 
 	    $current_user = wp_get_current_user();
 
+
         if(defined("WPDM_DISABLE_STATS") && WPDM_DISABLE_STATS === true) return;
-		if(__::query_var('open', 'int')) return;
+		if(__::query_var('open', 'int') || __::query_var('play', 'int')) return;
 
         //Handle downloads from email lock
         if(wpdm_query_var('subscriber' )){
@@ -39,14 +40,21 @@ class DownloadStats
             $wpdb->update("{$wpdb->prefix}ahm_emails", ['request_status' => 1], ['id' => $subscriber]);
         }
 
-        $uid = get_current_user_id();
-        $ip = (get_option('__wpdm_noip') == 0) ? wpdm_get_client_ip() : "";
+        $uid = $current_user->ID;
+	    if(!$uid && __::query_var('_wpdmkey') !== '') {
+		    $key  = "__wpdmkey_".__::query_var('_wpdmkey');
+		    $keyData = TempStorage::get( "{$key}_{$pid}" );
+			if(!$uid) $uid = (int)__::valueof($keyData, 'user');
+	    }
+
+	    $ip = (get_option('__wpdm_noip') == 0) ? wpdm_get_client_ip() : "";
         $agent = $_SERVER['HTTP_USER_AGENT'];
-        $hash = "uniq_".md5($pid.$uid.date("Y-m-d-h-i").wpdm_get_client_ip());
-        if((int)Session::get($hash) === 1 || wpdm_query_var('nostat', ['validate' => 'int']) === 1) return;
-        Session::set($hash, 1);
+        //$hash = $this->getInstanceID($pid, $filename, $uid); // "uniq_".md5($pid.$filename.$uid.date("Y-m-d-h-i").wpdm_get_client_ip());
+        if($this->sessionExists($pid, $filename, $uid) || wpdm_query_var('nostat', ['validate' => 'int']) === 1) return;
+        //Session::set($hash, 1);
         $version = get_post_meta($pid, '__wpdm_version', true);
-        $wpdb->insert("{$this->dbTable}", array('pid' => (int)$pid, 'uid' => (int)$uid, 'oid' => $oid, 'year' => date("Y"), 'month' => date("m"), 'day' => date("d"), 'timestamp' => time(), 'ip' => "$ip", 'filename' => $filename, 'agent' => $agent, 'version' => $version));
+		$data = apply_filters("wpdm_download_history_row_data", array('pid' => (int)$pid, 'uid' => (int)$uid, 'oid' => $oid, 'year' => date("Y"), 'month' => date("m"), 'day' => date("d"), 'timestamp' => time(), 'ip' => "$ip", 'filename' => $filename, 'agent' => $agent, 'version' => $version, 'type' => $type));
+        $wpdb->insert("{$this->dbTable}", $data);
         update_post_meta($pid, '__wpdm_download_count', (int)get_post_meta($pid, '__wpdm_download_count', true) + 1);
 
         $this->updateUserDownloadCount($pid);
@@ -60,7 +68,16 @@ class DownloadStats
 
         if ($ip == '') $ip = $index;
         Session::set('downloaded_' . $pid, $ip);
+		do_action("wpdm_after_insert_download_history", $pid, $uid);
     }
+
+	function sessionExists($pid, $filename, $uid)
+	{
+		$hash = "uniq_".md5($pid.$filename.$uid.date("Y-m-d-h-i").wpdm_get_client_ip());
+		$exists =  (int)Session::get($hash) === 1;
+		if(!$exists) Session::set($hash, 1);
+		return $exists;
+	}
 
     /**
      * Get user download count for the given package

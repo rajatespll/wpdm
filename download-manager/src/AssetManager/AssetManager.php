@@ -102,8 +102,16 @@ class AssetManager
 
         //add_shortcode('wpdm_asset_manager', array($this,'_assetManager'));
         add_shortcode('wpdm_asset', array($this, 'wpdmAsset'));
+        add_shortcode('wpdm_asset', array($this, 'wpdmAsset'));
 
-        //add_filter('wpdm_frontend', array($this,'frontendFileManagerTab'));
+	    add_shortcode("wpdm_dir_view", [$this, 'dirView']);
+	    add_action("wp_ajax_explore_dir", [$this, 'exploreDir']);
+	    add_action("wp_ajax_nopriv_explore_dir", [$this, 'exploreDir']);
+	    add_action("wp_ajax_wpdm_dir_fileinfo", [$this, 'fileInfo']);
+	    add_action("wp_ajax_nopriv_wpdm_dir_fileinfo", [$this, 'fileInfo']);
+
+
+	    //add_filter('wpdm_frontend', array($this,'frontendFileManagerTab'));
 
         if (is_admin()) {
             add_action('admin_menu', array($this, 'adminMenu'), 10);
@@ -140,6 +148,9 @@ class AssetManager
         if (preg_match('/wpdm\-asset\/([^\/]+)/', wpdm_valueof($url, 'path'), $matches)) {
             $asset = new Asset();
             $asset->resolveKey($matches[1]);
+			$expire = wpdm_valueof(wpdm_valueof($asset,'links/'.$asset->activeLinkKey), 'access/expire');
+			if($expire)
+				$expire = strtotime(str_replace('T', ' ', $expire));
             http_response_code(200);
             include Template::locate("asset-viewer.php", __DIR__.'/views');
             die();
@@ -795,7 +806,79 @@ class AssetManager
 		return $path;
 	}
 
+
+	/**
+	 * Directory view shortcode
+	 * @param $params
+	 *
+	 * @return false|string
+	 */
+	function dirView( $params ) {
+		ob_start();
+		$pid = -1;
+		if(isset($params['login']) && (int)$params['login'] === 1) {
+			return WPDM()->user->login->form();
+		}
+		if(isset($params['dir'])) {
+			$dir      = Crypt::encrypt( $params['dir'] );// $params['dir'];
+			$base_dir = $dir;
+		} else if(isset($params['pid'])) {
+			$dir = get_post_meta((int)$params['pid'], '__wpdm_package_dir', true);
+			$base_dir = $dir;
+			$pid = (int)$params['pid'];
+		}
+		if($dir)
+			include Template::locate("dir-explorer.php", __DIR__.'/views');
+		return ob_get_clean();
+	}
+
+	function exploreDir() {
+		__::isAuthentic('wpdm_direx', WPDM_PUB_NONCE, 'read', false);
+		$dir = Crypt::decrypt(wpdm_query_var('dir'));
+		$dir = realpath($dir);
+		$pid = (int)Crypt::decrypt(wpdm_query_var('pid'));
+
+		// $pid =  -1 for stand-alone dir
+		if($pid === 0)  wp_send_json(['success' => false, 'message' => __('[1] Invalid dir path!', WPDM_TEXT_DOMAIN)]);
+
+		$base_dir = rtrim(Crypt::decrypt(wpdm_query_var('base')), "/");
+		if(substr_count($dir, $base_dir) === 0) wp_send_json(['success' => false, 'message' => __('[2] Invalid dir path!', WPDM_TEXT_DOMAIN)]);
+
+		$contents = FileSystem::scanDir($dir, false);
+		$dir_contents = [];
+		foreach ($contents as $path){
+			$type = is_dir($path) ? 'dir' : substr(FileSystem::fileExt(basename($path)), 0, 4);
+			$dir_contents[] = ['name' => basename($path), 'path' => Crypt::encrypt($path), 'type' => strtoupper($type), 'size' => ($type === 'dir' ? '&mdash;' : __::formatBytes(filesize($path)))];
+		}
+
+		$rel_dir = str_replace(rtrim($base_dir, '/'), '', $dir);
+		$parts = explode("/", $rel_dir);
+		$breadcrumb[] = "<i class='fa fa-hdd color-purple'></i><a href='#' class='breadcrumb-block' data-path='".Crypt::encrypt($base_dir)."'>" . __("Home", "download-manager") . "</a>";
+		$topath = array();
+		foreach ($parts as $part) {
+			$topath[] = $part;
+			$rpath = Crypt::encrypt(realpath($base_dir.'/'.implode("/", $topath)));
+			if($part)
+				$breadcrumb[] = "<a href='#' class='breadcrumb-block' data-path='{$rpath}'>" . esc_attr($part) . "</a>";
+		}
+		$breadcrumb = implode("<i class='fa fa-folder-open'></i>", $breadcrumb);
+
+		wp_send_json(['success' => true, 'content' => $dir_contents, 'breadcrumb' => $breadcrumb]);
+	}
+
+	function fileInfo() {
+		__::isAuthentic('wpdm_direx', WPDM_PUB_NONCE, 'read', false);
+		$file = Crypt::decrypt(wpdm_query_var('file'));
+		$file = realpath($file);
+		$base_dir = rtrim(Crypt::decrypt(wpdm_query_var('base')), "/");
+		if(substr_count($file, $base_dir) === 0) {
+			Messages::error(__('Invalid dir path!', WPDM_TEXT_DOMAIN));
+			die();
+		}
+		include Template::locate("file-info.php", __DIR__.'/views');
+		die();
+
+	}
+
 }
-
-
 

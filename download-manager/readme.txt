@@ -3,7 +3,7 @@ Contributors: w3eden, codename065, shahriar0822, shimo16ab, shafayat-alam
 Donate link:
 Tags: download manager, document management, file manager, digital store, ecommerce, document management plugin,  download monitor, download counter, password protection, download protection
 Requires at least: 5.3
-Tested up to: 6.0
+Tested up to: 6.6
 License: GPLv2 or later
 
 
@@ -74,7 +74,7 @@ Also, you may use WordPress Download Manager as a complete e-Commerce Solution f
 *   Sharable link generator
 *   Bookmarking, Comments and discussions
 *   Front-end asset management
-*   Custom asset meta data
+*   Custom asset metadata
 *   Asset archive and version management
 
 = Complete Digital Store Solution: =
@@ -151,8 +151,4 @@ Check download stats and get a push notification when someone downloads, install
 * [Themes](https://www.wpdownloadmanager.com/downloads/themes/) - Themes Specially Optimized for Download Manager
 
 
-*** Latest Update Changelog ***
-* Improved email functions
-* Added new email template
-* Fixed an issue with input sanitization
 

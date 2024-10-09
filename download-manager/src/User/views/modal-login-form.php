@@ -83,7 +83,7 @@ if(!defined('ABSPATH')) die(); ?>
 <script>
     jQuery(function ($) {
         var llbl = $('#wpdmloginmodal-submit').html();
-        var __lm_redirect_to = "<?php echo __::valueof($_SERVER, 'REQUEST_URI', ['validate' => 'escs']); ?>";
+        var __lm_redirect_to = location.href;
         var __lm_logo = "<?php echo get_site_icon_url(); ?>";
         var $body = $('body');
         $('#modalloginform').submit(function () {

@@ -32,7 +32,7 @@ class Query
     /**
      * @var string WPDM Tag
      */
-    public $tag_tax = 'wpdmtag';
+    public $tag_tax = WPDM_TAG;
 
     public $tax_relation = null;
 
@@ -96,6 +96,8 @@ class Query
             $tax_query['include_children'] = $include_children;
         if ($operator !== 'IN')
             $tax_query['operator'] = $operator;
+	    if( isset( $tax_query['operator'] ) && $tax_query['operator'] === '' )
+		    $tax_query['operator'] = 'IN';
         if ($taxonomy === 'wpdmcategory') {
             array_unshift($this->params['tax_query'], $tax_query);
         } else
@@ -378,7 +380,7 @@ class Query
         $this->params = apply_filters('wpdm_packages_query_params', $this->params);
 
         $this->params['post_type'] = $this->post_type;
-
+	    //wpdmdd($this->params);
         $this->result = new \WP_Query($this->params);
         //wpdmdd($this->result);
         //wpdmprecho($this->result->tax_query->get_sql('wp_term_relationships', 'ID'));

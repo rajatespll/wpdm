@@ -223,6 +223,34 @@ class Categories
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label><?= __('Order By', WPDM_TEXT_DOMAIN); ?></label>
+                                        <select class="form-control system-ui wpdm-custom-select" name="__wpdmcategory[pagestyle][orderby]">
+                                            <option value="date"><?= __('Publish Date', WPDM_TEXT_DOMAIN); ?></option>
+                                            <option value="modified" <?php selected('modified', wpdm_valueof($cpage, 'orderby')) ?>><?= __('Update Date', WPDM_TEXT_DOMAIN); ?></option>
+                                            <option value="download_count" <?php selected('download_count', wpdm_valueof($cpage, 'orderby')) ?>><?= __('Download Count', WPDM_TEXT_DOMAIN); ?></option>
+                                            <option value="view_count" <?php selected('view_count', wpdm_valueof($cpage, 'orderby')) ?>><?= __('View Count', WPDM_TEXT_DOMAIN); ?></option>
+                                            <option value="title" <?php selected('title', wpdm_valueof($cpage, 'orderby')) ?>><?= __('Title', WPDM_TEXT_DOMAIN); ?></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label><?= __('Order', WPDM_TEXT_DOMAIN); ?></label>
+                                        <select class="form-control system-ui wpdm-custom-select" name="__wpdmcategory[pagestyle][order]">
+                                            <option value="desc"><?= __('DESC', WPDM_TEXT_DOMAIN); ?></option>
+                                            <option value="asc"  <?php selected('asc', wpdm_valueof($cpage, 'order')) ?>><?= __('ASC', WPDM_TEXT_DOMAIN); ?></option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label><?= __('Pagination', WPDM_TEXT_DOMAIN); ?></label>
+                                        <select class="form-control system-ui wpdm-custom-select" name="__wpdmcategory[pagestyle][async]">
+                                            <option value="0"><?= __('Regular', WPDM_TEXT_DOMAIN); ?></option>
+                                            <option value="1" <?php selected(1, (int)wpdm_valueof($cpage, 'async')) ?>><?= __('Async', WPDM_TEXT_DOMAIN); ?></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -451,6 +479,34 @@ class Categories
                                                             <i class="fa fa-mobile"></i>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label><?= __('Order By', WPDM_TEXT_DOMAIN); ?></label>
+                                                    <select class="form-control system-ui wpdm-custom-select" name="__wpdmcategory[pagestyle][orderby]">
+                                                        <option value="date"><?= __('Publish Date', WPDM_TEXT_DOMAIN); ?></option>
+                                                        <option value="modified" <?php selected('modified', wpdm_valueof($cpage, 'orderby')) ?>><?= __('Update Date', WPDM_TEXT_DOMAIN); ?></option>
+                                                        <option value="download_count" <?php selected('download_count', wpdm_valueof($cpage, 'orderby')) ?>><?= __('Download Count', WPDM_TEXT_DOMAIN); ?></option>
+                                                        <option value="view_count" <?php selected('view_count', wpdm_valueof($cpage, 'orderby')) ?>><?= __('View Count', WPDM_TEXT_DOMAIN); ?></option>
+                                                        <option value="title" <?php selected('title', wpdm_valueof($cpage, 'orderby')) ?>><?= __('Title', WPDM_TEXT_DOMAIN); ?></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label><?= __('Order', WPDM_TEXT_DOMAIN); ?></label>
+                                                    <select class="form-control system-ui wpdm-custom-select" name="__wpdmcategory[pagestyle][order]">
+                                                        <option value="desc"><?= __('DESC', WPDM_TEXT_DOMAIN); ?></option>
+                                                        <option value="asc"  <?php selected('asc', wpdm_valueof($cpage, 'order')) ?>><?= __('ASC', WPDM_TEXT_DOMAIN); ?></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label><?= __('Pagination', WPDM_TEXT_DOMAIN); ?></label>
+                                                    <select class="form-control system-ui wpdm-custom-select" name="__wpdmcategory[pagestyle][async]">
+                                                        <option value="0"><?= __('Regular', WPDM_TEXT_DOMAIN); ?></option>
+                                                        <option value="1" <?php selected(1, (int)wpdm_valueof($cpage, 'async')) ?>><?= __('Async', WPDM_TEXT_DOMAIN); ?></option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>

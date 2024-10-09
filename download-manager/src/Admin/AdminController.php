@@ -222,6 +222,7 @@ class AdminController {
     function adminHead() {
         remove_submenu_page('index.php', 'wpdm-welcome');
         ?>
+        <!-- Server Time: <?= wp_date("h:i:s A", time()) ?> -->
         <script type="text/javascript">
             var wpdmConfig = {
               siteURL: '<?php echo site_url(); ?>'
@@ -237,12 +238,15 @@ class AdminController {
                     jQuery.post(ajaxurl, {action: 'wpdm_remove_admin_notice'});
                 });
 
+                //jQuery('#wp-admin-bar-top-secondary').append("<span style='font-weight: 800' id='servertime'>Server Time: <?= wp_date("h:i:s A", time()) ?></span> | ");
 
             });
         </script>
         <?php
 
     }
+
+
 
 
     function metaBoxes() {

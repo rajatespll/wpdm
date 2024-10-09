@@ -120,7 +120,7 @@ class FileList
 						$play_button_attrs = [
 							'rel'               => 'nofollow',
 							'style'             => 'width: 32px',
-							'class'             => "inddl btn btn-success btn-sm wpdm-btn-play song-{$ID}-{$pc} ml-2",
+							'class'             => "inddl btn btn-success btn-xs wpdm-btn-play song-{$ID}-{$pc} ml-1",
 							'data-song-index'   => "song-{$ID}-{$pc}",
 							'id'                => "song-{$ID}-{$pc}",
 							'data-state'        => 'stop',
@@ -142,8 +142,10 @@ class FileList
 						if ($filePass != '' && $pwdlock && !$noaccess)
 							$fhtml .= "";
 						else {
-							$download_url = add_query_arg(['ind' => $ind, 'filename' => wp_basename($sfile)], $package_download_url);
-							$link_attrs = ['class' => 'inddl btn btn-primary btn-sm mr-2', 'rel' => 'nofollow'];
+							if ( substr_count( $sfile, 'magnet:' ) ) $download_url = $sfile;
+							else
+								$download_url = add_query_arg(['ind' => $ind, 'filename' => wp_basename($sfile)], $package_download_url);
+							$link_attrs = ['class' => 'inddl btn btn-primary btn-xs mr-1', 'rel' => 'nofollow'];
 							if((int)get_option('__wpdm_open_in_new_window', 0))
 								$link_attrs['target'] = '_blank';
 							$ind_download_link = UI::a($download_url, $fileTitle, $link_attrs);
@@ -192,7 +194,9 @@ class FileList
         $pd = $package->avail_date ? strtotime($package->avail_date) : 0;
         $xd = $package->expire_date ? strtotime($package->expire_date) : 0;
 
-        $package_download_url = $package->getDownloadURL($ID);
+        $package_download_url = $package->getDownloadURL($ID, ['ind' => '{{fileid}}', 'filename' => '{{filename}}']);
+
+	    $flat         = (int)get_option('__wpdm_flat_download_url', 0);
 
         $nodl = $play_only ? 'style="display: none"' : "";
 
@@ -229,7 +233,8 @@ class FileList
             if ($noaccess === 0) {
 
                 if ($pwdlock && $idvdl) $pwdcol = "<th>" . __("Password", "download-manager") . "</th>";
-                if ($idvdl && ($pwdlock || !$olock)) {
+                //if ($idvdl && ($pwdlock || !$olock)) {
+                if ($idvdl) {
                     $dlcol = "<th>" . __("Action", "download-manager") . "</th>";
                     $swl = 1;
                 }
@@ -274,11 +279,11 @@ class FileList
 
 	                $play_button = "";
 	                if($ext === 'mp3') {
-		                $play_url = add_query_arg(['forceplay' => 1, 'ind' => $ind], $package_download_url);
+		                $play_url = add_query_arg(['forceplay' => 1], str_replace( ['{{fileid}}', '{{filename}}'], [$ind, wp_basename($sfile)], $package_download_url));
 		                $play_button_attrs = [
 			                'rel'               => 'nofollow',
 			                'style'             => 'width: 32px',
-			                'class'             => "inddl btn btn-success btn-sm wpdm-btn-play song-{$ID}-{$pc} ml-2",
+			                'class'             => "inddl btn btn-success btn-xs wpdm-btn-play song-{$ID}-{$pc} ml-1",
 			                'data-song-index'   => "song-{$ID}-{$pc}",
 			                'id'                => "song-{$ID}-{$pc}",
 			                'data-state'        => 'stop',
@@ -297,17 +302,26 @@ class FileList
                         $fhtml .= "<tr><td>{$fileTitle}{$fileVersion}{$lastUpdate}</td>";
                         $passField = '';
                         if ($pwdlock && !$noaccess)
-                            $passField = "<input style='width:150px'  onkeypress='jQuery(this).removeClass(\"input-error\");' size=10 type='password' value='' id='pass_{$ID}_{$ind}' placeholder='" . __("Password", "download-manager") . "' name='pass' class='form-control input-sm inddlps d-inline-block' />";
+                            $passField = "<input style='width:150px'  onkeypress='jQuery(this).removeClass(\"input-error\");' size=10 type='password' value='' id='pass_{$ID}_{$ind}' placeholder='" . __("Password", "download-manager") . "' name='pass' class='form-control input-xs inddlps d-inline-block' />";
                         //$fhtml .= "<td width='120' class='text-right'><input  onkeypress='jQuery(this).removeClass(\"input-error\");' size=10 type='password' value='' id='pass_{$ID}_{$ind}' placeholder='".__( "Password" , "download-manager" )."' name='pass' class='form-control input-sm inddlps' /></td>";
                         if ($filePass != '' && $pwdlock && !$noaccess)
-                            $fhtml .= "<td style='white-space: nowrap;text-align: right'>{$passField}<button class='inddl btn btn-primary btn-sm' data-pid='{$ID}' data-file='{$fileID}' rel='" . $permalink . $sap . "wpdmdl={$ID}" . "&ind=" . $ind . "' data-pass='#pass_{$ID}_{$ind}'><i class='fa fa-download'></i>&nbsp;" . $button_label . "</button>&nbsp;{$individual_file_actions}</td></tr>";
+                            $fhtml .= "<td style='white-space: nowrap;text-align: right'>{$passField} <button class='inddl btn btn-primary btn-xs' data-pid='{$ID}' data-file='{$fileID}' rel='" . $permalink . $sap . "wpdmdl={$ID}" . "&ind=" . $ind . "' data-pass='#pass_{$ID}_{$ind}'><i class='fa fa-download'></i>&nbsp;" . $button_label . "</button>&nbsp;{$individual_file_actions}</td></tr>";
                         else {
-                            $download_url = add_query_arg(['ind' => $ind, 'filename' => wp_basename($sfile)], $package_download_url);
-                            $link_attrs = ['class' => 'inddl btn btn-primary btn-sm', 'rel' => 'nofollow'];
+	                        if ( substr_count( $sfile, 'magnet:' ) ) $download_url = $sfile;
+							else
+								$download_url = str_replace(['{{fileid}}', '{{filename}}'], [$ind, wp_basename($sfile)], $package_download_url); // add_query_arg(['ind' => $ind, 'filename' => wp_basename($sfile)], $package_download_url);
+								//$download_url = add_query_arg(['ind' => $ind, 'filename' => wp_basename($sfile)], $package_download_url);
+                            $link_attrs = ['class' => 'inddl btn btn-primary btn-xs', 'rel' => 'nofollow'];
                             if((int)get_option('__wpdm_open_in_new_window', 0))
                                 $link_attrs['target'] = '_blank';
-                            $ind_download_link = UI::a($download_url, $button_label, $link_attrs);
-                            $ind_download_link = apply_filters("wpdm_single_file_download_link", $ind_download_link, $fileID, (array)$package);
+							if(!$olock)
+								$ind_download_link = UI::a($download_url, $button_label, $link_attrs);
+							else
+								$ind_download_link = '<a href="#unlock" class="wpdm-download-link wpdm-download-locked btn btn-xs btn-info " data-package="'.$package->ID.'" data-file="'.$fileID.'">Download</a>';
+
+							$packageA = (array)$package;
+							$packageA['file_download_url'] = $download_url;
+							$ind_download_link = apply_filters("wpdm_single_file_download_link", $ind_download_link, $fileID, $packageA);
                             $fhtml .= "<td style='white-space: nowrap;'  class='text-right'>{$ind_download_link} {$play_button} {$individual_file_actions}</td></tr>";
                         }
                     } else {
@@ -427,7 +441,9 @@ class FileList
                         if ($filePass != '' && $pwdlock)
                             $fhtml .= "<span class='input-group-btn input-group-append'><button class='inddl btn btn-secondary btn-light btn-block' data-pid='{$ID}' data-file='{$fileID}' data-pass='#pass_{$ID}_{$ind}'><i class='fas fa-arrow-alt-circle-down'></i></button></span></div>"; //rel='" . $download_url . "&ind=" . $ind . "'
                         else {
-                            $ind_download_link = "<a rel='nofollow' class='inddl btn btn-primary btn-sm' href='" . $download_url . "&ind=" . $ind . "'>" . $button_label . "</a>";
+	                        if ( substr_count( $sfile, 'magnet:' ) ) $ind_download_link = $sfile;
+	                        else
+								$ind_download_link = "<a rel='nofollow' class='inddl btn btn-primary btn-xs' href='" . $download_url . "&ind=" . $ind . "'>" . $button_label . "</a>";
                             $ind_download_link = apply_filters("wpdm_single_file_download_link", $ind_download_link, $fileID, (array)$package);
                             $individual_file_actions = '';
                             $individual_file_actions = apply_filters("individual_file_action", $individual_file_actions, $ID, $sfile, $fileID);
@@ -508,7 +524,7 @@ class FileList
 		                $play_button_attrs = [
 			                'rel'               => 'nofollow',
 			                'style'               => 'font-size: 14px;width: 24px',
-			                'class'             => "inddl btn btn-link wpdm-btn-play song-{$ID}-{$pc} p-0 mr-2",
+			                'class'             => "inddl btn btn-link wpdm-btn-play song-{$ID}-{$pc} p-0 mr-1",
 			                'data-song-index'   => "song-{$ID}-{$pc}",
 			                'id'                => "song-{$ID}-{$pc}",
 			                'data-state'        => 'stop',
@@ -584,6 +600,7 @@ class FileList
         $package = WPDM()->package->init($ID);
 
         $fileinfo = maybe_unserialize(get_post_meta($ID, '__wpdm_fileinfo', true));
+		if(!is_array($fileinfo)) $fileinfo = [];
 
         if (function_exists('wpdmpp_effective_price') && wpdmpp_effective_price($ID) > 0) return self::premium($ID);
 
@@ -636,7 +653,7 @@ class FileList
                 $ind = $fileID; //\WPDM_Crypt::Encrypt($sfile);
 
                 //if (!isset($fileinfo[$sfile]) || !@is_array($fileinfo[$sfile])) $fileinfo[$sfile] = array();
-                if (!@is_array($fileinfo[$fileID])) $fileinfo[$fileID] = array();
+                if (!isset($fileinfo[$fileID]) || !is_array($fileinfo[$fileID])) $fileinfo[$fileID] = array();
 
                 $filePass = isset($fileinfo[$sfile]['password']) ? $fileinfo[$sfile]['password'] : (isset($fileinfo[$fileID]['password']) ? $fileinfo[$fileID]['password'] : '');
                 $fileTitle = isset($fileinfo[$sfile]['title']) && $fileinfo[$sfile]['title'] != '' ? $fileinfo[$sfile]['title'] : (isset($fileinfo[$fileID]['title']) && $fileinfo[$fileID]['title'] != '' ? $fileinfo[$fileID]['title'] : preg_replace("/([0-9]+)wpdm_/", "", wpdm_basename($sfile)));
@@ -674,7 +691,7 @@ class FileList
                         $fhtml .= "<span class='input-group-btn input-group-append'><button class='inddl btn btn-secondary btn-light btn-block' data-pid='{$ID}' data-file='{$fileID}' data-pass='#pass_{$ID}_{$ind}'><i class='fas fa-arrow-alt-circle-down'></i></button></span></div>"; //rel='" . $download_url . "&ind=" . $ind . "'
                     else {
 
-                        $link_attrs = ['class' => 'inddl btn btn-primary btn-sm', 'rel' => 'nofollow'];
+                        $link_attrs = ['class' => 'inddl btn btn-primary btn-xs', 'rel' => 'nofollow'];
                         if((int)get_option('__wpdm_open_in_new_window', 0))
                             $link_attrs['target'] = '_blank';
                         $ind_download_link = UI::a("{$download_url}&ind={$ind}", $button_label, $link_attrs);

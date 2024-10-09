@@ -5,6 +5,7 @@ if (!defined('ABSPATH')) die();
  * Date: 1/16/18
  * Time: 12:33 AM
  */
+
 error_reporting(0);
 //global $post;
 $ID = wpdm_query_var('__wpdmlo');
@@ -336,7 +337,7 @@ $base_price = (double)get_post_meta($ID, '__wpdm_base_price', true);
 <body class="w3eden" style="background: transparent">
 
 <div class="modal fade" id="wpdm-locks" tabindex="-1" role="dialog" aria-labelledby="wpdm-optinmagicLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="width: <?php echo $terms_lock === 1?395:365; ?>px;max-width: calc(100% - 20px);">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="width: <?php echo $terms_lock === 1?395:365; ?>px;max-width: calc(100% - 20px);margin: 0 auto;">
         <div class="modal-content">
             <div class="modal-icon">
                 <?php if(has_post_thumbnail($ID)) echo get_the_post_thumbnail($ID, 'thumbnail'); else echo WPDM()->package::icon($ID, true, 'p-2'); ?>
@@ -350,7 +351,8 @@ $base_price = (double)get_post_meta($ID, '__wpdm_base_price', true);
             </div>
             <div class="modal-body" id="wpdm-lock-options">
                 <?php
-                echo WPDM()->package->downloadLink(wpdm_query_var('__wpdmlo', 'int'), 1);
+                $extras = isset($_REQUEST['__wpdmfl']) ? ['ind' => wpdm_query_var('__wpdmfl', 'txt')] : [];
+                echo WPDM()->package->downloadLink(wpdm_query_var('__wpdmlo', 'int'), 1, $extras);
                 ?>
             </div>
 

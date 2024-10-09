@@ -16,12 +16,12 @@ if(!defined("ABSPATH")) die();
     <div class="card-body tag-card">
         <ul  id="wpdm-tags">
             <?php
-            $term_list = wp_get_post_terms($post->ID, 'wpdmtag', array("fields" => "all"));
+            $term_list = wp_get_post_terms($post->ID, WPDM_TAG, array("fields" => "all"));
             $selectedtags = array();
             foreach ($term_list as $__term) {
                 $selectedtags[] = $__term->term_id;
             }
-            $terms = get_terms(['taxonomy' => 'wpdmtag', 'hide_empty' => false]);
+            $terms = get_terms(['taxonomy' => WPDM_TAG, 'hide_empty' => false]);
             foreach($terms as $term){
                 echo "<li class='wpdm-tag'><label><input type='checkbox' name='wpdmtags[]' ".checked(in_array($term->term_id, $selectedtags), true, false)." class='wpdmtag' value='{$term->term_id}'> <span class='tagname'>{$term->name}</span></label></li>";
             }
